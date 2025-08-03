@@ -14,7 +14,7 @@
   ],
   "homepage": "https://www.piplupjs.com",
   "repository": {
-    "url": "git+https://github.com/sadik-malik/piplup.git",
+    "url": "git+https://github.com/sadik-malik/piplup-react-hook-form.git",
     "directory": "packages/rhf-adapters"
   },
   "license": "MIT",
@@ -81,11 +81,9 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist",
-    "README.md"
+    "dist"
   ],
   "peerDependencies": {
-    "@mui/lab": ">=6.0.0-beta.0 <8.0.0",
     "@mui/material": ">=6.0.0 <8.0.0",
     "@mui/x-date-pickers": ">=7.19.0 <9.0.0",
     "@piplup/rhf-core": "workspace:*",
@@ -98,7 +96,7 @@
     "react": "^18.0.0 || ^19.0.0",
     "react-hook-form": ">=7.51.5 <8.0.0",
     "react-number-format": ">=5.4.2 <6.0.0",
-    "@piplup/utils": "workspace:*"
+    "@piplup/utils": "3.2.4"
   },
   "peerDependenciesMeta": {
     "@mui/lab": {

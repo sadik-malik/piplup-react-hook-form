@@ -14,7 +14,7 @@
   ],
   "homepage": "https://www.piplupjs.com",
   "repository": {
-    "url": "git+https://github.com/sadik-malik/piplup.git",
+    "url": "git+https://github.com/sadik-malik/piplup-react-hook-form.git",
     "directory": "packages/rhf-core"
   },
   "license": "MIT",
@@ -41,8 +41,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist",
-    "README.md"
+    "dist"
   ],
   "dependencies": {
     "@piplup/utils": "3.2.4"
