@@ -24,8 +24,7 @@ const external = [
     'react-dom',
     'react/jsx-runtime',
     '@mui/x-date-pickers/internals',
-    '@piplup/rhf-core/utils',
-    '@piplup/rhf-core/html',
+    '@piplup/rhf-core'
   ]),
 ];
 

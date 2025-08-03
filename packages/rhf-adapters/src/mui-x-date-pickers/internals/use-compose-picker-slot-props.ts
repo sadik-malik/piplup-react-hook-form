@@ -1,5 +1,5 @@
 import type * as React from 'react';
-import { execSequentially } from '@piplup/rhf-core/utils';
+import { execSequentially } from '@piplup/utils';
 
 export interface UseComposePickerSlotProps {
   error: boolean;
