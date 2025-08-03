@@ -94,3 +94,17 @@ jobs:
           NODE_ENV: production
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm run release -y
+
+      - name: Configure git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Commit and push version/changelog changes and tags
+        run: |
+          git add CHANGELOG.md **/package.json
+          git commit -m "chore(release): version bump and changelog [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
+          git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
