@@ -22,19 +22,19 @@
   "exports": {
     "./package.json": "./dist/package.json",
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./utils": {
+      "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.mjs",
-      "require": "./dist/utils/index.js",
-      "types": "./dist/utils/index.d.ts"
+      "require": "./dist/utils/index.js"
     },
     "./html": {
+      "types": "./dist/html/index.d.ts",
       "import": "./dist/html/index.mjs",
-      "require": "./dist/html/index.js",
-      "types": "./dist/html/index.d.ts"
+      "require": "./dist/html/index.js"
     }
   },
   "main": "./dist/index.js",
