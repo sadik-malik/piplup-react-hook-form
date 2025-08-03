@@ -1,3 +1,13 @@
+## 4.0.2 (2025-08-03)
+
+### 🩹 Fixes
+
+- local package resolution in build ([9137cbe](https://github.com/sadik-malik/piplup-react-hook-form/commit/9137cbe))
+
+### ❤️ Thank You
+
+- sadik-malik
+
 ## 4.0.1 (2025-08-03)
 
 ### 🩹 Fixes
