@@ -1,7 +1,10 @@
-name: Lint
+name: CI & Release
 
 on:
   pull_request:
+    branches:
+      - main
+  push:
     branches:
       - main
 
@@ -32,9 +35,9 @@ jobs:
         run: pnpm lint
 
   require-approval:
-    needs: lint
+    needs: [lint]
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true || github.event.pull_request.state == 'open'
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     steps:
       - name: Wait for approval
         uses: trstringer/manual-approval@v1
@@ -42,6 +45,36 @@ jobs:
           secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: sadik-malik
           minimum-approvals: 1
-          issue-title: "Manual approval required to proceed with merge to main"
+          issue-title: "Manual approval required"
           issue-body: "Please approve to continue."
           exclude-workflow-initiator-as-approver: false
+
+  release:
+    needs: [require-approval]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Release (non-interactive)
+        env:
+          NODE_ENV: production
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm run release -y
