@@ -44,7 +44,7 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: {
-        'html/index': 'src/html/index.ts',
+        'html': 'src/html/index.ts',
         index: 'src/index.ts',
         'mui-chips-input': 'src/mui-chips-input/index.ts',
         'mui-color-input': 'src/mui-color-input/index.ts',
