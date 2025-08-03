@@ -1,0 +1,8 @@
+{
+  "name": "@piplup/rhf-core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/rhf-core/src",
+  "projectType": "library",
+  "tags": ["scope:packages"],
+  "targets": {}
+}

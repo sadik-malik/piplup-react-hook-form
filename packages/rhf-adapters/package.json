@@ -1,0 +1,138 @@
+{
+  "name": "@piplup/rhf-adapters",
+  "version": "3.2.4",
+  "private": false,
+  "description": "A library designed to streamline the integration of react-hook-form with UI frameworks by managing boilerplate code.",
+  "keywords": [
+    "react-hook-form",
+    "react-hook-form adapters",
+    "react-hook-form mui",
+    "react-hook-form material",
+    "react-hook-form @mui/material",
+    "react-hook-form @mui/x-date-pickers",
+    "react-hook-form @mui/base"
+  ],
+  "homepage": "https://www.piplupjs.com",
+  "repository": {
+    "url": "git+https://github.com/sadik-malik/piplup.git",
+    "directory": "packages/rhf-adapters"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "exports": {
+    "./package.json": "./dist/package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./html": {
+      "types": "./dist/html/index.d.ts",
+      "import": "./dist/html.mjs",
+      "require": "./dist/html.js"
+    },
+    "./mui-lab": {
+      "types": "./dist/mui-lab/index.d.ts",
+      "import": "./dist/mui-lab.mjs",
+      "require": "./dist/mui-lab.js"
+    },
+    "./mui-material": {
+      "types": "./dist/mui-material/index.d.ts",
+      "import": "./dist/mui-material.mjs",
+      "require": "./dist/mui-material.js"
+    },
+    "./mui-x-date-pickers": {
+      "types": "./dist/mui-x-date-pickers/index.d.ts",
+      "import": "./dist/mui-x-date-pickers.mjs",
+      "require": "./dist/mui-x-date-pickers.js"
+    },
+    "./mui-chips-input": {
+      "types": "./dist/mui-chips-input/index.d.ts",
+      "import": "./dist/mui-chips-input.mjs",
+      "require": "./dist/mui-chips-input.js"
+    },
+    "./mui-color-input": {
+      "types": "./dist/mui-color-input/index.d.ts",
+      "import": "./dist/mui-color-input.mjs",
+      "require": "./dist/mui-color-input.js"
+    },
+    "./mui-file-input": {
+      "types": "./dist/mui-file-input/index.d.ts",
+      "import": "./dist/mui-file-input.mjs",
+      "require": "./dist/mui-file-input.js"
+    },
+    "./mui-one-time-password-input": {
+      "types": "./dist/mui-one-time-password-input/index.d.ts",
+      "import": "./dist/mui-one-time-password-input.mjs",
+      "require": "./dist/mui-one-time-password-input.js"
+    },
+    "./mui-tel-input": {
+      "types": "./dist/mui-tel-input/index.d.ts",
+      "import": "./dist/mui-tel-input.mjs",
+      "require": "./dist/mui-tel-input.js"
+    },
+    "./react-number-format": {
+      "types": "./dist/react-number-format/index.d.ts",
+      "import": "./dist/react-number-format.mjs",
+      "require": "./dist/react-number-format.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@mui/lab": ">=6.0.0-beta.0 <8.0.0",
+    "@mui/material": ">=6.0.0 <8.0.0",
+    "@mui/x-date-pickers": ">=7.19.0 <9.0.0",
+    "@piplup/rhf-core": "workspace:*",
+    "@types/react": "^18.2.0 || ^19.0.0",
+    "mui-chips-input": ">=4.0.1 <8.0.0",
+    "mui-color-input": ">=5.0.1 <8.0.0",
+    "mui-file-input": ">=6.0.0 <8.0.0",
+    "mui-one-time-password-input": "^3.0.1 <5.0.0",
+    "mui-tel-input": "^7.0.0 <9.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-hook-form": ">=7.51.5 <8.0.0",
+    "react-number-format": ">=5.4.2 <6.0.0",
+    "@piplup/utils": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@mui/lab": {
+      "optional": true
+    },
+    "@mui/material": {
+      "optional": true
+    },
+    "@mui/x-date-pickers": {
+      "optional": true
+    },
+    "@types/react": {
+      "optional": true
+    },
+    "mui-chips-input": {
+      "optional": true
+    },
+    "mui-color-input": {
+      "optional": true
+    },
+    "mui-file-input": {
+      "optional": true
+    },
+    "mui-tel-input": {
+      "optional": true
+    },
+    "mui-one-time-password-input": {
+      "optional": true
+    },
+    "react-number-format": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
