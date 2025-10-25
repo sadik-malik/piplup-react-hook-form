@@ -30,11 +30,6 @@
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.mjs",
       "require": "./dist/utils/index.js"
-    },
-    "./html": {
-      "types": "./dist/html/index.d.ts",
-      "import": "./dist/html/index.mjs",
-      "require": "./dist/html/index.js"
     }
   },
   "main": "./dist/index.js",

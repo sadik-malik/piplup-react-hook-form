@@ -8,11 +8,11 @@ export * from './desktop-time-picker';
 export * from './digital-clock';
 export {
   type ComposePickerRulesMessages,
+  useUnstableBasePickerAdapter as useBasePickerAdapter,
   type UseBasePickerAdapterProps,
   type UseComposePickerRules,
-  type UseComposePickerSlotProps,
-  useUnstableBasePickerAdapter as useBasePickerAdapter,
-  useUnstableComposePickerRules as useComposePickerRules ,
+  useUnstableComposePickerRules as useComposePickerRules,
+  type UseComposePickerSlotProps ,
   useUnstableComposePickerSlotProps as useComposePickerSlotProps,
 } from './internals';
 export * from './mobile-date-picker';

@@ -138,7 +138,7 @@ export function useUnstableComposePickerRules<
     minDateTime,
     minTime,
     minutesStep,
-    rules = {},
+    rules: rulesProp = {},
     shouldDisableDate,
     shouldDisableMonth,
     shouldDisableTime,
@@ -202,6 +202,7 @@ export function useUnstableComposePickerRules<
 
   const adapter = useLocalizationContext<NonNullable<TTransformedValue>>();
 
+  const rules = { ...rulesProp };
   if (!rules.validate) {
     if (rules.validate === 'function') {
       const validateFunc = rules.validate;
