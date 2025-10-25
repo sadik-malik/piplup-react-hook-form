@@ -11,14 +11,13 @@ export type MuiXDateFieldElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Omit<
   DateFieldProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
-  'defaultValue' | 'name' | 'value'
+  'defaultValue' | 'helperText' | 'name' | 'value'
 > &
   Omit<
     UseMuiXDateFieldAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
     | 'composeClassName'
     | 'composeHelperText'
-    | 'helperText'
     | 'onBlur'
     | 'onChange'
     | 'slotProps'

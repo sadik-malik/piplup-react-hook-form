@@ -4,5 +4,23 @@
   "sourceRoot": "packages/rhf-adapters/src",
   "projectType": "library",
   "tags": ["scope:packages"],
-  "targets": {}
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "packages/rhf-adapters/dist"
+      }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/rhf-adapters/cypress.config.ts",
+        "testingType": "component",
+        "devServerTarget": "@piplup/rhf-adapters:build",
+        "skipServe": true
+      }
+    }
+  }
 }

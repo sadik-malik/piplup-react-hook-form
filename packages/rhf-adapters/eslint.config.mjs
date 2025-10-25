@@ -52,6 +52,7 @@ export default [
             '@nx/vite',
             'vite',
             '@piplup/utils', // This is already bundled with @piplup/rhf-core. So we do not needs its import
+            "cypress"
           ],
           ignoredFiles: ['eslint.config.js', 'rollup.config.js'],
           includeTransitiveDependencies: true,

@@ -1,10 +1,16 @@
 import * as React from 'react';
-import { type FieldValues, type FieldError, type FieldErrors } from 'react-hook-form';
+import {
+  type FieldValues,
+  type FieldError,
+  type FieldErrors,
+} from 'react-hook-form';
 
 /**
  * Props for the `useComposeModifierState` hook.
  */
-export type UseComposeModifierStateProps<TFieldValues extends FieldValues = FieldValues> = {
+export type UseComposeModifierStateProps<
+  TFieldValues extends FieldValues = FieldValues,
+> = {
   /**
    * Flag indicating if the component should be disabled.
    */
@@ -28,7 +34,7 @@ export type UseComposeModifierStateProps<TFieldValues extends FieldValues = Fiel
   /**
    * Error object from form validation, used to determine the error state.
    */
-  fieldError?: FieldError | FieldErrors<TFieldValues>;
+  fieldError?: boolean | FieldError | FieldErrors<TFieldValues>;
 
   /**
    * Flag indicating if the form is currently submitting.
@@ -57,19 +63,29 @@ export type UseComposeModifierStateResult = {
  * @param props - The properties used to determine the modifier states.
  * @returns The composed modifier state object containing `error` and `disabled` flags.
  */
-export function useUnstableComposeModifierState<TFieldValues extends FieldValues = FieldValues>(
+export function useUnstableComposeModifierState<
+  TFieldValues extends FieldValues = FieldValues,
+>(
   props: UseComposeModifierStateProps<TFieldValues>,
 ): UseComposeModifierStateResult {
-  const { disabled, disableOnError, disableOnIsSubmitting, error, fieldError, isSubmitting } =
-    props;
+  const {
+    disabled,
+    disableOnError,
+    disableOnIsSubmitting,
+    error,
+    fieldError,
+    isSubmitting,
+  } = props;
 
   return React.useMemo<UseComposeModifierStateResult>(() => {
     const hasError =
       typeof error !== 'undefined'
         ? error
-        : typeof fieldError === 'object' &&
-          fieldError !== null &&
-          Object.keys(fieldError).length > 0;
+        : typeof fieldError === 'boolean'
+          ? fieldError
+          : typeof fieldError === 'object' &&
+            fieldError !== null &&
+            Object.keys(fieldError).length > 0;
     return {
       disabled: !!(
         disabled ||
@@ -78,5 +94,12 @@ export function useUnstableComposeModifierState<TFieldValues extends FieldValues
       ),
       error: hasError,
     };
-  }, [error, fieldError, disabled, disableOnError, disableOnIsSubmitting, isSubmitting]);
+  }, [
+    error,
+    fieldError,
+    disabled,
+    disableOnError,
+    disableOnIsSubmitting,
+    isSubmitting,
+  ]);
 }

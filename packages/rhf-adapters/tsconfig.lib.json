@@ -8,7 +8,7 @@
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts",
       "vite/client"
-    ],
+    ]
   },
   "exclude": [
     "jest.config.ts",
@@ -21,7 +21,13 @@
     "src/**/*.spec.jsx",
     "src/**/*.test.jsx",
     "**/*.stories.ts",
-    "**/*.stories.js"
+    "**/*.stories.js",
+    "cypress/**/*",
+    "cypress.config.ts",
+    "**/*.cy.ts",
+    "**/*.cy.js",
+    "**/*.cy.tsx",
+    "**/*.cy.jsx"
   ],
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }

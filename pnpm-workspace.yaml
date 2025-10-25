@@ -5,6 +5,7 @@ packages:
 onlyBuiltDependencies:
   - '@swc/core'
   - core-js
+  - cypress
   - esbuild
   - nx
   - unrs-resolver
