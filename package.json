@@ -46,7 +46,6 @@
     "@typescript-eslint/utils": "8.46.2",
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/ui": "^4.0.3",
-    "chromatic": "^13.3.2",
     "core-js": "^3.46.0",
     "cypress": "^14.2.1",
     "dayjs": "^1.11.18",
