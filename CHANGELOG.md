@@ -1,3 +1,13 @@
+## 4.1.0 (2026-01-03)
+
+### 🚀 Features
+
+- dropped react 18 support, react-hook-form minimum version will be 7.65.0 and configured workspace for cypress based component testing ([ad8a8a3](https://github.com/sadik-malik/piplup-react-hook-form/commit/ad8a8a3))
+
+### ❤️ Thank You
+
+- sadik-malik
+
 ## 4.0.1 (2025-08-03)
 
 ### 🩹 Fixes

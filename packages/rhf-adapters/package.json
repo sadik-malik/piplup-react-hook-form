@@ -1,6 +1,6 @@
 {
   "name": "@piplup/rhf-adapters",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "private": false,
   "description": "A library designed to streamline the integration of react-hook-form with UI frameworks by managing boilerplate code.",
   "keywords": [

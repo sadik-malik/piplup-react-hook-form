@@ -1,6 +1,6 @@
 {
   "name": "@piplup/rhf-core",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "private": false,
   "description": "Core library containing hooks and utility functions designed to streamline the integration of react-hook-form with UI frameworks, by managing boilerplate code.",
   "keywords": [
