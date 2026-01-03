@@ -1,5 +1,3 @@
-// @ts-check
-
 import enquirer from 'enquirer';
 import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release/index.js';
 import yargs from 'yargs';
@@ -24,6 +22,7 @@ const versionTypes = ['patch', 'minor', 'major', 'prerelease'];
  * @param {string} versionType
  * @param {boolean} dryRun
  * @param {boolean} verbose
+ * @param {boolean} firstRelease
  */
 async function runVersioning(versionType, dryRun, verbose, firstRelease) {
   console.log('\n📦 Running versioning...');
@@ -48,6 +47,7 @@ async function runVersioning(versionType, dryRun, verbose, firstRelease) {
  * @param {string} workspaceVersion
  * @param {boolean} dryRun
  * @param {boolean} verbose
+ * @param {boolean} firstRelease
  */
 async function generateChangelog(versionData, workspaceVersion, dryRun, verbose, firstRelease) {
   console.log('\n� Generating changelog...');
@@ -70,6 +70,7 @@ async function generateChangelog(versionData, workspaceVersion, dryRun, verbose,
  * Publish packages
  * @param {boolean} dryRun
  * @param {boolean} verbose
+ * @param {boolean} firstRelease
  */
 async function publishPackages(dryRun, verbose, firstRelease) {
   console.log('\n� Publishing packages...');
