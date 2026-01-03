@@ -88,7 +88,6 @@
     "@mui/x-date-pickers": ">=7.19.0 <9.0.0",
     "@mui/lab": ">=6.0.0-0 <8.0.0",
     "@piplup/rhf-core": "workspace:*",
-    "@types/react": "^19.0.0",
     "mui-chips-input": ">=4.0.1 <8.0.0",
     "mui-color-input": ">=5.0.1 <8.0.0",
     "mui-file-input": ">=6.0.0 <8.0.0",
@@ -97,7 +96,8 @@
     "react": "^19.0.0",
     "react-hook-form": ">=7.65.0 <8.0.0",
     "react-number-format": ">=5.4.2 <6.0.0",
-    "@piplup/utils": "3.2.4"
+    "@piplup/utils": "3.2.4",
+    "@types/react": "^19.0.0"
   },
   "peerDependenciesMeta": {
     "@mui/lab": {

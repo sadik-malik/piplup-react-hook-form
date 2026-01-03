@@ -23,6 +23,12 @@ import {
   useUnstableTransform as useTransform,
 } from './internals';
 
+// @see https://github.com/mui/material-ui/issues/42020
+declare const UNDEFINED_VOID_ONLY: unique symbol;
+declare module "react" {
+   export type VoidOrUndefinedOnly = void | { [UNDEFINED_VOID_ONLY]: never };
+}
+
 /**
  * Type for the props of the controller adapter hook.
  */

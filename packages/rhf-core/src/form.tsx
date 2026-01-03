@@ -3,10 +3,10 @@ import {
   type FieldValues,
   FormProvider as ReactHookFormProvider,
   type SubmitErrorHandler,
-  type SubmitHandler,
   type UseFormProps,
   useForm,
   type FormProviderProps as ReactHookFormProviderProps,
+  type SubmitHandler,
 } from 'react-hook-form';
 import {
   FormErrorParserContext,
@@ -18,7 +18,7 @@ export interface FormErrorProviderProps {
   errorParser?: FormErrorParserFn;
 }
 
-export function FormErrorProvider(props: FormErrorProviderProps){
+export function FormErrorProvider(props: FormErrorProviderProps) {
   const { children, errorParser } = props;
   return <FormErrorParserContext.Provider value={errorParser}>{children}</FormErrorParserContext.Provider>
 }
@@ -27,7 +27,7 @@ interface FormContainerWithoutUseFormProps<
   TFieldValues extends FieldValues = FieldValues,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
-  TTransformedValues extends FieldValues | undefined = undefined,
+  TTransformedValues = TFieldValues,
 > extends FormErrorProviderProps {
   formContext: Omit<
     ReactHookFormProviderProps<TFieldValues, TContext, TTransformedValues>,
@@ -35,18 +35,14 @@ interface FormContainerWithoutUseFormProps<
   >;
   formProps?: Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit'>;
   onError?: SubmitErrorHandler<TFieldValues>;
-  onSubmit?: TTransformedValues extends undefined
-    ? SubmitHandler<TFieldValues>
-    : TTransformedValues extends FieldValues
-      ? SubmitHandler<TTransformedValues>
-      : never;
+  onSubmit?: SubmitHandler<TTransformedValues>
 }
 
 function FormContainerWithoutUseForm<
   TFieldValues extends FieldValues = FieldValues,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
-  TTransformedValues extends FieldValues | undefined = undefined,
+  TTransformedValues = TFieldValues,
 >(props: FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>) {
   const { children, errorParser, formContext, formProps, onError, onSubmit } = props;
   return (
@@ -72,23 +68,23 @@ interface FormContainerWithUseFormProps<
   TFieldValues extends FieldValues = FieldValues,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
-  TTransformedValues extends FieldValues | undefined = undefined,
-> extends UseFormProps<TFieldValues, TContext>,
-    Omit<
-      FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>,
-      'formContext'
-    > {}
+  TTransformedValues = TFieldValues,
+> extends UseFormProps<TFieldValues, TContext, TTransformedValues>,
+  Omit<
+    FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>,
+    'formContext'
+  > { }
 
 function FormContainerWithUseForm<
   TFieldValues extends FieldValues = FieldValues,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
-  TTransformedValues extends FieldValues | undefined = undefined,
+  TTransformedValues = TFieldValues,
 >(props: FormContainerWithUseFormProps<TFieldValues, TContext, TTransformedValues>) {
   const { children, errorParser, formProps, onError, onSubmit, ...UseFormProps } = props;
 
   const formContext = useForm<TFieldValues, TContext, TTransformedValues>({
-    ...UseFormProps,
+    ...UseFormProps
   });
 
   return (
@@ -108,18 +104,18 @@ export type FormContainerProps<
   TFieldValues extends FieldValues = FieldValues,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
-  TTransformedValues extends FieldValues | undefined = undefined,
+  TTransformedValues = TFieldValues,
 > =
   | FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>
   | (FormContainerWithUseFormProps<TFieldValues, TContext, TTransformedValues> & {
-      formContext?: undefined;
-    });
+    formContext?: undefined;
+  });
 
 export function FormContainer<
   TFieldValues extends FieldValues = FieldValues,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
-  TTransformedValues extends FieldValues | undefined = undefined,
+  TTransformedValues = TFieldValues,
 >(props: FormContainerProps<TFieldValues, TContext, TTransformedValues>) {
   const { errorParser, formContext, ...rest } = props;
 

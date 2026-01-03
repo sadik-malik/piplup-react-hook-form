@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { type Transform } from '@piplup/rhf-core';
-import { MuiTelInput, type MuiTelInputProps } from 'mui-tel-input';
+import { MuiTelInput } from 'mui-tel-input';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type UseMuiTelInputAdapterProps, useMuiTelInputAdapter } from './adapter';
+
+type MuiTelInputProps = React.ComponentProps<typeof MuiTelInput>
 
 export type MuiTelInputElementProps<
   TTransformedValue extends string,
