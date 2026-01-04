@@ -175,8 +175,7 @@ function modifyOutputPackageJson() {
       if (hadWorkspaceError) {
         process.exit(1);
       }
-
-      replaceDistPaths(packageJson, outDir);
+      replaceDistPaths(packageJson, path.basename(outDir));
 
       writeFileSync(
         packageJsonPath,
