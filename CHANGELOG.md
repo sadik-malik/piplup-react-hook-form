@@ -1,3 +1,13 @@
+## 4.3.0 (2026-01-04)
+
+### 🩹 Fixes
+
+- typescript warnings for  useComposePickerRules ([c18e9a0](https://github.com/sadik-malik/piplup-react-hook-form/commit/c18e9a0))
+
+### ❤️ Thank You
+
+- sadik-malik
+
 ## 4.2.0 (2026-01-03)
 
 ### 🩹 Fixes
