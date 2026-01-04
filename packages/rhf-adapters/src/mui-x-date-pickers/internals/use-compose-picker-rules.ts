@@ -191,9 +191,9 @@ export function useUnstableComposePickerRules<
         'shouldDisableTime-hours': (date: TTransformedValue) =>
           getMessage(messages?.['shouldDisableTime-hours'] ?? 'Hour is disabled', date),
         'shouldDisableTime-minutes': (date: TTransformedValue) =>
-          getMessage(messages?.['shouldDisableTime-hours'] ?? 'Minute is disabled', date),
+          getMessage(messages?.['shouldDisableTime-minutes'] ?? 'Minute is disabled', date),
         'shouldDisableTime-seconds': (date: TTransformedValue) =>
-          getMessage(messages?.['shouldDisableTime-hours'] ?? 'Second is disabled', date),
+          getMessage(messages?.['shouldDisableTime-seconds'] ?? 'Second is disabled', date),
         shouldDisableYear: (date: TTransformedValue) =>
           getMessage(messages?.shouldDisableYear ?? 'Year is not allowed', date),
       }),
@@ -202,7 +202,7 @@ export function useUnstableComposePickerRules<
 
   const adapter = useLocalizationContext<NonNullable<TTransformedValue>>();
 
-  const rules = { ...rulesProp };
+  const rules: UseControllerProps<TFieldValues, TName>['rules'] = { ...rulesProp };
   if (!rules.validate) {
     if (rules.validate === 'function') {
       const validateFunc = rules.validate;
