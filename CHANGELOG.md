@@ -1,3 +1,7 @@
+## 4.4.0 (2026-01-04)
+
+This was a version bump only, there were no code changes.
+
 ## 4.3.0 (2026-01-04)
 
 ### 🩹 Fixes
