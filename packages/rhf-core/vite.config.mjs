@@ -26,6 +26,9 @@ const external = [
   ]),
 ];
 
+/**
+ * @type {Record<string, string}
+ */
 const globals = {
   '@piplup/utils': 'PiplupUtils',
   react: 'React',
@@ -56,7 +59,7 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: {
-        index: 'src/index.ts'
+        index: 'src/index.ts',
       },
       fileName: (format, entryName) => {
         const extension = format === 'es' ? 'mjs' : 'js';
@@ -85,7 +88,10 @@ export default defineConfig({
     react(),
     nxViteTsPaths(),
     nxCopyAssetsPlugin(['README.md', 'LICENSE']),
-    dts({ entryRoot: 'src', tsconfigPath: path.join(__dirname, 'tsconfig.lib.json') }),
+    dts({
+      entryRoot: 'src',
+      tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
+    }),
     modifyOutputPackageJson(),
   ],
   root: __dirname,

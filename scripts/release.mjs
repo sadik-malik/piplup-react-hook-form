@@ -1,5 +1,9 @@
 import enquirer from 'enquirer';
-import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release/index.js';
+import {
+  releaseChangelog,
+  releasePublish,
+  releaseVersion,
+} from 'nx/release/index.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
@@ -33,7 +37,9 @@ async function runVersioning(versionType, dryRun, verbose, firstRelease) {
       specifier: versionType,
       verbose,
     });
-    console.log(`✅ Versioning completed. Workspace version: ${workspaceVersion}`);
+    console.log(
+      `✅ Versioning completed. Workspace version: ${workspaceVersion}`,
+    );
     return { projectsVersionData, workspaceVersion };
   } catch (error) {
     console.error('❌ Versioning failed:', error.message);
@@ -49,7 +55,13 @@ async function runVersioning(versionType, dryRun, verbose, firstRelease) {
  * @param {boolean} verbose
  * @param {boolean} firstRelease
  */
-async function generateChangelog(versionData, workspaceVersion, dryRun, verbose, firstRelease) {
+async function generateChangelog(
+  versionData,
+  workspaceVersion,
+  dryRun,
+  verbose,
+  firstRelease,
+) {
   console.log('\n� Generating changelog...');
   try {
     await releaseChangelog({
@@ -66,6 +78,20 @@ async function generateChangelog(versionData, workspaceVersion, dryRun, verbose,
   }
 }
 
+async function promptForNpmOtp() {
+  const { otp } = await prompt({
+    message: 'Enter npm OTP (2FA code):',
+    name: 'otp',
+    type: 'password',
+  });
+
+  if (!otp) {
+    throw new Error('npm OTP is required to publish');
+  }
+
+  return otp;
+}
+
 /**
  * Publish packages
  * @param {boolean} dryRun
@@ -75,13 +101,20 @@ async function generateChangelog(versionData, workspaceVersion, dryRun, verbose,
 async function publishPackages(dryRun, verbose, firstRelease) {
   console.log('\n� Publishing packages...');
   try {
+    const otp = await promptForNpmOtp();
+    if (otp) {
+      process.env.NPM_CONFIG_OTP = otp;
+    }
+
     const publishResults = await releasePublish({
       dryRun,
       firstRelease,
       verbose,
     });
-    
-    const allSuccessful = Object.values(publishResults).every((result) => result.code === 0);
+
+    const allSuccessful = Object.values(publishResults).every(
+      (result) => result.code === 0,
+    );
     if (allSuccessful) {
       console.log('✅ Publishing completed successfully');
     } else {
@@ -89,7 +122,7 @@ async function publishPackages(dryRun, verbose, firstRelease) {
       console.error('Publish results:', publishResults);
       throw new Error('Publishing failed for some packages');
     }
-    
+
     return publishResults;
   } catch (error) {
     console.error('❌ Publishing failed:', error.message);
@@ -153,17 +186,32 @@ async function main() {
       console.log('Running with default configuration...');
       // Versioning
       if (config.runVersioning) {
-        const versionResult = await runVersioning(config.versionType, config.dryRun, config.verbose, config.firstRelease);
+        const versionResult = await runVersioning(
+          config.versionType,
+          config.dryRun,
+          config.verbose,
+          config.firstRelease,
+        );
         versionData = versionResult.projectsVersionData;
         workspaceVersion = versionResult.workspaceVersion;
       }
       // Changelog
       if (config.generateChangelog && versionData && workspaceVersion) {
-        await generateChangelog(versionData, workspaceVersion, config.dryRun, config.verbose, config.firstRelease);
+        await generateChangelog(
+          versionData,
+          workspaceVersion,
+          config.dryRun,
+          config.verbose,
+          config.firstRelease,
+        );
       }
       // Publish
       if (config.publishPackages) {
-        await publishPackages(config.dryRun, config.verbose, config.firstRelease);
+        await publishPackages(
+          config.dryRun,
+          config.verbose,
+          config.firstRelease,
+        );
       }
     } else {
       // Prompt for first release
@@ -213,7 +261,12 @@ async function main() {
         config.versionType = result['versionType'];
 
         // Run versioning step
-        const versionResult = await runVersioning(config.versionType, config.dryRun, config.verbose, config.firstRelease);
+        const versionResult = await runVersioning(
+          config.versionType,
+          config.dryRun,
+          config.verbose,
+          config.firstRelease,
+        );
         versionData = versionResult.projectsVersionData;
         workspaceVersion = versionResult.workspaceVersion;
       } else {
@@ -231,9 +284,17 @@ async function main() {
 
       if (config.generateChangelog) {
         if (versionData && workspaceVersion) {
-          await generateChangelog(versionData, workspaceVersion, config.dryRun, config.verbose, config.firstRelease);
+          await generateChangelog(
+            versionData,
+            workspaceVersion,
+            config.dryRun,
+            config.verbose,
+            config.firstRelease,
+          );
         } else {
-          console.log('⚠️  Cannot generate changelog without version data. Skipping...');
+          console.log(
+            '⚠️  Cannot generate changelog without version data. Skipping...',
+          );
         }
       } else {
         console.log('⏭️  Skipping changelog generation');
@@ -249,7 +310,11 @@ async function main() {
       config.publishPackages = result['publishPackages'];
 
       if (config.publishPackages) {
-        await publishPackages(config.dryRun, config.verbose, config.firstRelease);
+        await publishPackages(
+          config.dryRun,
+          config.verbose,
+          config.firstRelease,
+        );
       } else {
         console.log('⏭️  Skipping package publishing');
       }
@@ -258,7 +323,9 @@ async function main() {
     console.log('\n✅ Release process completed successfully!');
 
     if (config.dryRun) {
-      console.log('\n💡 This was a dry run. Run without --dry-run to execute actual release.');
+      console.log(
+        '\n💡 This was a dry run. Run without --dry-run to execute actual release.',
+      );
     } else {
       console.log('\n🎉 Packages have been released!');
       console.log('📋 Next steps:');
