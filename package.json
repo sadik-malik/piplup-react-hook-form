@@ -22,7 +22,6 @@
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "~9.38.0",
     "@mui/icons-material": "^7.3.4",
-    "@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
     "@mui/material": "^7.3.4",
     "@mui/x-date-pickers": "^8.15.0",
     "@nx/cypress": "22.3.3",

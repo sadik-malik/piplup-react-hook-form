@@ -1,35 +1,17 @@
-import type * as React from 'react';
-import { useFormState, type FieldValues } from 'react-hook-form';
-import { useHtmlButtonAdapter, type UseHtmlButtonAdapterProps } from '../../html/button/adapter';
+/**
+ * Deprecated: importing from "@piplup/rhf-adapters/mui-lab/loading-button" is deprecated.
+ * Please import from "@piplup/rhf-adapters/mui-material" instead:
+ *
+ * import { useMuiButtonAdapter } from "@piplup/rhf-adapters/mui-material"
+ */
 
-export interface UseMuiLoadingButtonAdapterProps<TFieldValues extends FieldValues = FieldValues>
-  extends UseHtmlButtonAdapterProps<TFieldValues> {
-  loading?: boolean;
+if (process.env.NODE_ENV !== 'production') {
+  console.warn(
+    '[deprecated] Importing from "@piplup/rhf-adapters/mui-lab/loading-button" is deprecated. Use "@piplup/rhf-adapters/mui-material" instead: import { useMuiButtonAdapter } from "@piplup/rhf-adapters/mui-material"',
+  );
 }
 
-export function useMuiLoadingButtonAdapter<
-  TFieldValues extends FieldValues = FieldValues,
-  RefType = unknown
->(props: UseMuiLoadingButtonAdapterProps<TFieldValues>, ref?: React.Ref<RefType>) {
-  const { control, disabled, exact, loading: loadingProp, name } = props;
-
-  const adapter = useHtmlButtonAdapter<TFieldValues, RefType>(props, ref);
-
-  const { isSubmitting } = useFormState<TFieldValues>({
-    control,
-    disabled,
-    exact,
-    name,
-  });
-
-  let loading = loadingProp;
-  if (typeof loading === 'undefined') {
-    loading = isSubmitting;
-  }
-
-  return {
-    ...adapter,
-    classes: props.classes,
-    loading,
-  };
-}
+export {
+  useMuiButtonAdapter as useMuiLoadingButtonAdapter,
+  UseMuiButtonAdapterProps as UseMuiLoadingButtonAdapterProps,
+} from '../../mui-material/button';
