@@ -69,7 +69,7 @@ function HtmlInputComponent<
   } = props;
 
   const {
-    error: _error,
+    error: hasError,
     helperText: _helperText,
     ...adapter
   } = useHtmlInputAdapter(
@@ -109,7 +109,7 @@ function HtmlInputComponent<
     ref
   );
 
-  return <input {...rest} {...adapter} />;
+  return <input aria-invalid={hasError} {...rest} {...adapter} />;
 }
 
 export const HtmlInputElement = React.forwardRef(

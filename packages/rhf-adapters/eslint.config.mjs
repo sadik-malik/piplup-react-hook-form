@@ -2,6 +2,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
+import cypress from 'eslint-plugin-cypress/flat';
 import jsonParser from 'jsonc-eslint-parser';
 import baseConfig from '../../eslint.config.mjs';
 
@@ -13,6 +14,7 @@ const compat = new FlatCompat({
 });
 
 export default [
+  cypress.configs['recommended'],
   ...baseConfig,
   ...compat.extends('plugin:@nx/react'),
   {
@@ -52,7 +54,8 @@ export default [
             '@nx/vite',
             'vite',
             '@piplup/utils', // This is already bundled with @piplup/rhf-core. So we do not needs its import
-            "cypress"
+            "cypress",
+            "eslint-plugin-cypress"
           ],
           ignoredFiles: ['eslint.config.js', 'rollup.config.js'],
           includeTransitiveDependencies: true,

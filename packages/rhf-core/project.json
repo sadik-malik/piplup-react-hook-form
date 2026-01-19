@@ -3,6 +3,28 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/rhf-core/src",
   "projectType": "library",
-  "tags": ["scope:packages"],
-  "targets": {}
+  "tags": [
+    "scope:packages"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "packages/rhf-core/dist"
+      }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/rhf-core/cypress.config.ts",
+        "testingType": "component",
+        "devServerTarget": "@piplup/rhf-core:build",
+        "skipServe": true
+      }
+    }
+  }
 }
