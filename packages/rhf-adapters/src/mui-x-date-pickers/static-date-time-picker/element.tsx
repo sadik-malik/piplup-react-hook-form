@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
-  type PickerValidDate,
   StaticDateTimePicker,
   type StaticDateTimePickerProps,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,11 +12,11 @@ import {
 } from './adapter';
 
 export interface MuiXStaticDateTimePickerElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<
-      StaticDateTimePickerProps<TTransformedValue>,
+      StaticDateTimePickerProps,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,
     Omit<
@@ -33,7 +33,7 @@ export interface MuiXStaticDateTimePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    StaticDateTimePickerProps<TTransformedValue>['onChange'],
+    StaticDateTimePickerProps['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -41,7 +41,7 @@ export interface MuiXStaticDateTimePickerElementProps<
 }
 
 function MuiXStaticDateTimePickerComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(
@@ -61,11 +61,9 @@ function MuiXStaticDateTimePickerComponent<
     error: errorProp,
     errorParser,
     maxDate,
-    maxDateTime,
     maxTime,
     messages,
     minDate,
-    minDateTime,
     minTime,
     minutesStep,
     name,
@@ -106,11 +104,9 @@ function MuiXStaticDateTimePickerComponent<
       error: errorProp,
       errorParser,
       maxDate,
-      maxDateTime,
       maxTime,
       messages,
       minDate,
-      minDateTime,
       minTime,
       minutesStep,
       name,

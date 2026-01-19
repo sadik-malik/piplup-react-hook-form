@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { type PickerValidDate, TimePicker, type TimePickerProps } from '@mui/x-date-pickers';
+import { TimePicker, type TimePickerProps } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type UseMuiXTimePickerAdapterProps, useMuiXTimePickerAdapter } from './adapter';
 
 export type MuiXTimePickerElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Omit<
-  TimePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+  TimePickerProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'name' | 'value'
 > &
   Omit<
@@ -27,7 +28,7 @@ export type MuiXTimePickerElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      TimePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+      TimePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -35,8 +36,8 @@ export type MuiXTimePickerElementProps<
   };
 
 function MuiXTimePickerComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

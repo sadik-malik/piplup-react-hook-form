@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
-  type PickerValidDate,
   DesktopDatePicker,
   type DesktopDatePickerProps,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,16 +12,20 @@ import {
 } from './adapter';
 
 export interface MuiXDesktopDatePickerElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-      DesktopDatePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+      DesktopDatePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,
     Omit<
-      UseMuiXDesktopDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+      UseMuiXDesktopDatePickerAdapterProps<
+        TTransformedValue,
+        TFieldValues,
+        TName
+      >,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -35,7 +39,7 @@ export interface MuiXDesktopDatePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    DesktopDatePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+    DesktopDatePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -43,10 +47,10 @@ export interface MuiXDesktopDatePickerElementProps<
 }
 
 function MuiXDesktopDatePickerComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDesktopDatePickerElementProps<
     TTransformedValue,
@@ -54,7 +58,7 @@ function MuiXDesktopDatePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -120,14 +124,14 @@ function MuiXDesktopDatePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <DesktopDatePicker {...rest} {...adapter} />;
 }
 
 export const MuiXDesktopDatePickerElement = React.forwardRef(
-  MuiXDesktopDatePickerComponent
+  MuiXDesktopDatePickerComponent,
 ) as typeof MuiXDesktopDatePickerComponent & { displayName?: string };
 
 MuiXDesktopDatePickerElement.displayName = 'MuiXDesktopDatePickerElement';

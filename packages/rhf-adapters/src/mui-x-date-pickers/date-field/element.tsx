@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { type PickerValidDate, DateField, type DateFieldProps } from '@mui/x-date-pickers';
+import { DateField, type DateFieldProps } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type UseMuiXDateFieldAdapterProps, useMuiXDateFieldAdapter } from './adapter';
 
 export type MuiXDateFieldElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Omit<
-  DateFieldProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+  DateFieldProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'helperText' | 'name' | 'value'
 > &
   Omit<
@@ -27,7 +28,7 @@ export type MuiXDateFieldElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      DateFieldProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+      DateFieldProps<TEnableAccessibleFieldDOMStructure>['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -35,8 +36,8 @@ export type MuiXDateFieldElementProps<
   };
 
 function MuiXDateFieldComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(
@@ -117,7 +118,7 @@ function MuiXDateFieldComponent<
 
   return (
     <DateField
-      {...(rest as DateFieldProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>)}
+      {...rest}
       {...adapter}
     />
   );

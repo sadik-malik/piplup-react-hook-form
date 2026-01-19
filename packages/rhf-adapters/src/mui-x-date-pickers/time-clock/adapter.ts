@@ -1,27 +1,22 @@
 import type * as React from 'react';
-import { validateTime, type PickerValidDate } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useUnstableBasePickerAdapter as useBasePickerAdapter, type UseBasePickerAdapterProps } from '../internals';
+import {
+  useUnstableBaseTimePickerAdapter as useBaseTimePickerAdapter,
+  type UseBaseTimePickerAdapterProps,
+} from '../internals';
 
 export interface UseMuiXTimeClockAdapterProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBasePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    | 'maxDate'
-    | 'maxDateTime'
-    | 'minDate'
-    | 'minDateTime'
-    | 'onBlur'
-    | 'shouldDisableDate'
-    | 'shouldDisableMonth'
-    | 'shouldDisableYear'
-    | 'validator'
+    UseBaseTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+    'onBlur' | 'validator'
   > {}
 
 export function useMuiXTimeClockAdapter<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
@@ -29,27 +24,10 @@ export function useMuiXTimeClockAdapter<
   props: UseMuiXTimeClockAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
-  const {
-    maxDate: _maxDate,
-    maxDateTime: _maxDateTime,
-    minDate: _minDate,
-    minDateTime: _minDateTime,
-    shouldDisableDate: _shouldDisableDate,
-    shouldDisableMonth: _shouldDisableMonth,
-    shouldDisableYear: _shouldDisableYear,
-    ...adapter
-  } = useBasePickerAdapter(
+  const adapter = useBaseTimePickerAdapter(
     {
       ...props,
-      maxDate: undefined,
-      maxDateTime: undefined,
-      minDate: undefined,
-      minDateTime: undefined,
       onBlur: undefined,
-      shouldDisableDate: undefined,
-      shouldDisableMonth: undefined,
-      shouldDisableYear: undefined,
-      validator: validateTime,
     },
     ref,
   );

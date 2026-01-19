@@ -1,20 +1,20 @@
 import type * as React from 'react';
-import { validateDateTime, type PickerValidDate } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { execSequentially } from '@piplup/utils';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
-  useUnstableBasePickerAdapter as useBasePickerAdapter,
+  useUnstableBaseDateTimePickerAdapter as useBaseDateTimePickerAdapter,
+  type UseBaseDateTimePickerAdapterProps,
   useUnstableComposePickerSlotProps as useComposePickerSlotProps,
-  type UseBasePickerAdapterProps,
 } from '../internals';
 
 export interface UseMuiXDateTimePickerAdapterProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBasePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'helperText' | 'onBlur' | 'title' | 'validator'
+    UseBaseDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+    'helperText' | 'onBlur' | 'title'
   > {
   inputRef?: React.Ref<HTMLInputElement>;
   onClose?: () => void;
@@ -23,25 +23,22 @@ export interface UseMuiXDateTimePickerAdapterProps<
 }
 
 export function useMuiXDateTimePickerAdapter<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiXDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  props: UseMuiXDateTimePickerAdapterProps<
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >,
   ref?: React.Ref<RefType>,
 ) {
   const { inputRef, onClose, slotProps } = props;
 
-  const { error, helperText, onBlur, ...adapter } = useBasePickerAdapter(
-    {
-      ...props,
-      helperText: undefined,
-      onBlur: undefined,
-      validator: validateDateTime,
-    },
-    inputRef,
-  );
+  const { error, helperText, onBlur, ...adapter } =
+    useBaseDateTimePickerAdapter(props, inputRef);
 
   const composedSlotProps = useComposePickerSlotProps({
     error,

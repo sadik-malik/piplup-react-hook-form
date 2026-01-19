@@ -9,11 +9,11 @@ import {
 
 export type MuiXDesktopTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Omit<
-  TimePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+  TimePickerProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'name' | 'value'
 > &
   Omit<
@@ -30,7 +30,7 @@ export type MuiXDesktopTimePickerElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      TimePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+      TimePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -39,7 +39,7 @@ export type MuiXDesktopTimePickerElementProps<
 
 function MuiXDesktopTimePickerComponent<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
-  type PickerValidDate,
   StaticTimePicker,
   type StaticTimePickerProps,
   type TimePickerProps,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -13,10 +13,10 @@ import {
 } from './adapter';
 
 export type MuiXStaticTimePickerElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = Omit<StaticTimePickerProps<TTransformedValue>, 'defaultValue' | 'name' | 'value'> &
+> = Omit<StaticTimePickerProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
     UseMuiXStaticTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -31,7 +31,7 @@ export type MuiXStaticTimePickerElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      TimePickerProps<TTransformedValue>['onChange'],
+      TimePickerProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -39,7 +39,7 @@ export type MuiXStaticTimePickerElementProps<
   };
 
 function MuiXStaticTimePickerComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

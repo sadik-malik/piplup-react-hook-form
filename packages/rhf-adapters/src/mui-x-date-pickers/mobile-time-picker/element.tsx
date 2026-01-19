@@ -3,8 +3,8 @@ import {
   MobileTimePicker,
   type TimeView,
   type MobileTimePickerProps,
-  type PickerValidDate,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -13,12 +13,12 @@ import {
 } from './adapter';
 
 export type MuiXMobileTimePickerElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  MobileTimePickerProps<TTransformedValue, TimeView, TEnableAccessibleFieldDOMStructure>,
+  MobileTimePickerProps<TimeView, TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'name' | 'value'
 > &
   Omit<
@@ -37,7 +37,6 @@ export type MuiXMobileTimePickerElementProps<
      */
     transform?: Transform<
       MobileTimePickerProps<
-        TTransformedValue,
         TimeView,
         TEnableAccessibleFieldDOMStructure
       >['onChange'],
@@ -48,10 +47,10 @@ export type MuiXMobileTimePickerElementProps<
   };
 
 function MuiXMobileTimePickerComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXMobileTimePickerElementProps<
     TTransformedValue,
@@ -59,7 +58,7 @@ function MuiXMobileTimePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -125,14 +124,14 @@ function MuiXMobileTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <MobileTimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXMobileTimePickerElement = React.forwardRef(
-  MuiXMobileTimePickerComponent
+  MuiXMobileTimePickerComponent,
 ) as typeof MuiXMobileTimePickerComponent & { displayName?: string };
 
 MuiXMobileTimePickerElement.displayName = 'MuiXMobileTimePickerElement';

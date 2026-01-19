@@ -85,7 +85,7 @@
   ],
   "peerDependencies": {
     "@mui/material": ">=6.0.0 <8.0.0",
-    "@mui/x-date-pickers": ">=7.19.0 <9.0.0",
+    "@mui/x-date-pickers": ">=8.15.0 <9.0.0",
     "@piplup/rhf-core": "workspace:*",
     "mui-chips-input": ">=4.0.1 <8.0.0",
     "mui-color-input": ">=5.0.1 <8.0.0",

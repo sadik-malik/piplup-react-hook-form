@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {
-  type PickerValidDate,
   MobileDateTimePicker,
   type MobileDateTimePickerProps,
-  type DateOrTimeView,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -13,25 +12,27 @@ import {
 } from './adapter';
 
 export interface MuiXMobileDateTimePickerElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-      MobileDateTimePickerProps<
-        TTransformedValue,
-        DateOrTimeView,
-        TEnableAccessibleFieldDOMStructure
-      >,
+      MobileDateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'name' | 'value'
     >,
     Omit<
-      UseMuiXMobileDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+      UseMuiXMobileDateTimePickerAdapterProps<
+        TTransformedValue,
+        TFieldValues,
+        TName
+      >,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
       | 'helperText'
       | 'internalClasses'
+      | 'maxDate'
+      | 'minDate'
       | 'onChange'
       | 'slotProps'
       | 'transform'
@@ -40,11 +41,7 @@ export interface MuiXMobileDateTimePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    MobileDateTimePickerProps<
-      TTransformedValue,
-      DateOrTimeView,
-      TEnableAccessibleFieldDOMStructure
-    >['onChange'],
+    MobileDateTimePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -52,10 +49,10 @@ export interface MuiXMobileDateTimePickerElementProps<
 }
 
 function MuiXMobileDateTimePickerComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXMobileDateTimePickerElementProps<
     TTransformedValue,
@@ -63,7 +60,7 @@ function MuiXMobileDateTimePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -79,11 +76,9 @@ function MuiXMobileDateTimePickerComponent<
     errorParser,
     inputRef,
     maxDate,
-    maxDateTime,
     maxTime,
     messages,
     minDate,
-    minDateTime,
     minTime,
     minutesStep,
     name,
@@ -121,11 +116,9 @@ function MuiXMobileDateTimePickerComponent<
       errorParser,
       inputRef,
       maxDate,
-      maxDateTime,
       maxTime,
       messages,
       minDate,
-      minDateTime,
       minTime,
       minutesStep,
       name,
@@ -143,14 +136,15 @@ function MuiXMobileDateTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <MobileDateTimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXMobileDateTimePickerElement = React.forwardRef(
-  MuiXMobileDateTimePickerComponent
+  MuiXMobileDateTimePickerComponent,
 ) as typeof MuiXMobileDateTimePickerComponent & { displayName?: string };
 
-MuiXMobileDateTimePickerElement.displayName = 'MuiXDesktopDateTimePickerElement';
+MuiXMobileDateTimePickerElement.displayName =
+  'MuiXDesktopDateTimePickerElement';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
-  type PickerValidDate,
   StaticDatePicker,
   type StaticDatePickerProps,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,11 +12,11 @@ import {
 } from './adapter';
 
 export interface MuiXStaticDatePickerElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<
-      StaticDatePickerProps<TTransformedValue>,
+      StaticDatePickerProps,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,
     Omit<
@@ -33,7 +33,7 @@ export interface MuiXStaticDatePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    StaticDatePickerProps<TTransformedValue>['onChange'],
+    StaticDatePickerProps['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -41,7 +41,7 @@ export interface MuiXStaticDatePickerElementProps<
 }
 
 function MuiXStaticDatePickerComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

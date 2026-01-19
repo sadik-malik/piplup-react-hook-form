@@ -1,21 +1,20 @@
 import * as React from 'react';
 import {
-  type DatePickerProps,
-  type PickerValidDate,
   type DateTimePickerProps,
   DateTimePicker,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type UseMuiXDateTimePickerAdapterProps, useMuiXDateTimePickerAdapter } from './adapter';
 
 export interface MuiXDateTimePickerElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<
-      DateTimePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+      DateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'name' | 'value'
     >,
     Omit<
@@ -24,6 +23,8 @@ export interface MuiXDateTimePickerElementProps<
       | 'composeClassName'
       | 'composeHelperText'
       | 'internalClasses'
+      | 'maxDate'
+      | 'minDate'
       | 'onChange'
       | 'slotProps'
       | 'transform'
@@ -32,7 +33,7 @@ export interface MuiXDateTimePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    DatePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+    DateTimePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -40,8 +41,8 @@ export interface MuiXDateTimePickerElementProps<
 }
 
 function MuiXDateTimePickerComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(
@@ -67,11 +68,9 @@ function MuiXDateTimePickerComponent<
     errorParser,
     inputRef,
     maxDate,
-    maxDateTime,
     maxTime,
     messages,
     minDate,
-    minDateTime,
     minTime,
     minutesStep,
     name,
@@ -109,11 +108,9 @@ function MuiXDateTimePickerComponent<
       errorParser,
       inputRef,
       maxDate,
-      maxDateTime,
       maxTime,
       messages,
       minDate,
-      minDateTime,
       minTime,
       minutesStep,
       name,

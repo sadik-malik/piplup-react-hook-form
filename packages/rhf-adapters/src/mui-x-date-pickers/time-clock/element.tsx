@@ -1,14 +1,21 @@
 import * as React from 'react';
-import { TimeClock, type PickerValidDate, type TimeClockProps } from '@mui/x-date-pickers';
+import {
+  TimeClock,
+  type TimeClockProps,
+} from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXTimeClockAdapterProps, useMuiXTimeClockAdapter } from './adapter';
+import {
+  type UseMuiXTimeClockAdapterProps,
+  useMuiXTimeClockAdapter,
+} from './adapter';
 
 export type MuiXTimeClockElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = Omit<TimeClockProps<TTransformedValue>, 'defaultValue' | 'name' | 'value'> &
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<TimeClockProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
     UseMuiXTimeClockAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -23,7 +30,7 @@ export type MuiXTimeClockElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      TimeClockProps<TTransformedValue>['onChange'],
+      TimeClockProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -31,12 +38,12 @@ export type MuiXTimeClockElementProps<
   };
 
 function MuiXTimeClockComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXTimeClockElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -102,14 +109,14 @@ function MuiXTimeClockComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <TimeClock {...rest} {...adapter} />;
 }
 
 export const MuiXTimeClockElement = React.forwardRef(
-  MuiXTimeClockComponent
+  MuiXTimeClockComponent,
 ) as typeof MuiXTimeClockComponent & { displayName?: string };
 
 MuiXTimeClockElement.displayName = 'MuiXTimeClockElement';

@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { type PickerValidDate, MonthCalendar, type MonthCalendarProps } from '@mui/x-date-pickers';
+import { MonthCalendar, type MonthCalendarProps } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type UseMuiXMonthCalendarAdapterProps, useMuiXMonthCalendarAdapter } from './adapter';
 
 export type MuiXMonthCalendarElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Omit<
-  MonthCalendarProps<TTransformedValue>,
+  MonthCalendarProps,
   'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
 > &
   Omit<
@@ -26,7 +27,7 @@ export type MuiXMonthCalendarElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      MonthCalendarProps<TTransformedValue>['onChange'],
+      MonthCalendarProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -34,7 +35,7 @@ export type MuiXMonthCalendarElementProps<
   };
 
 function MuiXMonthCalendarComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

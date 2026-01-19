@@ -1,15 +1,22 @@
 import * as React from 'react';
-import { type PickerValidDate, YearCalendar, type YearCalendarProps } from '@mui/x-date-pickers';
+import {
+  YearCalendar,
+  type YearCalendarProps,
+} from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXYearCalendarAdapterProps, useMuiXYearCalendarAdapter } from './adapter';
+import {
+  type UseMuiXYearCalendarAdapterProps,
+  useMuiXYearCalendarAdapter,
+} from './adapter';
 
 export type MuiXYearCalendarElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  YearCalendarProps<TTransformedValue>,
+  YearCalendarProps,
   'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
 > &
   Omit<
@@ -26,7 +33,7 @@ export type MuiXYearCalendarElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      YearCalendarProps<TTransformedValue>['onChange'],
+      YearCalendarProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -34,12 +41,12 @@ export type MuiXYearCalendarElementProps<
   };
 
 function MuiXYearCalendarComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXYearCalendarElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -96,14 +103,14 @@ function MuiXYearCalendarComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <YearCalendar {...rest} {...adapter} />;
 }
 
 export const MuiXYearCalendarElement = React.forwardRef(
-  MuiXYearCalendarComponent
+  MuiXYearCalendarComponent,
 ) as typeof MuiXYearCalendarComponent & { displayName?: string };
 
 MuiXYearCalendarElement.displayName = 'MuiXYearCalendarElement';

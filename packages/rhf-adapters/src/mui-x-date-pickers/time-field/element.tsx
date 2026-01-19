@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { type PickerValidDate, TimeField, type TimeFieldProps } from '@mui/x-date-pickers';
+import { TimeField, type TimeFieldProps } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type UseMuiXTimeFieldAdapterProps, useMuiXTimeFieldAdapter } from './adapter';
 
 export type MuiXTimeFieldElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Omit<
-  TimeFieldProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+  TimeFieldProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'name' | 'value'
 > &
   Omit<
@@ -28,7 +29,7 @@ export type MuiXTimeFieldElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      TimeFieldProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+      TimeFieldProps<TEnableAccessibleFieldDOMStructure>['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -36,8 +37,8 @@ export type MuiXTimeFieldElementProps<
   };
 
 function MuiXTimeFieldComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(
@@ -118,7 +119,7 @@ function MuiXTimeFieldComponent<
 
   return (
     <TimeField
-      {...(rest as TimeFieldProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>)}
+      {...rest}
       {...adapter}
     />
   );

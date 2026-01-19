@@ -1,14 +1,17 @@
 import type * as React from 'react';
-import { validateTime, type PickerValidDate } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useUnstableBasePickerAdapter as useBasePickerAdapter, type UseBasePickerAdapterProps } from '../internals';
+import {
+  useUnstableBaseTimePickerAdapter as useBaseTimePickerAdapter,
+  type UseBaseTimePickerAdapterProps,
+} from '../internals';
 
 export interface UseMuiXTimeFieldAdapterProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBasePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+    UseBaseTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'maxDate'
     | 'maxDateTime'
     | 'minDate'
@@ -22,7 +25,7 @@ export interface UseMuiXTimeFieldAdapterProps<
 }
 
 export function useMuiXTimeFieldAdapter<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
@@ -32,27 +35,8 @@ export function useMuiXTimeFieldAdapter<
 ) {
   const { inputRef } = props;
 
-  const {
-    maxDate: _maxDate,
-    maxDateTime: _maxDateTime,
-    minDate: _minDate,
-    minDateTime: _minDateTime,
-    shouldDisableDate: _shouldDisableDate,
-    shouldDisableMonth: _shouldDisableMonth,
-    shouldDisableYear: _shouldDisableYear,
-    ...adapter
-  } = useBasePickerAdapter(
-    {
-      ...props,
-      maxDate: undefined,
-      maxDateTime: undefined,
-      minDate: undefined,
-      minDateTime: undefined,
-      shouldDisableDate: undefined,
-      shouldDisableMonth: undefined,
-      shouldDisableYear: undefined,
-      validator: validateTime,
-    },
+  const adapter = useBaseTimePickerAdapter(
+    props,
     inputRef,
   );
 

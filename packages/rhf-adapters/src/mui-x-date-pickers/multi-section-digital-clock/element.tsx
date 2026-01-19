@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { type MultiSectionDigitalClockProps, type PickerValidDate } from '@mui/x-date-pickers';
+import { type MultiSectionDigitalClockProps } from '@mui/x-date-pickers';
 import { MultiSectionDigitalClock } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -9,10 +10,10 @@ import {
 } from './adapter';
 
 export type MuiXMultiSectionDigitalClockElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = Omit<MultiSectionDigitalClockProps<TTransformedValue>, 'defaultValue' | 'name' | 'value'> &
+> = Omit<MultiSectionDigitalClockProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
     UseMuiXMultiSectionDigitalClockAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -27,7 +28,7 @@ export type MuiXMultiSectionDigitalClockElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      MultiSectionDigitalClockProps<TTransformedValue>['onChange'],
+      MultiSectionDigitalClockProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -35,7 +36,7 @@ export type MuiXMultiSectionDigitalClockElementProps<
   };
 
 function MuiXMultiSectionDigitalClockComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

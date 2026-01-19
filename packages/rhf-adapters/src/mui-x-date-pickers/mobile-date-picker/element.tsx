@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
-  type PickerValidDate,
   type MobileDatePickerProps,
   MobileDatePicker,
 } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,12 +12,12 @@ import {
 } from './adapter';
 
 export interface MuiXMobileDatePickerElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<
-      MobileDatePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+      MobileDatePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,
     Omit<
@@ -35,7 +35,7 @@ export interface MuiXMobileDatePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    MobileDatePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+    MobileDatePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -43,8 +43,8 @@ export interface MuiXMobileDatePickerElementProps<
 }
 
 function MuiXMobileDatePickerComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

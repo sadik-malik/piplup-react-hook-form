@@ -13,11 +13,11 @@ import {
 
 export interface MuiXDesktopDateTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<
-      DesktopDateTimePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+      DesktopDateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'name' | 'value'
     >,
     Omit<
@@ -27,6 +27,8 @@ export interface MuiXDesktopDateTimePickerElementProps<
       | 'composeHelperText'
       | 'helperText'
       | 'internalClasses'
+      | 'maxDate'
+      | 'minDate'
       | 'onChange'
       | 'slotProps'
       | 'transform'
@@ -35,7 +37,7 @@ export interface MuiXDesktopDateTimePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    DesktopDateTimePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+    DesktopDateTimePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -44,7 +46,7 @@ export interface MuiXDesktopDateTimePickerElementProps<
 
 function MuiXDesktopDateTimePickerComponent<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(
@@ -70,11 +72,9 @@ function MuiXDesktopDateTimePickerComponent<
     errorParser,
     inputRef,
     maxDate,
-    maxDateTime,
     maxTime,
     messages,
     minDate,
-    minDateTime,
     minTime,
     minutesStep,
     name,
@@ -112,11 +112,9 @@ function MuiXDesktopDateTimePickerComponent<
       errorParser,
       inputRef,
       maxDate,
-      maxDateTime,
       maxTime,
       messages,
       minDate,
-      minDateTime,
       minTime,
       minutesStep,
       name,

@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { type DatePickerProps, type PickerValidDate, DatePicker } from '@mui/x-date-pickers';
+import { type DatePickerProps, DatePicker } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type UseMuiXDatePickerAdapterProps, useMuiXDatePickerAdapter } from './adapter';
 
 export interface MuiXDatePickerElementProps<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<
-      DatePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>,
+      DatePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,
     Omit<
@@ -26,7 +27,7 @@ export interface MuiXDatePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    DatePickerProps<TTransformedValue, TEnableAccessibleFieldDOMStructure>['onChange'],
+    DatePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -34,8 +35,8 @@ export interface MuiXDatePickerElementProps<
 }
 
 function MuiXDatePickerComponent<
-  TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = false,
+  TTransformedValue extends PickerValidValue,
+  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >(

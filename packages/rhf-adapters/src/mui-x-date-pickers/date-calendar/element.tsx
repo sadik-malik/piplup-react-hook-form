@@ -1,15 +1,19 @@
 import * as React from 'react';
-import { type PickerValidDate, DateCalendar, type DateCalendarProps } from '@mui/x-date-pickers';
+import { DateCalendar, type DateCalendarProps } from '@mui/x-date-pickers';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useMuiXDateCalendarAdapter, type UseMuiXDateCalendarAdapterProps } from './adapter';
+import {
+  useMuiXDateCalendarAdapter,
+  type UseMuiXDateCalendarAdapterProps,
+} from './adapter';
 
 export type MuiXDateCalendarElementProps<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  DateCalendarProps<TTransformedValue>,
+  DateCalendarProps,
   'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
 > &
   Omit<
@@ -27,7 +31,7 @@ export type MuiXDateCalendarElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      DateCalendarProps<TTransformedValue>['onChange'],
+      DateCalendarProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -35,12 +39,12 @@ export type MuiXDateCalendarElementProps<
   };
 
 function MuiXDateCalendarComponent<
-  TTransformedValue extends PickerValidDate,
+  TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDateCalendarElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -103,14 +107,14 @@ function MuiXDateCalendarComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <DateCalendar {...rest} {...adapter} />;
 }
 
 export const MuiXDateCalendarElement = React.forwardRef(
-  MuiXDateCalendarComponent
+  MuiXDateCalendarComponent,
 ) as typeof MuiXDateCalendarComponent & { displayName?: string };
 
 MuiXDateCalendarElement.displayName = 'MuiXDateCalendarElement';
