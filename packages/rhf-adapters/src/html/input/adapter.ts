@@ -3,7 +3,11 @@ import {
   useControllerAdapter,
   type UseControllerAdapterProps,
 } from '@piplup/rhf-core';
-import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
+import {
+  type PathValue,
+  type FieldPath,
+  type FieldValues,
+} from 'react-hook-form';
 
 function isEqualRadioOrCheckboxValue(a: unknown, b: unknown) {
   if (typeof a === 'object' && b !== null) {
@@ -16,7 +20,7 @@ function isEqualRadioOrCheckboxValue(a: unknown, b: unknown) {
 export interface UseHtmlInputAdapterProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseControllerAdapterProps<TTransformedValue, TFieldValues, TName> {
   checked?: (values: TTransformedValue) => boolean;
   indeterminate?: (values: TTransformedValue) => boolean;
@@ -47,10 +51,10 @@ export function useHtmlInputAdapter<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  RefType = unknown
+  RefType = unknown,
 >(
   props: UseHtmlInputAdapterProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<RefType>
+  ref?: React.Ref<RefType>,
 ) {
   const {
     checked,
@@ -80,7 +84,9 @@ export function useHtmlInputAdapter<
 
   React.useMemo(() => {
     if (type === 'checkbox' && typeof value === 'undefined') {
-      throw new Error(`\`value\` prop is required when using type as "${type}".`);
+      throw new Error(
+        `\`value\` prop is required when using type as "${type}".`,
+      );
     }
   }, [value, type]);
 
@@ -99,13 +105,13 @@ export function useHtmlInputAdapter<
       },
       output(
         event: React.ChangeEvent<HTMLInputElement>,
-        previousValue: TTransformedValue
+        previousValue: TTransformedValue,
       ): PathValue<TFieldValues, TName> {
         switch (type) {
           case 'checkbox': {
-            const values = (Array.isArray(previousValue) ? previousValue : []).filter(
-              (previousVal) => previousVal !== value
-            );
+            const values = (
+              Array.isArray(previousValue) ? previousValue : []
+            ).filter((previousVal) => previousVal !== value);
             if (event.target.checked) {
               values.push(value);
             }
@@ -115,10 +121,9 @@ export function useHtmlInputAdapter<
             return values as PathValue<TFieldValues, TName>;
           }
           case 'radio': {
-            return (event.target.checked ? event.target.value : null) as PathValue<
-              TFieldValues,
-              TName
-            >;
+            return (
+              event.target.checked ? event.target.value : null
+            ) as PathValue<TFieldValues, TName>;
           }
           case 'file': {
             return event.target.files as PathValue<TFieldValues, TName>;
@@ -134,7 +139,7 @@ export function useHtmlInputAdapter<
         }
       },
     }),
-    [type, value]
+    [type, value],
   );
 
   const adapter = useControllerAdapter(
@@ -147,7 +152,7 @@ export function useHtmlInputAdapter<
         ...props.transform,
       },
     },
-    ref
+    ref,
   );
 
   const isChecked = React.useMemo(() => {

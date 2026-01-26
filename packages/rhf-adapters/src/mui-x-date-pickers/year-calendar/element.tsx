@@ -2,8 +2,8 @@ import * as React from 'react';
 import {
   YearCalendar,
   type YearCalendarProps,
+  type PickerValidDate,
 } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,7 +12,7 @@ import {
 } from './adapter';
 
 export type MuiXYearCalendarElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
@@ -41,7 +41,7 @@ export type MuiXYearCalendarElementProps<
   };
 
 function MuiXYearCalendarComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
@@ -113,4 +113,6 @@ export const MuiXYearCalendarElement = React.forwardRef(
   MuiXYearCalendarComponent,
 ) as typeof MuiXYearCalendarComponent & { displayName?: string };
 
-MuiXYearCalendarElement.displayName = 'MuiXYearCalendarElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXYearCalendarElement.displayName = 'MuiXYearCalendarElement';
+}

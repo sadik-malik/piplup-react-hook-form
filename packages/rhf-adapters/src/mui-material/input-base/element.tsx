@@ -2,12 +2,15 @@ import * as React from 'react';
 import { InputBase, type InputBaseProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiInputBaseAdapterProps, useMuiInputBaseAdapter } from './adapter';
+import {
+  type UseMuiInputBaseAdapterProps,
+  useMuiInputBaseAdapter,
+} from './adapter';
 
 export interface MuiInputBaseElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       InputBaseProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
@@ -26,16 +29,21 @@ export interface MuiInputBaseElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<InputBaseProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    InputBaseProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiInputBaseComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiInputBaseElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: InputBaseProps['ref']
+  ref?: InputBaseProps['ref'],
 ): React.ReactElement {
   const {
     checked,
@@ -100,16 +108,18 @@ function MuiInputBaseComponent<
       type,
       value,
     },
-    ref
+    ref,
   );
 
   return <InputBase {...rest} {...adapter} />;
 }
 
 export const MuiInputBaseElement = React.forwardRef(
-  MuiInputBaseComponent
+  MuiInputBaseComponent,
 ) as typeof MuiInputBaseComponent & {
   displayName?: string;
 };
 
-MuiInputBaseElement.displayName = 'MuiInputBaseElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiInputBaseElement.displayName = 'MuiInputBaseElement';
+}

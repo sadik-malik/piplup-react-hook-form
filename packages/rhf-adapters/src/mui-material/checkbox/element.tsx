@@ -2,12 +2,15 @@ import * as React from 'react';
 import { Checkbox, type CheckboxProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useMuiCheckboxAdapter, type UseMuiCheckboxAdapterProps } from './adapter';
+import {
+  useMuiCheckboxAdapter,
+  type UseMuiCheckboxAdapterProps,
+} from './adapter';
 
 export interface MuiCheckboxElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       CheckboxProps,
       'checked' | 'defaultValue' | 'indeterminate' | 'name' | 'style' | 'value'
@@ -26,16 +29,21 @@ export interface MuiCheckboxElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<CheckboxProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    CheckboxProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiCheckboxComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiCheckboxElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: CheckboxProps['ref']
+  ref?: CheckboxProps['ref'],
 ): React.ReactElement {
   const {
     checked,
@@ -102,14 +110,16 @@ function MuiCheckboxComponent<
       transform,
       value,
     },
-    ref
+    ref,
   );
 
   return <Checkbox {...rest} {...adapter} />;
 }
 
 export const MuiCheckboxElement = React.forwardRef(
-  MuiCheckboxComponent
+  MuiCheckboxComponent,
 ) as typeof MuiCheckboxComponent & { displayName?: string };
 
-MuiCheckboxElement.displayName = 'MuiCheckboxElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiCheckboxElement.displayName = 'MuiCheckboxElement';
+}

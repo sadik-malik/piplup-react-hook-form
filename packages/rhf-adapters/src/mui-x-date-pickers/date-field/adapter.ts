@@ -1,23 +1,24 @@
 import type * as React from 'react';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import { type PickerValidDate } from '@mui/x-date-pickers';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useUnstableBaseDatePickerAdapter, type UseBaseDatePickerAdapterProps } from '../internals';
+import {
+  useUnstableBaseDatePickerAdapter,
+  type UseBaseDatePickerAdapterProps,
+} from '../internals';
 
 export interface UseMuiXDateFieldAdapterProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
     UseBaseDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    | 'title'
-    | 'validationProps'
-    | 'validator'
+    'title' | 'validationProps' | 'validator'
   > {
   inputRef?: React.Ref<HTMLInputElement>;
 }
 
 export function useMuiXDateFieldAdapter<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
@@ -27,10 +28,7 @@ export function useMuiXDateFieldAdapter<
 ) {
   const { inputRef } = props;
 
-  const adapter = useUnstableBaseDatePickerAdapter(
-   props,
-    inputRef,
-  );
+  const adapter = useUnstableBaseDatePickerAdapter(props, inputRef);
 
   return {
     ...adapter,

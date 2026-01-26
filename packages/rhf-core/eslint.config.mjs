@@ -53,8 +53,9 @@ export default [
             'vite-plugin-dts',
             '@nx/vite',
             'vite',
-            "cypress",
-            "eslint-plugin-cypress"
+            'cypress',
+            'eslint-plugin-cypress',
+            'cypress-real-events',
           ],
           ignoredFiles: ['eslint.config.js', 'rollup.config.js'],
           includeTransitiveDependencies: true,

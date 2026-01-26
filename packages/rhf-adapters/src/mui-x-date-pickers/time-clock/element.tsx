@@ -2,8 +2,8 @@ import * as React from 'react';
 import {
   TimeClock,
   type TimeClockProps,
+  type PickerValidDate,
 } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,7 +12,7 @@ import {
 } from './adapter';
 
 export type MuiXTimeClockElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<TimeClockProps, 'defaultValue' | 'name' | 'value'> &
@@ -38,7 +38,7 @@ export type MuiXTimeClockElementProps<
   };
 
 function MuiXTimeClockComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
@@ -119,4 +119,6 @@ export const MuiXTimeClockElement = React.forwardRef(
   MuiXTimeClockComponent,
 ) as typeof MuiXTimeClockComponent & { displayName?: string };
 
-MuiXTimeClockElement.displayName = 'MuiXTimeClockElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXTimeClockElement.displayName = 'MuiXTimeClockElement';
+}

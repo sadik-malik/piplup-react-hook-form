@@ -5,7 +5,8 @@ import { type UseComposeModifierStateResult } from './use-compose-modifier-state
  * Defines the properties for the `useComposeStyle` hook.
  */
 export type UseComposeStyleProps<
-  ModifierState extends UseComposeModifierStateResult = UseComposeModifierStateResult
+  ModifierState extends
+    UseComposeModifierStateResult = UseComposeModifierStateResult,
 > = {
   /**
    * The state object representing the current modifier states.
@@ -15,7 +16,9 @@ export type UseComposeStyleProps<
   /**
    * `style` accepts either a `React.CSSProperties` object or a function that takes modifierState and returns a `React.CSSProperties` object.
    */
-  style?: ((modifierState: ModifierState) => React.CSSProperties) | React.CSSProperties;
+  style?:
+    | ((modifierState: ModifierState) => React.CSSProperties)
+    | React.CSSProperties;
 };
 
 /**
@@ -28,12 +31,13 @@ export type UseComposeStyleProps<
  * or `undefined` if no style is provided.
  */
 export function useUnstableComposeStyle<
-  ModifierState extends UseComposeModifierStateResult = UseComposeModifierStateResult
+  ModifierState extends
+    UseComposeModifierStateResult = UseComposeModifierStateResult,
 >(options: UseComposeStyleProps<ModifierState>) {
   const { modifierState, style } = options;
 
   return React.useMemo(
     () => (typeof style === 'function' ? style(modifierState) : style),
-    [style, modifierState]
+    [style, modifierState],
   );
 }

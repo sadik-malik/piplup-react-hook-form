@@ -1,15 +1,21 @@
 import * as React from 'react';
-import { type DatePickerProps, DatePicker } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import {
+  type DatePickerProps,
+  DatePicker,
+  type PickerValidDate,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXDatePickerAdapterProps, useMuiXDatePickerAdapter } from './adapter';
+import {
+  type UseMuiXDatePickerAdapterProps,
+  useMuiXDatePickerAdapter,
+} from './adapter';
 
 export interface MuiXDatePickerElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       DatePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
@@ -35,10 +41,10 @@ export interface MuiXDatePickerElementProps<
 }
 
 function MuiXDatePickerComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDatePickerElementProps<
     TTransformedValue,
@@ -46,7 +52,7 @@ function MuiXDatePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -112,14 +118,16 @@ function MuiXDatePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <DatePicker {...rest} {...adapter} />;
 }
 
 export const MuiXDatePickerElement = React.forwardRef(
-  MuiXDatePickerComponent
+  MuiXDatePickerComponent,
 ) as typeof MuiXDatePickerComponent & { displayName?: string };
 
-MuiXDatePickerElement.displayName = 'MuiXDatePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXDatePickerElement.displayName = 'MuiXDatePickerElement';
+}

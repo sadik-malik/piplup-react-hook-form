@@ -2,15 +2,19 @@ import type * as React from 'react';
 import {
   useFormStateAdapter,
   type UseFormStateAdapterProps,
-  useFormReset
+  useFormReset,
 } from '@piplup/rhf-core';
 import { useEventCallback } from '@piplup/utils';
 import { type FieldValues } from 'react-hook-form';
 
-export interface UseHtmlButtonAdapterProps<TFieldValues extends FieldValues = FieldValues>
-  extends UseFormStateAdapterProps<TFieldValues> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>, ...args: any[]) => void;
+export interface UseHtmlButtonAdapterProps<
+  TFieldValues extends FieldValues = FieldValues,
+> extends UseFormStateAdapterProps<TFieldValues> {
+  onClick?: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...args: any[]
+  ) => void;
   type?: 'button' | 'reset' | 'submit';
 }
 
@@ -26,8 +30,8 @@ export function useHtmlButtonAdapter<
     control,
   });
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = useEventCallback(
-    (event, ...args) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> =
+    useEventCallback((event, ...args) => {
       if (typeof onClick === 'function') {
         onClick(event, ...args);
       }
@@ -35,8 +39,7 @@ export function useHtmlButtonAdapter<
       if (type === 'reset' && !event.defaultPrevented) {
         reset();
       }
-    },
-  );
+    });
 
   return {
     ...adapter,

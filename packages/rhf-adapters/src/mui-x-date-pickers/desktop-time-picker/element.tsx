@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { DesktopTimePicker, type PickerValidDate, type TimePickerProps } from '@mui/x-date-pickers';
+import {
+  DesktopTimePicker,
+  type PickerValidDate,
+  type TimePickerProps,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -11,13 +15,17 @@ export type MuiXDesktopTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
   TimePickerProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'name' | 'value'
 > &
   Omit<
-    UseMuiXDesktopTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+    UseMuiXDesktopTimePickerAdapterProps<
+      TTransformedValue,
+      TFieldValues,
+      TName
+    >,
     | 'classes'
     | 'composeClassName'
     | 'composeHelperText'
@@ -41,7 +49,7 @@ function MuiXDesktopTimePickerComponent<
   TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDesktopTimePickerElementProps<
     TTransformedValue,
@@ -49,7 +57,7 @@ function MuiXDesktopTimePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -115,14 +123,16 @@ function MuiXDesktopTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <DesktopTimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXDesktopTimePickerElement = React.forwardRef(
-  MuiXDesktopTimePickerComponent
+  MuiXDesktopTimePickerComponent,
 ) as typeof MuiXDesktopTimePickerComponent & { displayName?: string };
 
-MuiXDesktopTimePickerElement.displayName = 'MuiXDesktopTimePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXDesktopTimePickerElement.displayName = 'MuiXDesktopTimePickerElement';
+}

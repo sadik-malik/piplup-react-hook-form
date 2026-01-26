@@ -1,15 +1,21 @@
 import * as React from 'react';
-import { DateField, type DateFieldProps } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import {
+  DateField,
+  type DateFieldProps,
+  type PickerValidDate,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXDateFieldAdapterProps, useMuiXDateFieldAdapter } from './adapter';
+import {
+  type UseMuiXDateFieldAdapterProps,
+  useMuiXDateFieldAdapter,
+} from './adapter';
 
 export type MuiXDateFieldElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
   DateFieldProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'helperText' | 'name' | 'value'
@@ -36,10 +42,10 @@ export type MuiXDateFieldElementProps<
   };
 
 function MuiXDateFieldComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDateFieldElementProps<
     TTransformedValue,
@@ -47,7 +53,7 @@ function MuiXDateFieldComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -113,19 +119,16 @@ function MuiXDateFieldComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
-  return (
-    <DateField
-      {...rest}
-      {...adapter}
-    />
-  );
+  return <DateField {...rest} {...adapter} />;
 }
 
 export const MuiXDateFieldElement = React.forwardRef(
-  MuiXDateFieldComponent
+  MuiXDateFieldComponent,
 ) as typeof MuiXDateFieldComponent & { displayName?: string };
 
-MuiXDateFieldElement.displayName = 'MuiXDateFieldElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXDateFieldElement.displayName = 'MuiXDateFieldElement';
+}

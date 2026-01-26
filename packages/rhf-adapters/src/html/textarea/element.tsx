@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useHtmlTextareaAdapter, type UseHtmlTextareaAdapterProps } from './adapter';
+import {
+  useHtmlTextareaAdapter,
+  type UseHtmlTextareaAdapterProps,
+} from './adapter';
 
 export interface HtmlTextareaElementProps<
   TTransformedValue extends number | readonly string[] | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> extends Omit<React.ComponentProps<'textarea'>, 'defaultValue' | 'name' | 'style' | 'type'>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<
+      React.ComponentProps<'textarea'>,
+      'defaultValue' | 'name' | 'style' | 'type'
+    >,
     Omit<
       UseHtmlTextareaAdapterProps<TTransformedValue, TFieldValues, TName>,
       'composeClassName' | 'composeHelperText' | 'onBlur' | 'onChange'
@@ -15,10 +21,10 @@ export interface HtmlTextareaElementProps<
 function HtmlTextareaComponent<
   TTransformedValue extends number | readonly string[] | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: HtmlTextareaElementProps<TTransformedValue, TFieldValues, TName>,
-  ref: React.Ref<HTMLTextAreaElement>
+  ref: React.Ref<HTMLTextAreaElement>,
 ): React.ReactElement {
   const {
     classes,
@@ -83,7 +89,7 @@ function HtmlTextareaComponent<
       title,
       transform,
     },
-    ref
+    ref,
   );
 
   return <textarea {...rest} {...adapter} />;
@@ -91,4 +97,6 @@ function HtmlTextareaComponent<
 
 export const HtmlTextareaElement = React.forwardRef(HtmlTextareaComponent);
 
-HtmlTextareaElement.displayName = 'HtmlTextareaElement';
+if (process.env.NODE_ENV !== 'production') {
+  HtmlTextareaElement.displayName = 'HtmlTextareaElement';
+}

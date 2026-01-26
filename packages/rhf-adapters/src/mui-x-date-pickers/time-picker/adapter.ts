@@ -1,5 +1,5 @@
 import type * as React from 'react';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import { type PickerValidDate } from '@mui/x-date-pickers';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
   useUnstableBaseTimePickerAdapter as useBaseTimePickerAdapter,
@@ -8,7 +8,7 @@ import {
 } from '../internals';
 
 export interface UseMuiXTimePickerAdapterProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
@@ -22,7 +22,7 @@ export interface UseMuiXTimePickerAdapterProps<
 }
 
 export function useMuiXTimePickerAdapter<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,

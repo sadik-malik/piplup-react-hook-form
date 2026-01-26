@@ -1,4 +1,8 @@
-import { type FieldPath, type FieldValues, type UseControllerProps } from 'react-hook-form';
+import {
+  type FieldPath,
+  type FieldValues,
+  type UseControllerProps,
+} from 'react-hook-form';
 
 /**
  * Type definition for customizable rule messages.
@@ -48,11 +52,13 @@ export type ComposeRulesMessages = {
 
 const defaultMessages: NonNullable<ComposeRulesMessages> = {
   max: (max) => `Value must be ${max} or earlier.`,
-  maxLength: (maxLength) => `Please shorten this text to ${maxLength} characters or less.`,
+  maxLength: (maxLength) =>
+    `Please shorten this text to ${maxLength} characters or less.`,
   min: (min) => `Value must be ${min} or later.`,
-  minLength: (minLength) => `Please lengthen this text to ${minLength} characters or more`,
+  minLength: (minLength) =>
+    `Please lengthen this text to ${minLength} characters or more`,
   pattern: (_pattern: RegExp, title?: string) =>
-    (['Please match the requested format.', title]).filter(Boolean).join(' '),
+    ['Please match the requested format.', title].filter(Boolean).join(' '),
   required: 'Please fill out this field.',
 };
 
@@ -75,7 +81,9 @@ export function getMessage(
   ...values: any
 ): string {
   return (
-    (typeof messageOrFunction === 'function' ? messageOrFunction(values) : messageOrFunction) || ''
+    (typeof messageOrFunction === 'function'
+      ? messageOrFunction(values)
+      : messageOrFunction) || ''
   );
 }
 
@@ -142,7 +150,17 @@ export function useUnstableComposeRules<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: UseComposeRulesProps<TFieldValues, TName>) {
-  const { max, maxLength, messages, min, minLength, pattern, required, rules = {}, title } = props;
+  const {
+    max,
+    maxLength,
+    messages,
+    min,
+    minLength,
+    pattern,
+    required,
+    rules = {},
+    title,
+  } = props;
 
   if (!rules.required && required) {
     rules.required = messages?.required ?? defaultMessages.required;
@@ -150,21 +168,31 @@ export function useUnstableComposeRules<
 
   if (!rules.minLength && minLength) {
     rules.minLength = {
-      message: getMessage(messages?.minLength ?? defaultMessages?.minLength, minLength),
+      message: getMessage(
+        messages?.minLength ?? defaultMessages?.minLength,
+        minLength,
+      ),
       value: minLength,
     };
   }
 
   if (!rules.maxLength && maxLength) {
     rules.maxLength = {
-      message: getMessage(messages?.maxLength ?? defaultMessages?.maxLength, maxLength),
+      message: getMessage(
+        messages?.maxLength ?? defaultMessages?.maxLength,
+        maxLength,
+      ),
       value: maxLength,
     };
   }
 
   if (!rules.pattern && pattern) {
     rules.pattern = {
-      message: getMessage(messages?.pattern ?? defaultMessages?.pattern, pattern, title),
+      message: getMessage(
+        messages?.pattern ?? defaultMessages?.pattern,
+        pattern,
+        title,
+      ),
       value: pattern instanceof RegExp ? pattern : new RegExp(pattern),
     };
   }

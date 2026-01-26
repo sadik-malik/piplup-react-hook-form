@@ -12,7 +12,7 @@ import {
  */
 export type UseFieldStateProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   /** The control object from react-hook-form. */
   control?: Control<TFieldValues>;
@@ -42,7 +42,7 @@ export type UseFieldStateReturn = ControllerFieldState & {
  */
 export function useFieldState<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: UseFieldStateProps<TFieldValues, TName>): UseFieldStateReturn {
   const { control, disabled, name } = props;
 
@@ -59,7 +59,8 @@ export function useFieldState<
       disabled: {
         enumerable: true,
         get: () =>
-          typeof formState.disabled === 'boolean' || typeof disabled === 'boolean'
+          typeof formState.disabled === 'boolean' ||
+          typeof disabled === 'boolean'
             ? formState.disabled || disabled
             : undefined,
       },
@@ -87,6 +88,6 @@ export function useFieldState<
         enumerable: true,
         get: () => !!get(formState.validatingFields, name),
       },
-    }
+    },
   ) as UseFieldStateReturn;
 }

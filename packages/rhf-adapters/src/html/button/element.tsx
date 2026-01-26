@@ -1,17 +1,25 @@
 import * as React from 'react';
 import { type FieldValues } from 'react-hook-form';
-import { useHtmlButtonAdapter, type UseHtmlButtonAdapterProps } from './adapter';
+import {
+  useHtmlButtonAdapter,
+  type UseHtmlButtonAdapterProps,
+} from './adapter';
 
-export interface HtmlButtonElementProps<TFieldValues extends FieldValues = FieldValues>
-  extends Omit<React.ComponentProps<'button'>, 'name' | 'style'>,
+export interface HtmlButtonElementProps<
+  TFieldValues extends FieldValues = FieldValues,
+> extends Omit<React.ComponentProps<'button'>, 'name' | 'style'>,
     Omit<
       UseHtmlButtonAdapterProps<TFieldValues>,
-      'composeClassName' | 'composeHelperText' | 'helperText' | 'internalClasses' | 'onClick'
+      | 'composeClassName'
+      | 'composeHelperText'
+      | 'helperText'
+      | 'internalClasses'
+      | 'onClick'
     > {}
 
 function HtmlButtonComponent<TFieldValues extends FieldValues = FieldValues>(
   props: HtmlButtonElementProps<TFieldValues>,
-  ref?: React.Ref<HTMLButtonElement>
+  ref?: React.Ref<HTMLButtonElement>,
 ): React.ReactElement {
   const {
     classes,
@@ -53,14 +61,16 @@ function HtmlButtonComponent<TFieldValues extends FieldValues = FieldValues>(
       style,
       type,
     },
-    ref
+    ref,
   );
 
   return <button {...rest} {...adapter} />;
 }
 
 export const HtmlButtonElement = React.forwardRef(
-  HtmlButtonComponent
+  HtmlButtonComponent,
 ) as typeof HtmlButtonComponent & { displayName?: string };
 
-HtmlButtonElement.displayName = 'HtmlButtonElement';
+if (process.env.NODE_ENV !== 'production') {
+  HtmlButtonElement.displayName = 'HtmlButtonElement';
+}

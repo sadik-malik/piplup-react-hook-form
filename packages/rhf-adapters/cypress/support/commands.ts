@@ -1,3 +1,5 @@
+import 'cypress-real-events';
+
 /// <reference types="cypress" />
 
 // ***********************************************

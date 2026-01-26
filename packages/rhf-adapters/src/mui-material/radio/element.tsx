@@ -7,7 +7,7 @@ import { useMuiRadioAdapter, type UseMuiRadioAdapterProps } from './adapter';
 export interface MuiRadioElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       RadioProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
@@ -26,16 +26,21 @@ export interface MuiRadioElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<RadioProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    RadioProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiRadioComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiRadioElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: RadioProps['ref']
+  ref?: RadioProps['ref'],
 ): React.ReactElement {
   const {
     checked,
@@ -102,14 +107,18 @@ function MuiRadioComponent<
       transform,
       value,
     },
-    ref
+    ref,
   );
 
   return <Radio {...rest} {...adapter} />;
 }
 
-export const MuiRadioElement = React.forwardRef(MuiRadioComponent) as typeof MuiRadioComponent & {
+export const MuiRadioElement = React.forwardRef(
+  MuiRadioComponent,
+) as typeof MuiRadioComponent & {
   displayName?: string;
 };
 
-MuiRadioElement.displayName = 'MuiRadioElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiRadioElement.displayName = 'MuiRadioElement';
+}

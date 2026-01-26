@@ -15,13 +15,17 @@ export interface MuiXDesktopDateTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       DesktopDateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'name' | 'value'
     >,
     Omit<
-      UseMuiXDesktopDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+      UseMuiXDesktopDateTimePickerAdapterProps<
+        TTransformedValue,
+        TFieldValues,
+        TName
+      >,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -48,7 +52,7 @@ function MuiXDesktopDateTimePickerComponent<
   TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDesktopDateTimePickerElementProps<
     TTransformedValue,
@@ -56,7 +60,7 @@ function MuiXDesktopDateTimePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -132,14 +136,17 @@ function MuiXDesktopDateTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <DesktopDateTimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXDesktopDateTimePickerElement = React.forwardRef(
-  MuiXDesktopDateTimePickerComponent
+  MuiXDesktopDateTimePickerComponent,
 ) as typeof MuiXDesktopDateTimePickerComponent & { displayName?: string };
 
-MuiXDesktopDateTimePickerElement.displayName = 'MuiXDesktopDateTimePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXDesktopDateTimePickerElement.displayName =
+    'MuiXDesktopDateTimePickerElement';
+}

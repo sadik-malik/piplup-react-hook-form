@@ -2,13 +2,19 @@ import * as React from 'react';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { NumericFormat, type NumericFormatProps } from 'react-number-format';
-import { type UseNumericFormatAdapterProps, useNumericFormatAdapter } from './adapter';
+import {
+  type UseNumericFormatAdapterProps,
+  useNumericFormatAdapter,
+} from './adapter';
 
 export interface NumericFormatElementProps<
   TTransformedValue extends null | number | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> extends Omit<NumericFormatProps, 'defaultValue' | 'name' | 'pattern' | 'style'>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<
+      NumericFormatProps,
+      'defaultValue' | 'name' | 'pattern' | 'style'
+    >,
     Omit<
       UseNumericFormatAdapterProps<TTransformedValue, TFieldValues, TName>,
       'onBlur' | 'onValueChange'
@@ -27,8 +33,10 @@ export interface NumericFormatElementProps<
 function NumericFormatComponent<
   TTransformedValue extends null | number | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->(props: NumericFormatElementProps<TTransformedValue, TFieldValues, TName>): React.ReactElement {
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(
+  props: NumericFormatElementProps<TTransformedValue, TFieldValues, TName>,
+): React.ReactElement {
   const {
     classes,
     className,
@@ -95,8 +103,9 @@ function NumericFormatComponent<
   return <NumericFormat {...rest} {...adapter} />;
 }
 
-export const NumericFormatElement = NumericFormatComponent as typeof NumericFormatComponent & {
-  displayName?: string;
-};
+export const NumericFormatElement =
+  NumericFormatComponent as typeof NumericFormatComponent & {
+    displayName?: string;
+  };
 
 NumericFormatElement.displayName = 'NumericFormatElement';

@@ -6,7 +6,7 @@ This was a version bump only, there were no code changes.
 
 ### 🩹 Fixes
 
-- typescript warnings for  useComposePickerRules ([c18e9a0](https://github.com/sadik-malik/piplup-react-hook-form/commit/c18e9a0))
+- typescript warnings for useComposePickerRules ([c18e9a0](https://github.com/sadik-malik/piplup-react-hook-form/commit/c18e9a0))
 
 ### ❤️ Thank You
 

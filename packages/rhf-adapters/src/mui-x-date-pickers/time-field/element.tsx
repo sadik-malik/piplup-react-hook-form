@@ -1,15 +1,21 @@
 import * as React from 'react';
-import { TimeField, type TimeFieldProps } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import {
+  TimeField,
+  type TimeFieldProps,
+  type PickerValidDate,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXTimeFieldAdapterProps, useMuiXTimeFieldAdapter } from './adapter';
+import {
+  type UseMuiXTimeFieldAdapterProps,
+  useMuiXTimeFieldAdapter,
+} from './adapter';
 
 export type MuiXTimeFieldElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
   TimeFieldProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'name' | 'value'
@@ -37,10 +43,10 @@ export type MuiXTimeFieldElementProps<
   };
 
 function MuiXTimeFieldComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXTimeFieldElementProps<
     TTransformedValue,
@@ -48,7 +54,7 @@ function MuiXTimeFieldComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -114,19 +120,16 @@ function MuiXTimeFieldComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
-  return (
-    <TimeField
-      {...rest}
-      {...adapter}
-    />
-  );
+  return <TimeField {...rest} {...adapter} />;
 }
 
 export const MuiXTimeFieldElement = React.forwardRef(
-  MuiXTimeFieldComponent
+  MuiXTimeFieldComponent,
 ) as typeof MuiXTimeFieldComponent & { displayName?: string };
 
-MuiXTimeFieldElement.displayName = 'MuiXTimeFieldElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXTimeFieldElement.displayName = 'MuiXTimeFieldElement';
+}

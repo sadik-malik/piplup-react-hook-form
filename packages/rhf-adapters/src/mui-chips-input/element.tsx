@@ -2,26 +2,34 @@ import * as React from 'react';
 import { type Transform } from '@piplup/rhf-core';
 import { MuiChipsInput } from 'mui-chips-input';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiChipsInputAdapterProps, useMuiChipsInputAdapter } from './adapter';
+import {
+  type UseMuiChipsInputAdapterProps,
+  useMuiChipsInputAdapter,
+} from './adapter';
 
-type MuiChipsInputProps = React.ComponentProps<typeof MuiChipsInput>
+type MuiChipsInputProps = React.ComponentProps<typeof MuiChipsInput>;
 
 export interface MuiChipsInputElementProps<
   TTransformedValue extends string[],
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-  MuiChipsInputProps,
-  'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
->,
-  Omit<
-    UseMuiChipsInputAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'composeHelperText' | 'onBlur' | 'onChange' | 'transform'
-  > {
+      MuiChipsInputProps,
+      'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
+    >,
+    Omit<
+      UseMuiChipsInputAdapterProps<TTransformedValue, TFieldValues, TName>,
+      'composeHelperText' | 'onBlur' | 'onChange' | 'transform'
+    > {
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<MuiChipsInputProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    MuiChipsInputProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiChipsInputComponent<
@@ -90,4 +98,6 @@ export const MuiChipsInputElement = React.forwardRef(
   MuiChipsInputComponent,
 ) as typeof MuiChipsInputComponent & { displayName?: string };
 
-MuiChipsInputElement.displayName = 'MuiChipsInputElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiChipsInputElement.displayName = 'MuiChipsInputElement';
+}

@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { IconButton, type IconButtonProps } from '@mui/material';
 import { type FieldValues } from 'react-hook-form';
-import { type UseMuiIconButtonAdapterProps, useMuiIconButtonAdapter } from './adapter';
+import {
+  type UseMuiIconButtonAdapterProps,
+  useMuiIconButtonAdapter,
+} from './adapter';
 
-export interface MuiIconButtonElementProps<TFieldValues extends FieldValues = FieldValues>
-  extends Omit<IconButtonProps, 'name' | 'style'>,
+export interface MuiIconButtonElementProps<
+  TFieldValues extends FieldValues = FieldValues,
+> extends Omit<IconButtonProps, 'name' | 'style'>,
     Omit<
       UseMuiIconButtonAdapterProps<TFieldValues>,
       | 'classes'
@@ -17,7 +21,7 @@ export interface MuiIconButtonElementProps<TFieldValues extends FieldValues = Fi
 
 function MuiIconButtonComponent<TFieldValues extends FieldValues = FieldValues>(
   props: MuiIconButtonElementProps<TFieldValues>,
-  ref?: IconButtonProps['ref']
+  ref?: IconButtonProps['ref'],
 ) {
   const {
     classes,
@@ -56,14 +60,16 @@ function MuiIconButtonComponent<TFieldValues extends FieldValues = FieldValues>(
       style,
       type,
     },
-    ref
+    ref,
   );
 
   return <IconButton {...rest} {...adapter} />;
 }
 
 export const MuiIconButtonElement = React.forwardRef(
-  MuiIconButtonComponent
+  MuiIconButtonComponent,
 ) as typeof MuiIconButtonComponent & { displayName?: string };
 
-MuiIconButtonElement.displayName = 'MuiIconButtonElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiIconButtonElement.displayName = 'MuiIconButtonElement';
+}

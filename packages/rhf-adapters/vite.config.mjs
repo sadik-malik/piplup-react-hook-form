@@ -24,7 +24,7 @@ const external = [
     'react-dom',
     'react/jsx-runtime',
     '@mui/x-date-pickers/internals',
-    '@piplup/rhf-core'
+    '@piplup/rhf-core',
   ]),
 ];
 
@@ -43,17 +43,18 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: {
-        'html': 'src/html/index.ts',
+        html: 'src/html/index.ts',
         index: 'src/index.ts',
         'mui-chips-input': 'src/mui-chips-input/index.ts',
         'mui-color-input': 'src/mui-color-input/index.ts',
         'mui-file-input': 'src/mui-file-input/index.ts',
         'mui-lab': 'src/mui-lab/index.ts',
         'mui-material': 'src/mui-material/index.ts',
-        'mui-one-time-password-input': 'src/mui-one-time-password-input/index.ts',
+        'mui-one-time-password-input':
+          'src/mui-one-time-password-input/index.ts',
         'mui-tel-input': 'src/mui-tel-input/index.ts',
         'mui-x-date-pickers': 'src/mui-x-date-pickers/index.ts',
-        'react-number-format': 'src/react-number-format/index.ts'
+        'react-number-format': 'src/react-number-format/index.ts',
       },
       fileName: (format, entryName) => {
         const extension = format === 'es' ? 'mjs' : 'js';

@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { type MultiSectionDigitalClockProps } from '@mui/x-date-pickers';
-import { MultiSectionDigitalClock } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import {
+  MultiSectionDigitalClock,
+  type PickerValidDate,
+  type MultiSectionDigitalClockProps,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -10,12 +12,16 @@ import {
 } from './adapter';
 
 export type MuiXMultiSectionDigitalClockElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<MultiSectionDigitalClockProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
-    UseMuiXMultiSectionDigitalClockAdapterProps<TTransformedValue, TFieldValues, TName>,
+    UseMuiXMultiSectionDigitalClockAdapterProps<
+      TTransformedValue,
+      TFieldValues,
+      TName
+    >,
     | 'classes'
     | 'composeClassName'
     | 'composeHelperText'
@@ -36,12 +42,16 @@ export type MuiXMultiSectionDigitalClockElementProps<
   };
 
 function MuiXMultiSectionDigitalClockComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXMultiSectionDigitalClockElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  props: MuiXMultiSectionDigitalClockElementProps<
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >,
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -107,14 +117,17 @@ function MuiXMultiSectionDigitalClockComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <MultiSectionDigitalClock {...rest} {...adapter} />;
 }
 
 export const MuiXMultiSectionDigitalClockElement = React.forwardRef(
-  MuiXMultiSectionDigitalClockComponent
+  MuiXMultiSectionDigitalClockComponent,
 ) as typeof MuiXMultiSectionDigitalClockComponent & { displayName?: string };
 
-MuiXMultiSectionDigitalClockElement.displayName = 'MuiXMultiSectionDigitalClockElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXMultiSectionDigitalClockElement.displayName =
+    'MuiXMultiSectionDigitalClockElement';
+}

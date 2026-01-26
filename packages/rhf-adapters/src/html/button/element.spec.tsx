@@ -40,7 +40,7 @@ describe('HtmlButtonElement', () => {
 
     cy.mount(<SubmitForm />);
 
-    cy.get('[data-cy=foo]').clear()
+    cy.get('[data-cy=foo]').clear();
     cy.get('[data-cy=foo]').type('changed');
     cy.get('button[type=reset]').click();
     cy.then(() => {
@@ -65,9 +65,7 @@ describe('HtmlButtonElement', () => {
     const onSubmit = cy.stub();
 
     cy.mount(
-      <FormContainer
-        onSubmit={onSubmit}
-      >
+      <FormContainer onSubmit={onSubmit}>
         <HtmlButtonElement type="submit">Submit</HtmlButtonElement>
       </FormContainer>,
     );

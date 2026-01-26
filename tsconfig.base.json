@@ -23,13 +23,21 @@
       "@piplup/rhf-adapters/mui-color-input": [
         "packages/rhf-adapters/src/mui-color-input/index.ts"
       ],
-      "@piplup/rhf-adapters/mui-file-input": ["packages/rhf-adapters/src/mui-file-input/index.ts"],
-      "@piplup/rhf-adapters/mui-lab": ["packages/rhf-adapters/src/mui-lab/index.ts"],
-      "@piplup/rhf-adapters/mui-material": ["packages/rhf-adapters/src/mui-material/index.ts"],
+      "@piplup/rhf-adapters/mui-file-input": [
+        "packages/rhf-adapters/src/mui-file-input/index.ts"
+      ],
+      "@piplup/rhf-adapters/mui-lab": [
+        "packages/rhf-adapters/src/mui-lab/index.ts"
+      ],
+      "@piplup/rhf-adapters/mui-material": [
+        "packages/rhf-adapters/src/mui-material/index.ts"
+      ],
       "@piplup/rhf-adapters/mui-one-time-password-input": [
         "packages/rhf-adapters/src/mui-one-time-password-input/index.ts"
       ],
-      "@piplup/rhf-adapters/mui-tel-input": ["packages/rhf-adapters/src/mui-tel-input/index.ts"],
+      "@piplup/rhf-adapters/mui-tel-input": [
+        "packages/rhf-adapters/src/mui-tel-input/index.ts"
+      ],
       "@piplup/rhf-adapters/mui-x-date-pickers": [
         "packages/rhf-adapters/src/mui-x-date-pickers/index.ts"
       ],

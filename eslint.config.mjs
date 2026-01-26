@@ -145,7 +145,12 @@ export default [
             caseInsensitive: true,
             order: 'asc',
           },
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling', 'index'],
+          ],
           'newlines-between': 'ignore',
           pathGroups: [
             {
@@ -179,7 +184,10 @@ export default [
     rules: {
       ...config.rules,
       '@typescript-eslint/comma-dangle': 'off',
-      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { fixStyle: 'inline-type-imports' },
+      ],
       '@typescript-eslint/indent': 'off',
       '@typescript-eslint/naming-convention': [
         'error',

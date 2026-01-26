@@ -1,5 +1,9 @@
 import type * as React from 'react';
-import { useFormState, type FieldValues, type UseFormStateProps } from 'react-hook-form';
+import {
+  useFormState,
+  type FieldValues,
+  type UseFormStateProps,
+} from 'react-hook-form';
 import {
   useUnstableComposeClassName as useComposeClassName,
   type UseComposeClassNameProps,
@@ -14,8 +18,9 @@ import {
 /**
  * Defines the properties for the `useFormStateAdapter` hook, including component-specific props.
  */
-export interface UseFormStateAdapterProps<TFieldValues extends FieldValues = FieldValues>
-  extends UseFormStateProps<TFieldValues>,
+export interface UseFormStateAdapterProps<
+  TFieldValues extends FieldValues = FieldValues,
+> extends UseFormStateProps<TFieldValues>,
     Omit<UseComposeModifierStateProps, 'fieldError' | 'isSubmitting'>,
     Omit<UseComposeClassNameProps, 'modifierState'>,
     Omit<UseComposeStyleProps, 'modifierState'>,

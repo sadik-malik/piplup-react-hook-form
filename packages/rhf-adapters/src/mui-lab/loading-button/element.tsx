@@ -1,4 +1,4 @@
-export  {
+export {
   MuiButtonElement as MuiLoadingButtonElement,
   MuiButtonElementProps as MuiLoadingButtonElementProps,
-} from '../../mui-material/button'
+} from '../../mui-material/button';

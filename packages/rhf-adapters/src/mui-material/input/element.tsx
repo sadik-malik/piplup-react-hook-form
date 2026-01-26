@@ -2,12 +2,15 @@ import * as React from 'react';
 import { Input, type InputProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiInputAdapterProps, useMuiInputAdapterProps } from './adapter';
+import {
+  type UseMuiInputAdapterProps,
+  useMuiInputAdapterProps,
+} from './adapter';
 
 export interface MuiInputElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       InputProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
@@ -26,16 +29,21 @@ export interface MuiInputElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<InputProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    InputProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiInputComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiInputElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: InputProps['ref']
+  ref?: InputProps['ref'],
 ): React.ReactElement {
   const {
     checked,
@@ -100,14 +108,18 @@ function MuiInputComponent<
       type,
       value,
     },
-    ref
+    ref,
   );
 
   return <Input {...rest} {...adapter} />;
 }
 
-export const MuiInputElement = React.forwardRef(MuiInputComponent) as typeof MuiInputComponent & {
+export const MuiInputElement = React.forwardRef(
+  MuiInputComponent,
+) as typeof MuiInputComponent & {
   displayName?: string;
 };
 
-MuiInputElement.displayName = 'MuiInputElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiInputElement.displayName = 'MuiInputElement';
+}

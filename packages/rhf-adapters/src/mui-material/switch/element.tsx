@@ -7,8 +7,11 @@ import { type UseMuiSwitchAdapterProps, useMuiSwitchAdapter } from './adapter';
 export interface MuiSwitchElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> extends Omit<SwitchProps, 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<
+      SwitchProps,
+      'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
+    >,
     Omit<
       UseMuiSwitchAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
@@ -23,16 +26,21 @@ export interface MuiSwitchElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<SwitchProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    SwitchProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiSwitchComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  TTransformedValue extends boolean = boolean
+  TTransformedValue extends boolean = boolean,
 >(
   props: MuiSwitchElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: SwitchProps['ref']
+  ref?: SwitchProps['ref'],
 ): React.ReactElement {
   const {
     classes,
@@ -93,14 +101,16 @@ function MuiSwitchComponent<
       title,
       transform,
     },
-    ref
+    ref,
   );
 
   return <Switch {...rest} {...adapter} />;
 }
 
 export const MuiSwitchElement = React.forwardRef(
-  MuiSwitchComponent
+  MuiSwitchComponent,
 ) as typeof MuiSwitchComponent & { displayName?: string };
 
-MuiSwitchElement.displayName = 'MuiSwitchElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiSwitchElement.displayName = 'MuiSwitchElement';
+}

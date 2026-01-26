@@ -12,7 +12,7 @@ export {
   type UseBasePickerAdapterProps,
   type UseComposePickerRules,
   useUnstableComposePickerRules as useComposePickerRules,
-  type UseComposePickerSlotProps ,
+  type UseComposePickerSlotProps,
   useUnstableComposePickerSlotProps as useComposePickerSlotProps,
 } from './internals';
 export * from './mobile-date-picker';

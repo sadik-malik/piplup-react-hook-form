@@ -1,14 +1,20 @@
 import * as React from 'react';
-import { MonthCalendar, type MonthCalendarProps } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import {
+  MonthCalendar,
+  type MonthCalendarProps,
+  type PickerValidDate,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXMonthCalendarAdapterProps, useMuiXMonthCalendarAdapter } from './adapter';
+import {
+  type UseMuiXMonthCalendarAdapterProps,
+  useMuiXMonthCalendarAdapter,
+} from './adapter';
 
 export type MuiXMonthCalendarElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
   MonthCalendarProps,
   'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
@@ -35,12 +41,12 @@ export type MuiXMonthCalendarElementProps<
   };
 
 function MuiXMonthCalendarComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXMonthCalendarElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -97,14 +103,16 @@ function MuiXMonthCalendarComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <MonthCalendar {...rest} {...adapter} />;
 }
 
 export const MuiXMonthCalendarElement = React.forwardRef(
-  MuiXMonthCalendarComponent
+  MuiXMonthCalendarComponent,
 ) as typeof MuiXMonthCalendarComponent & { displayName?: string };
 
-MuiXMonthCalendarElement.displayName = 'MuiXMonthCalendarElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXMonthCalendarElement.displayName = 'MuiXMonthCalendarElement';
+}

@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import {
+  useControllerAdapter,
+  type UseControllerAdapterProps,
+} from '@piplup/rhf-core';
 import { type MuiOtpInputProps } from 'mui-one-time-password-input';
-import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
+import {
+  type PathValue,
+  type FieldPath,
+  type FieldValues,
+} from 'react-hook-form';
 
 export interface UseMuiOtpInputAdapterProps<
   TTransformedValue,
@@ -44,12 +51,21 @@ export function useMuiOtpInputAdapter<
 >(
   props: UseMuiOtpInputAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
-): UseMuiOtpInputAdapterResult<TTransformedValue, TFieldValues, TName, RefType> {
+): UseMuiOtpInputAdapterResult<
+  TTransformedValue,
+  TFieldValues,
+  TName,
+  RefType
+> {
   const { TextFieldsProps, transform, ...rest } = props;
 
   const internalTransform = React.useMemo<
     Exclude<
-      UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>['transform'],
+      UseControllerAdapterProps<
+        TTransformedValue,
+        TFieldValues,
+        TName
+      >['transform'],
       undefined
     >
   >(

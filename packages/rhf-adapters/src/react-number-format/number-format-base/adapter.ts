@@ -1,10 +1,17 @@
-import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
-import { useHtmlInputAdapter, type UseHtmlInputAdapterProps } from '../../html/input/adapter';
+import {
+  type PathValue,
+  type FieldPath,
+  type FieldValues,
+} from 'react-hook-form';
+import {
+  useHtmlInputAdapter,
+  type UseHtmlInputAdapterProps,
+} from '../../html/input/adapter';
 
 export interface UseNumberFormatBaseAdapterProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
     UseHtmlInputAdapterProps<TTransformedValue, TFieldValues, TName>,
     'checked' | 'indeterminate' | 'onChange' | 'title' | 'type' | 'value'
@@ -22,9 +29,22 @@ export interface UseNumberFormatBaseAdapterProps<
 export function useNumberFormatBaseAdapter<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->(props: UseNumberFormatBaseAdapterProps<TTransformedValue, TFieldValues, TName>) {
-  const { composeHelperText, getInputRef, onValueChange, transform, type, ...rest } = props;
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(
+  props: UseNumberFormatBaseAdapterProps<
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >,
+) {
+  const {
+    composeHelperText,
+    getInputRef,
+    onValueChange,
+    transform,
+    type,
+    ...rest
+  } = props;
 
   const {
     checked: _checked,
@@ -37,7 +57,12 @@ export function useNumberFormatBaseAdapter<
     title: _title,
     type: _type,
     ...adapter
-  } = useHtmlInputAdapter<TTransformedValue, TFieldValues, TName, Required<typeof getInputRef>>(
+  } = useHtmlInputAdapter<
+    TTransformedValue,
+    TFieldValues,
+    TName,
+    Required<typeof getInputRef>
+  >(
     {
       ...rest,
       checked: undefined,
@@ -54,7 +79,7 @@ export function useNumberFormatBaseAdapter<
       type,
       value: undefined,
     },
-    getInputRef
+    getInputRef,
   );
   return {
     ...adapter,

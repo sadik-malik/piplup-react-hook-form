@@ -3,8 +3,9 @@ import { Button, type ButtonProps } from '@mui/material';
 import { type FieldValues } from 'react-hook-form';
 import { useMuiButtonAdapter, type UseMuiButtonAdapterProps } from './adapter';
 
-export interface MuiButtonElementProps<TFieldValues extends FieldValues = FieldValues>
-  extends Omit<ButtonProps, 'name' | 'style'>,
+export interface MuiButtonElementProps<
+  TFieldValues extends FieldValues = FieldValues,
+> extends Omit<ButtonProps, 'name' | 'style'>,
     Omit<
       UseMuiButtonAdapterProps<TFieldValues>,
       | 'classes'
@@ -17,7 +18,7 @@ export interface MuiButtonElementProps<TFieldValues extends FieldValues = FieldV
 
 function MuiButtonComponent<TFieldValues extends FieldValues = FieldValues>(
   props: MuiButtonElementProps<TFieldValues>,
-  ref?: ButtonProps['ref']
+  ref?: ButtonProps['ref'],
 ) {
   const {
     classes,
@@ -56,14 +57,16 @@ function MuiButtonComponent<TFieldValues extends FieldValues = FieldValues>(
       style,
       type,
     },
-    ref
+    ref,
   );
 
   return <Button {...rest} {...adapter} />;
 }
 
 export const MuiButtonElement = React.forwardRef(
-  MuiButtonComponent
+  MuiButtonComponent,
 ) as typeof MuiButtonComponent & { displayName?: string };
 
-MuiButtonElement.displayName = 'MuiButtonElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiButtonElement.displayName = 'MuiButtonElement';
+}

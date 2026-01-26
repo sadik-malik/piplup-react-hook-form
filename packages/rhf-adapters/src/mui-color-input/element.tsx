@@ -1,8 +1,15 @@
 import * as React from 'react';
 import { type Transform } from '@piplup/rhf-core';
-import { MuiColorInput, type MuiColorInputValue, type MuiColorInputProps } from 'mui-color-input';
+import {
+  MuiColorInput,
+  type MuiColorInputValue,
+  type MuiColorInputProps,
+} from 'mui-color-input';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiColorInputAdapterProps, useMuiColorInputAdapter } from './adapter';
+import {
+  type UseMuiColorInputAdapterProps,
+  useMuiColorInputAdapter,
+} from './adapter';
 
 export interface MuiColorInputElementProps<
   TTransformedValue extends MuiColorInputValue,
@@ -19,7 +26,12 @@ export interface MuiColorInputElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<MuiColorInputProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    MuiColorInputProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiColorInputComponent<
@@ -98,4 +110,6 @@ export const MuiColorInputElement = React.forwardRef(
   MuiColorInputComponent,
 ) as typeof MuiColorInputComponent & { displayName?: string };
 
-MuiColorInputElement.displayName = 'MuiColorInputElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiColorInputElement.displayName = 'MuiColorInputElement';
+}

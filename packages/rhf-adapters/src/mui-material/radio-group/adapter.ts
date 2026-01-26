@@ -1,24 +1,36 @@
 import * as React from 'react';
 import { useFormControl } from '@mui/material';
-import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
-import { type FieldPath, type FieldValues, type PathValue } from 'react-hook-form';
+import {
+  useControllerAdapter,
+  type UseControllerAdapterProps,
+} from '@piplup/rhf-core';
+import {
+  type FieldPath,
+  type FieldValues,
+  type PathValue,
+} from 'react-hook-form';
 
 export type UseMuiRadioGroupAdapterProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>;
 
 export function useMuiRadioGroupAdapter<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  RefType = unknown
+  RefType = unknown,
 >(
   props: UseMuiRadioGroupAdapterProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<RefType>
+  ref?: React.Ref<RefType>,
 ) {
-  const { disabled: disabledProp, required: requiredProp, transform, ...rest } = props;
+  const {
+    disabled: disabledProp,
+    required: requiredProp,
+    transform,
+    ...rest
+  } = props;
 
   const muiFormControl = useFormControl();
 
@@ -43,7 +55,7 @@ export function useMuiRadioGroupAdapter<
       },
       output(
         _event: React.ChangeEvent<HTMLInputElement>,
-        value: string
+        value: string,
       ): PathValue<TFieldValues, TName> {
         if (typeof value === 'undefined' || value === '') {
           return null as PathValue<TFieldValues, TName>;
@@ -51,7 +63,7 @@ export function useMuiRadioGroupAdapter<
         return value as PathValue<TFieldValues, TName>;
       },
     }),
-    []
+    [],
   );
 
   const { title: _title, ...adapter } = useControllerAdapter<
@@ -69,7 +81,7 @@ export function useMuiRadioGroupAdapter<
         ...transform,
       },
     },
-    ref
+    ref,
   );
 
   return {

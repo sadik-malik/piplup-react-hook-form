@@ -1,22 +1,25 @@
 import type * as React from 'react';
 import { useFormControl } from '@mui/material';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useHtmlInputAdapter, type UseHtmlInputAdapterProps } from '../../html/input/adapter';
+import {
+  useHtmlInputAdapter,
+  type UseHtmlInputAdapterProps,
+} from '../../html/input/adapter';
 
 export type UseMuiFilledInputAdapterProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = UseHtmlInputAdapterProps<TTransformedValue, TFieldValues, TName>;
 
 export function useMuiFilledInputAdapter<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  RefType = unknown
+  RefType = unknown,
 >(
   props: UseMuiFilledInputAdapterProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<RefType>
+  ref?: React.Ref<RefType>,
 ) {
   const { disabled: disabledProp, required: requiredProp, ...rest } = props;
 
@@ -34,13 +37,18 @@ export function useMuiFilledInputAdapter<
     }
   }
 
-  const adapter = useHtmlInputAdapter<TTransformedValue, TFieldValues, TName, RefType>(
+  const adapter = useHtmlInputAdapter<
+    TTransformedValue,
+    TFieldValues,
+    TName,
+    RefType
+  >(
     {
       ...rest,
       disabled,
       required,
     },
-    ref
+    ref,
   );
   return {
     ...adapter,

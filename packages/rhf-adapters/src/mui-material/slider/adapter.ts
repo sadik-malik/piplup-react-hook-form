@@ -1,12 +1,22 @@
 import * as React from 'react';
-import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
-import { type FieldValues, type FieldPath, type PathValue } from 'react-hook-form';
+import {
+  useControllerAdapter,
+  type UseControllerAdapterProps,
+} from '@piplup/rhf-core';
+import {
+  type FieldValues,
+  type FieldPath,
+  type PathValue,
+} from 'react-hook-form';
 
 export interface UseMuiSliderAdapterProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> extends Omit<UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>, 'max' | 'min'> {
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<
+    UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
+    'max' | 'min'
+  > {
   max?: number;
   min?: number;
 }
@@ -15,10 +25,10 @@ export function useMuiSliderAdapter<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  RefType = unknown
+  RefType = unknown,
 >(
   props: UseMuiSliderAdapterProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<RefType>
+  ref?: React.Ref<RefType>,
 ) {
   const {
     defaultValue,
@@ -30,19 +40,26 @@ export function useMuiSliderAdapter<
   const transformHelpers = React.useMemo(
     () => ({
       input(value: PathValue<TFieldValues, TName>): TTransformedValue {
-        return (typeof value !== 'undefined' ? value : defaultValue ?? min) as TTransformedValue;
+        return (
+          typeof value !== 'undefined' ? value : (defaultValue ?? min)
+        ) as TTransformedValue;
       },
       output(
         _event: React.ChangeEvent<HTMLInputElement>,
-        value: TTransformedValue
+        value: TTransformedValue,
       ): PathValue<TFieldValues, TName> {
         return value as PathValue<TFieldValues, TName>;
       },
     }),
-    [defaultValue, min]
+    [defaultValue, min],
   );
 
-  const adapter = useControllerAdapter<TTransformedValue, TFieldValues, TName, RefType>(
+  const adapter = useControllerAdapter<
+    TTransformedValue,
+    TFieldValues,
+    TName,
+    RefType
+  >(
     {
       ...props,
       max,
@@ -52,7 +69,7 @@ export function useMuiSliderAdapter<
         ...transform,
       },
     },
-    ref
+    ref,
   );
 
   return {

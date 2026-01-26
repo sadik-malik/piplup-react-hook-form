@@ -8,10 +8,7 @@ import { hideBin } from 'yargs/helpers';
 
 const { prompt } = enquirer;
 
-const patterns = [
-  './packages/*/dist',
-  '**/vite.config.*.timestamp*',
-];
+const patterns = ['./packages/*/dist', '**/vite.config.*.timestamp*'];
 
 const nodeModules = ['./packages/*/node_modules'];
 

@@ -4,9 +4,7 @@ import {
   type TimeValidationError,
   type ValidateTimeProps,
 } from '@mui/x-date-pickers';
-import {
-  type PickerValidValue,
-} from '@mui/x-date-pickers/internals';
+import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
   useUnstableBasePickerAdapter as useBasePickerAdapter,

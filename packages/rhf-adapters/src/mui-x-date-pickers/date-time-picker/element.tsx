@@ -2,17 +2,20 @@ import * as React from 'react';
 import {
   type DateTimePickerProps,
   DateTimePicker,
+  type PickerValidDate,
 } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXDateTimePickerAdapterProps, useMuiXDateTimePickerAdapter } from './adapter';
+import {
+  type UseMuiXDateTimePickerAdapterProps,
+  useMuiXDateTimePickerAdapter,
+} from './adapter';
 
 export interface MuiXDateTimePickerElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       DateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'name' | 'value'
@@ -41,10 +44,10 @@ export interface MuiXDateTimePickerElementProps<
 }
 
 function MuiXDateTimePickerComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDateTimePickerElementProps<
     TTransformedValue,
@@ -52,7 +55,7 @@ function MuiXDateTimePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -128,14 +131,16 @@ function MuiXDateTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <DateTimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXDateTimePickerElement = React.forwardRef(
-  MuiXDateTimePickerComponent
+  MuiXDateTimePickerComponent,
 ) as typeof MuiXDateTimePickerComponent & { displayName?: string };
 
-MuiXDateTimePickerElement.displayName = 'MuiXDateTimePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXDateTimePickerElement.displayName = 'MuiXDateTimePickerElement';
+}

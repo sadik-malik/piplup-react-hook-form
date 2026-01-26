@@ -2,12 +2,15 @@ import * as React from 'react';
 import { OutlinedInput, type OutlinedInputProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiOutlinedInputAdapterProps, useMuiOutlinedInputAdapter } from './adapter';
+import {
+  type UseMuiOutlinedInputAdapterProps,
+  useMuiOutlinedInputAdapter,
+} from './adapter';
 
 export interface MuiOutlinedInputElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       OutlinedInputProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
@@ -26,16 +29,21 @@ export interface MuiOutlinedInputElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<OutlinedInputProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    OutlinedInputProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiOutlinedInputComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiOutlinedInputElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: OutlinedInputProps['ref']
+  ref?: OutlinedInputProps['ref'],
 ): React.ReactElement {
   const {
     checked,
@@ -100,16 +108,18 @@ function MuiOutlinedInputComponent<
       type,
       value,
     },
-    ref
+    ref,
   );
 
   return <OutlinedInput {...rest} {...adapter} />;
 }
 
 export const MuiOutlinedInputElement = React.forwardRef(
-  MuiOutlinedInputComponent
+  MuiOutlinedInputComponent,
 ) as typeof MuiOutlinedInputComponent & {
   displayName?: string;
 };
 
-MuiOutlinedInputElement.displayName = 'MuiOutlinedInputElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiOutlinedInputElement.displayName = 'MuiOutlinedInputElement';
+}

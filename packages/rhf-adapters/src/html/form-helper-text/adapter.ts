@@ -7,7 +7,7 @@ import { type FieldPath, type FieldValues } from 'react-hook-form';
 
 export interface UseHtmlFormHelperTextProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<UseFieldStateAdapterProps<TFieldValues, TName>, 'helperText'> {
   children?: React.ReactNode;
 }
@@ -15,16 +15,23 @@ export interface UseHtmlFormHelperTextProps<
 export function useHtmlFormHelperTextAdapter<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  RefType = unknown
->(props: UseHtmlFormHelperTextProps<TFieldValues, TName>, ref?: React.Ref<RefType>) {
+  RefType = unknown,
+>(
+  props: UseHtmlFormHelperTextProps<TFieldValues, TName>,
+  ref?: React.Ref<RefType>,
+) {
   const { children, ...rest } = props;
 
-  const { helperText, ...adapter } = useFieldStateAdapter<TFieldValues, TName, RefType>(
+  const { helperText, ...adapter } = useFieldStateAdapter<
+    TFieldValues,
+    TName,
+    RefType
+  >(
     {
       ...rest,
       helperText: children,
     },
-    ref
+    ref,
   );
 
   return {

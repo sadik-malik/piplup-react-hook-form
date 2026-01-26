@@ -2,12 +2,15 @@ import * as React from 'react';
 import { FilledInput, type FilledInputProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiFilledInputAdapterProps, useMuiFilledInputAdapter } from './adapter';
+import {
+  type UseMuiFilledInputAdapterProps,
+  useMuiFilledInputAdapter,
+} from './adapter';
 
 export interface MuiFilledInputElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       FilledInputProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
@@ -26,16 +29,21 @@ export interface MuiFilledInputElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<FilledInputProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    FilledInputProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiFilledInputComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiFilledInputElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: FilledInputProps['ref']
+  ref?: FilledInputProps['ref'],
 ): React.ReactElement {
   const {
     checked,
@@ -100,16 +108,18 @@ function MuiFilledInputComponent<
       type,
       value,
     },
-    ref
+    ref,
   );
 
   return <FilledInput {...rest} {...adapter} />;
 }
 
 export const MuiFilledInputElement = React.forwardRef(
-  MuiFilledInputComponent
+  MuiFilledInputComponent,
 ) as typeof MuiFilledInputComponent & {
   displayName?: string;
 };
 
-MuiFilledInputElement.displayName = 'MuiFilledInputElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiFilledInputElement.displayName = 'MuiFilledInputElement';
+}

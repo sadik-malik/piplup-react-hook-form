@@ -3,8 +3,8 @@ import {
   StaticTimePicker,
   type StaticTimePickerProps,
   type TimePickerProps,
+  type PickerValidDate,
 } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -13,9 +13,9 @@ import {
 } from './adapter';
 
 export type MuiXStaticTimePickerElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<StaticTimePickerProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
     UseMuiXStaticTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
@@ -39,12 +39,16 @@ export type MuiXStaticTimePickerElementProps<
   };
 
 function MuiXStaticTimePickerComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXStaticTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  props: MuiXStaticTimePickerElementProps<
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >,
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -108,14 +112,16 @@ function MuiXStaticTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <StaticTimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXStaticTimePickerElement = React.forwardRef(
-  MuiXStaticTimePickerComponent
+  MuiXStaticTimePickerComponent,
 ) as typeof MuiXStaticTimePickerComponent & { displayName?: string };
 
-MuiXStaticTimePickerElement.displayName = 'MuiXStaticTimePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXStaticTimePickerElement.displayName = 'MuiXStaticTimePickerElement';
+}

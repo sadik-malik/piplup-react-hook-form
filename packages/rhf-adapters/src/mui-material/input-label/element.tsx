@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { InputLabel, type InputLabelProps } from '@mui/material';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiInputLabelAdapterProps, useMuiInputLabelAdapter } from './adapter';
+import {
+  type UseMuiInputLabelAdapterProps,
+  useMuiInputLabelAdapter,
+} from './adapter';
 
 export interface MuiInputLabelElementProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<InputLabelProps, 'name' | 'style'>,
     Omit<
       UseMuiInputLabelAdapterProps<TFieldValues, TName>,
@@ -19,10 +22,10 @@ export interface MuiInputLabelElementProps<
 
 function MuiInputLabelComponent<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiInputLabelElementProps<TFieldValues, TName>,
-  ref?: InputLabelProps['ref']
+  ref?: InputLabelProps['ref'],
 ): React.ReactElement {
   const {
     classes,
@@ -51,14 +54,16 @@ function MuiInputLabelComponent<
       name,
       style,
     },
-    ref
+    ref,
   );
 
   return <InputLabel {...rest} {...adapter} />;
 }
 
 export const MuiInputLabelElement = React.forwardRef(
-  MuiInputLabelComponent
+  MuiInputLabelComponent,
 ) as typeof MuiInputLabelComponent & { displayName?: string };
 
-MuiInputLabelElement.displayName = 'MuiInputLabelElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiInputLabelElement.displayName = 'MuiInputLabelElement';
+}

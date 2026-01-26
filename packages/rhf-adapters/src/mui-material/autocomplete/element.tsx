@@ -7,7 +7,10 @@ import {
 } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useMuiAutocompleteAdapter, type UseMuiAutocompleteProps } from './adapter';
+import {
+  useMuiAutocompleteAdapter,
+  type UseMuiAutocompleteProps,
+} from './adapter';
 
 export interface MuiAutocompleteElementProps<
   TTransformedValue,
@@ -16,14 +19,26 @@ export interface MuiAutocompleteElementProps<
   FreeSolo extends boolean | undefined,
   ChipComponent extends React.ElementType = ChipTypeMap['defaultComponent'],
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-      AutocompleteProps<TTransformedValue, Multiple, DisableClearable, FreeSolo, ChipComponent>,
+      AutocompleteProps<
+        TTransformedValue,
+        Multiple,
+        DisableClearable,
+        FreeSolo,
+        ChipComponent
+      >,
       'defaultValue' | 'style' | 'value'
     >,
     Omit<
       UseMuiAutocompleteProps<
-        AutocompleteValue<TTransformedValue, Multiple, DisableClearable, FreeSolo>,
+        AutocompleteValue<
+          TTransformedValue,
+          Multiple,
+          DisableClearable,
+          FreeSolo
+        >,
+        Multiple,
         TFieldValues,
         TName
       >,
@@ -60,7 +75,7 @@ function MuiAutocompleteComponent<
   ChipComponent extends React.ElementType = ChipTypeMap['defaultComponent'],
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  RefType = unknown
+  RefType = unknown,
 >(
   props: MuiAutocompleteElementProps<
     TTransformedValue,
@@ -71,7 +86,7 @@ function MuiAutocompleteComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<RefType>
+  ref?: React.Ref<RefType>,
 ): React.ReactElement {
   const {
     classes,
@@ -134,14 +149,16 @@ function MuiAutocompleteComponent<
       title,
       transform,
     },
-    ref
+    ref,
   );
 
   return <Autocomplete {...rest} {...adapter} />;
 }
 
 export const MuiAutocompleteElement = React.forwardRef(
-  MuiAutocompleteComponent
+  MuiAutocompleteComponent,
 ) as typeof MuiAutocompleteComponent & { displayName?: string };
 
-MuiAutocompleteElement.displayName = 'MuiAutocompleteElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiAutocompleteElement.displayName = 'MuiAutocompleteElement';
+}

@@ -1,14 +1,20 @@
 import * as React from 'react';
-import { DigitalClock, type DigitalClockProps } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import {
+  DigitalClock,
+  type DigitalClockProps,
+  type PickerValidDate,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXDigitalClockAdapterProps, useMuiXDigitalClockAdapter } from './adapter';
+import {
+  type UseMuiXDigitalClockAdapterProps,
+  useMuiXDigitalClockAdapter,
+} from './adapter';
 
 export type MuiXDigitalClockElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<DigitalClockProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
     UseMuiXDigitalClockAdapterProps<TTransformedValue, TFieldValues, TName>,
@@ -32,12 +38,12 @@ export type MuiXDigitalClockElementProps<
   };
 
 function MuiXDigitalClockComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDigitalClockElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -103,14 +109,16 @@ function MuiXDigitalClockComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <DigitalClock {...rest} {...adapter} />;
 }
 
 export const MuiXDigitalClockElement = React.forwardRef(
-  MuiXDigitalClockComponent
+  MuiXDigitalClockComponent,
 ) as typeof MuiXDigitalClockComponent & { displayName?: string };
 
-MuiXDigitalClockElement.displayName = 'MuiXDigitalClockElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXDigitalClockElement.displayName = 'MuiXDigitalClockElement';
+}

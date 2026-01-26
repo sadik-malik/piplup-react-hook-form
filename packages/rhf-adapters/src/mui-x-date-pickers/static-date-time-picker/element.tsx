@@ -2,8 +2,8 @@ import * as React from 'react';
 import {
   StaticDateTimePicker,
   type StaticDateTimePickerProps,
+  type PickerValidDate,
 } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,19 +12,22 @@ import {
 } from './adapter';
 
 export interface MuiXStaticDateTimePickerElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> extends Omit<
-      StaticDateTimePickerProps,
-      'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-    >,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<StaticDateTimePickerProps, 'defaultValue' | 'name' | 'value'>,
     Omit<
-      UseMuiXStaticDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+      UseMuiXStaticDateTimePickerAdapterProps<
+        TTransformedValue,
+        TFieldValues,
+        TName
+      >,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
       | 'helperText'
+      | 'maxDate'
+      | 'minDate'
       | 'onChange'
       | 'slotProps'
       | 'transform'
@@ -41,12 +44,16 @@ export interface MuiXStaticDateTimePickerElementProps<
 }
 
 function MuiXStaticDateTimePickerComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXStaticDateTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLDivElement>
+  props: MuiXStaticDateTimePickerElementProps<
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >,
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -122,14 +129,17 @@ function MuiXStaticDateTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <StaticDateTimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXStaticDateTimePickerElement = React.forwardRef(
-  MuiXStaticDateTimePickerComponent
+  MuiXStaticDateTimePickerComponent,
 ) as typeof MuiXStaticDateTimePickerComponent & { displayName?: string };
 
-MuiXStaticDateTimePickerElement.displayName = 'MuiXStaticDateTimePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXStaticDateTimePickerElement.displayName =
+    'MuiXStaticDateTimePickerElement';
+}

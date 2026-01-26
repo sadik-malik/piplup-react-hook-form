@@ -7,7 +7,7 @@ import { useMuiRatingAdapter, type UseMuiRatingAdapterProps } from './adapter';
 export interface MuiRatingElementProps<
   TTransformedValue extends null | number,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<RatingProps, 'defaultValue' | 'name' | 'style'>,
     Omit<
       UseMuiRatingAdapterProps<TTransformedValue, TFieldValues, TName>,
@@ -24,16 +24,21 @@ export interface MuiRatingElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<RatingProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    RatingProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiRatingComponent<
   TTransformedValue extends null | number,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiRatingElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: RatingProps['ref']
+  ref?: RatingProps['ref'],
 ): React.ReactElement {
   const {
     classes,
@@ -94,14 +99,16 @@ function MuiRatingComponent<
       title,
       transform,
     },
-    ref
+    ref,
   );
 
   return <Rating {...rest} {...adapter} />;
 }
 
 export const MuiRatingElement = React.forwardRef(
-  MuiRatingComponent
+  MuiRatingComponent,
 ) as typeof MuiRatingComponent & { displayName?: string };
 
-MuiRatingElement.displayName = 'MuiRatingElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiRatingElement.displayName = 'MuiRatingElement';
+}

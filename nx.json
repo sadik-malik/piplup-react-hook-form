@@ -26,10 +26,7 @@
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -73,9 +70,7 @@
     "changelog": {
       "workspaceChangelog": true
     },
-    "projects": [
-      "*"
-    ],
+    "projects": ["*"],
     "projectsRelationship": "fixed",
     "version": {
       "conventionalCommits": true
@@ -83,23 +78,17 @@
   },
   "targetDefaults": {
     "nx-release-publish": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "options": {
         "packageRoot": "{projectRoot}/dist"
       }
     },
     "typecheck": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "e2e": {},
     "component-test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     }
   }
 }

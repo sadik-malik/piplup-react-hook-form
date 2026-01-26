@@ -2,8 +2,8 @@ import * as React from 'react';
 import {
   type MobileDatePickerProps,
   MobileDatePicker,
+  type PickerValidDate,
 } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -12,16 +12,20 @@ import {
 } from './adapter';
 
 export interface MuiXMobileDatePickerElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       MobileDatePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,
     Omit<
-      UseMuiXMobileDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+      UseMuiXMobileDatePickerAdapterProps<
+        TTransformedValue,
+        TFieldValues,
+        TName
+      >,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -43,10 +47,10 @@ export interface MuiXMobileDatePickerElementProps<
 }
 
 function MuiXMobileDatePickerComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXMobileDatePickerElementProps<
     TTransformedValue,
@@ -54,7 +58,7 @@ function MuiXMobileDatePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -120,14 +124,16 @@ function MuiXMobileDatePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <MobileDatePicker {...rest} {...adapter} />;
 }
 
 export const MuiXMobileDatePickerElement = React.forwardRef(
-  MuiXMobileDatePickerComponent
+  MuiXMobileDatePickerComponent,
 ) as typeof MuiXMobileDatePickerComponent & { displayName?: string };
 
-MuiXMobileDatePickerElement.displayName = 'MuiXMobileDatePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXMobileDatePickerElement.displayName = 'MuiXMobileDatePickerElement';
+}

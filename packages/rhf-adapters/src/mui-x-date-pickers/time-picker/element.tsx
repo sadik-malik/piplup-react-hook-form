@@ -1,15 +1,21 @@
 import * as React from 'react';
-import { TimePicker, type TimePickerProps } from '@mui/x-date-pickers';
-import { type PickerValidValue } from '@mui/x-date-pickers/internals';
+import {
+  TimePicker,
+  type TimePickerProps,
+  type PickerValidDate,
+} from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiXTimePickerAdapterProps, useMuiXTimePickerAdapter } from './adapter';
+import {
+  type UseMuiXTimePickerAdapterProps,
+  useMuiXTimePickerAdapter,
+} from './adapter';
 
 export type MuiXTimePickerElementProps<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
   TimePickerProps<TEnableAccessibleFieldDOMStructure>,
   'defaultValue' | 'name' | 'value'
@@ -36,10 +42,10 @@ export type MuiXTimePickerElementProps<
   };
 
 function MuiXTimePickerComponent<
-  TTransformedValue extends PickerValidValue,
+  TTransformedValue extends PickerValidDate,
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXTimePickerElementProps<
     TTransformedValue,
@@ -47,7 +53,7 @@ function MuiXTimePickerComponent<
     TFieldValues,
     TName
   >,
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
     className,
@@ -113,14 +119,16 @@ function MuiXTimePickerComponent<
       timezone,
       transform,
     },
-    ref
+    ref,
   );
 
   return <TimePicker {...rest} {...adapter} />;
 }
 
 export const MuiXTimePickerElement = React.forwardRef(
-  MuiXTimePickerComponent
+  MuiXTimePickerComponent,
 ) as typeof MuiXTimePickerComponent & { displayName?: string };
 
-MuiXTimePickerElement.displayName = 'MuiXTimePickerElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiXTimePickerElement.displayName = 'MuiXTimePickerElement';
+}

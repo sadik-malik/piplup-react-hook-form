@@ -142,9 +142,7 @@ function modifyOutputPackageJson() {
       const packageJsonPath = path.resolve(rootDir, outDir, 'package.json');
 
       if (!existsSync(packageJsonPath)) {
-        console.warn(
-          `package.json not found in ${packageJsonPath}.`,
-        );
+        console.warn(`package.json not found in ${packageJsonPath}.`);
         return;
       }
 

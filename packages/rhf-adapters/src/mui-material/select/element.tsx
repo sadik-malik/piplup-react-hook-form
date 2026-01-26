@@ -7,7 +7,7 @@ import { useMuiSelectAdapter, type UseMuiSelectAdapterProps } from './adapter';
 export interface MuiSelectElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<SelectProps, 'defaultValue' | 'name' | 'style'>,
     Omit<
       UseMuiSelectAdapterProps<TTransformedValue, TFieldValues, TName>,
@@ -24,14 +24,22 @@ export interface MuiSelectElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<SelectProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    SelectProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiSelectComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->(props: MuiSelectElementProps<TTransformedValue, TFieldValues, TName>, ref?: SelectProps['ref']) {
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(
+  props: MuiSelectElementProps<TTransformedValue, TFieldValues, TName>,
+  ref?: SelectProps['ref'],
+) {
   const {
     classes,
     className,
@@ -89,16 +97,18 @@ function MuiSelectComponent<
       title,
       transform,
     },
-    ref
+    ref,
   );
 
   return <Select {...rest} {...adapter} />;
 }
 
 export const MuiSelectElement = React.forwardRef(
-  MuiSelectComponent
+  MuiSelectComponent,
 ) as typeof MuiSelectComponent & {
   displayName?: string;
 };
 
-MuiSelectElement.displayName = 'MuiSelectElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiSelectElement.displayName = 'MuiSelectElement';
+}

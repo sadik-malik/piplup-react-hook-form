@@ -8,7 +8,9 @@ describe('HtmlFormHelperTextElement', () => {
   it('renders children as helper text when no error', () => {
     cy.mount(
       <FormContainer>
-        <HtmlFormHelperTextElement>Helpful text</HtmlFormHelperTextElement>
+        <HtmlFormHelperTextElement name="helperText">
+          Helpful text
+        </HtmlFormHelperTextElement>
       </FormContainer>,
     );
 

@@ -5,7 +5,7 @@ import { useHtmlInputAdapter, type UseHtmlInputAdapterProps } from './adapter';
 export interface HtmlInputElementProps<
   TTransformedValue extends number | readonly string[] | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
       React.ComponentProps<'input'>,
       | 'checked'
@@ -31,10 +31,10 @@ export interface HtmlInputElementProps<
 function HtmlInputComponent<
   TTransformedValue extends number | readonly string[] | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: HtmlInputElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: React.Ref<HTMLInputElement>
+  ref?: React.Ref<HTMLInputElement>,
 ): React.ReactElement {
   const {
     checked,
@@ -106,16 +106,18 @@ function HtmlInputComponent<
       type,
       value,
     },
-    ref
+    ref,
   );
 
   return <input aria-invalid={hasError} {...rest} {...adapter} />;
 }
 
 export const HtmlInputElement = React.forwardRef(
-  HtmlInputComponent
+  HtmlInputComponent,
 ) as typeof HtmlInputComponent & {
   displayName?: string;
 };
 
-HtmlInputElement.displayName = 'HtmlInputElement';
+if (process.env.NODE_ENV !== 'production') {
+  HtmlInputElement.displayName = 'HtmlInputElement';
+}

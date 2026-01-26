@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { FormLabel, type FormLabelProps } from '@mui/material';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { type UseMuiFormLabelAdapterProps, useMuiFormLabelAdapter } from './adapter';
+import {
+  type UseMuiFormLabelAdapterProps,
+  useMuiFormLabelAdapter,
+} from './adapter';
 
 export interface MuiFormLabelElementProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<FormLabelProps, 'name' | 'style'>,
     Omit<
       UseMuiFormLabelAdapterProps<TFieldValues, TName>,
@@ -19,10 +22,10 @@ export interface MuiFormLabelElementProps<
 
 function MuiFormLabelComponent<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiFormLabelElementProps<TFieldValues, TName>,
-  ref?: FormLabelProps['ref']
+  ref?: FormLabelProps['ref'],
 ): React.ReactElement {
   const {
     classes,
@@ -51,14 +54,16 @@ function MuiFormLabelComponent<
       name,
       style,
     },
-    ref
+    ref,
   );
 
   return <FormLabel {...rest} {...adapter} />;
 }
 
 export const MuiFormLabelElement = React.forwardRef(
-  MuiFormLabelComponent
+  MuiFormLabelComponent,
 ) as typeof MuiFormLabelComponent & { displayName?: string };
 
-MuiFormLabelElement.displayName = 'MuiFormLabelElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiFormLabelElement.displayName = 'MuiFormLabelElement';
+}

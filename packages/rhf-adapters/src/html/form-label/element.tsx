@@ -8,7 +8,10 @@ export interface HtmlFormLabelElementProps<
 > extends Omit<React.ComponentProps<'label'>, 'style'>,
     Omit<
       UseHtmlFormLabelProps<TFieldValues, TName>,
-      'composeClassName' | 'composeHelperText' | 'helperText' | 'internalClasses'
+      | 'composeClassName'
+      | 'composeHelperText'
+      | 'helperText'
+      | 'internalClasses'
     > {}
 
 function HtmlFormLabelComponent<
@@ -48,4 +51,6 @@ export const HtmlFormLabelElement = React.forwardRef(
   HtmlFormLabelComponent,
 ) as typeof HtmlFormLabelComponent & { displayName?: string };
 
-HtmlFormLabelElement.displayName = 'HtmlFormLabelElement';
+if (process.env.NODE_ENV !== 'production') {
+  HtmlFormLabelElement.displayName = 'HtmlFormLabelElement';
+}

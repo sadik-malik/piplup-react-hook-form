@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-  type Validator,
-  type PickersTimezone,
-} from '@mui/x-date-pickers';
+import { type Validator, type PickersTimezone } from '@mui/x-date-pickers';
 import { type PickerValidValue } from '@mui/x-date-pickers/internals';
 import {
   useControllerAdapter,

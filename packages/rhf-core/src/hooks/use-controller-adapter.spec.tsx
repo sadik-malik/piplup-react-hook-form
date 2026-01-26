@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { FormContainer } from '../form';
 import {
   useControllerAdapter,

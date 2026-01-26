@@ -5,7 +5,11 @@ import {
   type ValidateDateTimeProps,
   type DateTimeValidationError,
 } from '@mui/x-date-pickers';
-import { applyDefaultDate, type PickerValidValue, useDefaultDates } from '@mui/x-date-pickers/internals';
+import {
+  applyDefaultDate,
+  type PickerValidValue,
+  useDefaultDates,
+} from '@mui/x-date-pickers/internals';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
   useUnstableBasePickerAdapter as useBasePickerAdapter,
@@ -17,7 +21,6 @@ type ValidationProps = Omit<
   'disableFuture' | 'disablePast'
 > &
   Partial<Pick<ValidateDateTimeProps, 'disableFuture' | 'disablePast'>>;
-
 
 export interface UseBaseDateTimePickerAdapterProps<
   TTransformedValue extends PickerValidValue,
@@ -88,5 +91,5 @@ export function useUnstableBaseDateTimePickerAdapter<
     ref,
   );
 
-  return adapter
+  return adapter;
 }

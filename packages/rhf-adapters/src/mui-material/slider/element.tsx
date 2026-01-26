@@ -7,7 +7,7 @@ import { type UseMuiSliderAdapterProps, useMuiSliderAdapter } from './adapter';
 export interface MuiSliderElementProps<
   TTransformedValue extends number | number[] = number | number[],
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<SliderProps, 'defaultValue' | 'name' | 'style'>,
     Omit<
       UseMuiSliderAdapterProps<TTransformedValue, TFieldValues, TName>,
@@ -23,16 +23,21 @@ export interface MuiSliderElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<SliderProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    SliderProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiSliderComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  TTransformedValue extends number | number[] = number | number[]
+  TTransformedValue extends number | number[] = number | number[],
 >(
   props: MuiSliderElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: SliderProps['ref']
+  ref?: SliderProps['ref'],
 ): React.ReactElement {
   const {
     classes,
@@ -89,16 +94,18 @@ function MuiSliderComponent<
       title,
       transform,
     },
-    ref
+    ref,
   );
 
   return <Slider {...rest} {...adapter} />;
 }
 
 export const MuiSliderElement = React.forwardRef(
-  MuiSliderComponent
+  MuiSliderComponent,
 ) as typeof MuiSliderComponent & {
   displayName?: string;
 };
 
-MuiSliderElement.displayName = 'MuiSliderElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiSliderElement.displayName = 'MuiSliderElement';
+}

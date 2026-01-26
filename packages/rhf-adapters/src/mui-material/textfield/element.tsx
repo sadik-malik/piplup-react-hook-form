@@ -2,7 +2,10 @@ import * as React from 'react';
 import { TextField, type TextFieldProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import { useMuiTextFieldAdapter, type UseMuiTextFieldAdapterProps } from './adapter';
+import {
+  useMuiTextFieldAdapter,
+  type UseMuiTextFieldAdapterProps,
+} from './adapter';
 
 export interface MuiTextFieldElementProps<
   TTransformedValue,
@@ -25,7 +28,12 @@ export interface MuiTextFieldElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<TextFieldProps['onChange'], TTransformedValue, TFieldValues, TName>;
+  transform?: Transform<
+    TextFieldProps['onChange'],
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >;
 }
 
 function MuiTextFieldComponent<
@@ -125,4 +133,6 @@ export const MuiTextFieldElement = React.forwardRef(
   MuiTextFieldComponent,
 ) as typeof MuiTextFieldComponent & { displayName?: string };
 
-MuiTextFieldElement.displayName = 'MuiTextFieldElement';
+if (process.env.NODE_ENV !== 'production') {
+  MuiTextFieldElement.displayName = 'MuiTextFieldElement';
+}

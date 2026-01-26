@@ -12,7 +12,9 @@ export interface UseComposePickerSlotProps {
   slotProps?: Record<string, any>;
 }
 
-export function useUnstableComposePickerSlotProps(props: UseComposePickerSlotProps) {
+export function useUnstableComposePickerSlotProps(
+  props: UseComposePickerSlotProps,
+) {
   const { error, helperText, onBlur, slotProps } = props;
   return {
     ...slotProps,
