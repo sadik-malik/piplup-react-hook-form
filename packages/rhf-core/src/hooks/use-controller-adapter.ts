@@ -25,8 +25,8 @@ import {
 
 // @see https://github.com/mui/material-ui/issues/42020
 declare const UNDEFINED_VOID_ONLY: unique symbol;
-declare module "react" {
-   export type VoidOrUndefinedOnly = void | { [UNDEFINED_VOID_ONLY]: never };
+declare module 'react' {
+  export type VoidOrUndefinedOnly = void | { [UNDEFINED_VOID_ONLY]: never };
 }
 
 /**
@@ -37,7 +37,7 @@ export interface UseControllerAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseComposeRulesProps<TFieldValues, TName>,
-    Omit<UseComposeModifierStateProps<TFieldValues>, 'fieldError' | 'isSubmitting'>,
+    Omit<UseComposeModifierStateProps, 'fieldError' | 'isSubmitting'>,
     Omit<UseComposeClassNameProps, 'modifierState'>,
     Omit<UseComposeStyleProps, 'modifierState'>,
     Omit<UseComposeHelperTextProps<TFieldValues>, 'fieldError' | 'name'> {
@@ -166,7 +166,7 @@ export function useControllerAdapter<
 
   const {
     field,
-    fieldState: { error: fieldError },
+    fieldState: { error: fieldError, invalid },
     formState: { isSubmitting },
   } = useController({
     control,
@@ -194,12 +194,12 @@ export function useControllerAdapter<
     [field.onBlur, onBlur],
   );
 
-  const modifierState = useComposeModifierState<TFieldValues>({
+  const modifierState = useComposeModifierState({
     disabled: field.disabled,
     disableOnError,
     disableOnIsSubmitting,
     error,
-    fieldError,
+    fieldError: invalid,
     isSubmitting,
   });
 

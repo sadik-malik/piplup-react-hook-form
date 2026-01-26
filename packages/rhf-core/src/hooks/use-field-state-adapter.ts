@@ -19,7 +19,7 @@ export interface UseFieldStateAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseFieldStateProps<TFieldValues, TName>,
-    Omit<UseComposeModifierStateProps<TFieldValues>, 'fieldError' | 'isSubmitting' | 'name'>,
+    Omit<UseComposeModifierStateProps, 'fieldError' | 'isSubmitting' | 'name'>,
     Omit<UseComposeClassNameProps, 'modifierState'>,
     Omit<UseComposeStyleProps, 'modifierState'>,
     Omit<UseComposeHelperTextProps, 'fieldError' | 'name'> {}
@@ -35,7 +35,10 @@ export function useFieldStateAdapter<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
->(props: UseFieldStateAdapterProps<TFieldValues, TName>, ref?: React.Ref<RefType>) {
+>(
+  props: UseFieldStateAdapterProps<TFieldValues, TName>,
+  ref?: React.Ref<RefType>,
+) {
   const {
     classes,
     className,
@@ -55,6 +58,7 @@ export function useFieldStateAdapter<
   const {
     disabled: disableField,
     error: fieldError,
+    invalid,
     isSubmitting,
   } = useFieldState<TFieldValues, TName>({
     control,
@@ -62,12 +66,12 @@ export function useFieldStateAdapter<
     name,
   });
 
-  const modifierState = useComposeModifierState<TFieldValues>({
+  const modifierState = useComposeModifierState({
     disabled: disableField,
     disableOnError,
     disableOnIsSubmitting,
     error,
-    fieldError,
+    fieldError: invalid,
     isSubmitting,
   });
 

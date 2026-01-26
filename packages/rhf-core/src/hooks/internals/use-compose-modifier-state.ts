@@ -1,16 +1,9 @@
 import * as React from 'react';
-import {
-  type FieldValues,
-  type FieldError,
-  type FieldErrors,
-} from 'react-hook-form';
 
 /**
  * Props for the `useComposeModifierState` hook.
  */
-export type UseComposeModifierStateProps<
-  TFieldValues extends FieldValues = FieldValues,
-> = {
+export type UseComposeModifierStateProps = {
   /**
    * Flag indicating if the component should be disabled.
    */
@@ -32,9 +25,9 @@ export type UseComposeModifierStateProps<
   error?: boolean;
 
   /**
-   * Error object from form validation, used to determine the error state.
+   * field error state from react hook form
    */
-  fieldError?: boolean | FieldError | FieldErrors<TFieldValues>;
+  fieldError?: boolean;
 
   /**
    * Flag indicating if the form is currently submitting.
@@ -63,10 +56,8 @@ export type UseComposeModifierStateResult = {
  * @param props - The properties used to determine the modifier states.
  * @returns The composed modifier state object containing `error` and `disabled` flags.
  */
-export function useUnstableComposeModifierState<
-  TFieldValues extends FieldValues = FieldValues,
->(
-  props: UseComposeModifierStateProps<TFieldValues>,
+export function useUnstableComposeModifierState(
+  props: UseComposeModifierStateProps,
 ): UseComposeModifierStateResult {
   const {
     disabled,
@@ -78,14 +69,7 @@ export function useUnstableComposeModifierState<
   } = props;
 
   return React.useMemo<UseComposeModifierStateResult>(() => {
-    const hasError =
-      typeof error !== 'undefined'
-        ? error
-        : typeof fieldError === 'boolean'
-          ? fieldError
-          : typeof fieldError === 'object' &&
-            fieldError !== null &&
-            Object.keys(fieldError).length > 0;
+    const hasError = error ?? fieldError ?? false;
     return {
       disabled: !!(
         disabled ||

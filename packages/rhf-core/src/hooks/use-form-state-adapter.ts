@@ -16,7 +16,7 @@ import {
  */
 export interface UseFormStateAdapterProps<TFieldValues extends FieldValues = FieldValues>
   extends UseFormStateProps<TFieldValues>,
-    Omit<UseComposeModifierStateProps<TFieldValues>, 'fieldError' | 'isSubmitting'>,
+    Omit<UseComposeModifierStateProps, 'fieldError' | 'isSubmitting'>,
     Omit<UseComposeClassNameProps, 'modifierState'>,
     Omit<UseComposeStyleProps, 'modifierState'>,
     Omit<UseComposeHelperTextProps<TFieldValues>, 'fieldError' | 'name'> {}
@@ -49,19 +49,19 @@ export function useFormStateAdapter<
     style,
   } = props;
 
-  const { errors, isSubmitting } = useFormState<TFieldValues>({
+  const { errors, isSubmitting, isValid } = useFormState<TFieldValues>({
     control,
     disabled,
     exact,
     name,
   });
 
-  const modifierState = useComposeModifierState<TFieldValues>({
+  const modifierState = useComposeModifierState({
     disabled,
     disableOnError,
     disableOnIsSubmitting,
     error,
-    fieldError: errors,
+    fieldError: !isValid,
     isSubmitting,
   });
 

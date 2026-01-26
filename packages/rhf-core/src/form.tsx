@@ -20,7 +20,11 @@ export interface FormErrorProviderProps {
 
 export function FormErrorProvider(props: FormErrorProviderProps) {
   const { children, errorParser } = props;
-  return <FormErrorParserContext.Provider value={errorParser}>{children}</FormErrorParserContext.Provider>
+  return (
+    <FormErrorParserContext.Provider value={errorParser}>
+      {children}
+    </FormErrorParserContext.Provider>
+  );
 }
 
 interface FormContainerWithoutUseFormProps<
@@ -33,9 +37,12 @@ interface FormContainerWithoutUseFormProps<
     ReactHookFormProviderProps<TFieldValues, TContext, TTransformedValues>,
     'children'
   >;
-  formProps?: Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit'>;
+  formProps?: Omit<
+    React.FormHTMLAttributes<HTMLFormElement>,
+    'children' | 'onSubmit'
+  >;
   onError?: SubmitErrorHandler<TFieldValues>;
-  onSubmit?: SubmitHandler<TTransformedValues>
+  onSubmit?: SubmitHandler<TTransformedValues>;
 }
 
 function FormContainerWithoutUseForm<
@@ -43,8 +50,15 @@ function FormContainerWithoutUseForm<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues = TFieldValues,
->(props: FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>) {
-  const { children, errorParser, formContext, formProps, onError, onSubmit } = props;
+>(
+  props: FormContainerWithoutUseFormProps<
+    TFieldValues,
+    TContext,
+    TTransformedValues
+  >,
+) {
+  const { children, errorParser, formContext, formProps, onError, onSubmit } =
+    props;
   return (
     <ReactHookFormProvider {...formContext}>
       <FormErrorProvider errorParser={errorParser}>
@@ -54,7 +68,10 @@ function FormContainerWithoutUseForm<
           onSubmit={
             typeof onSubmit === 'function'
               ? formContext.handleSubmit(onSubmit, onError)
-              : () => console.warn('Callback `onValid` is missing from FormContainer.')
+              : () =>
+                  console.warn(
+                    'Callback `onValid` is missing from FormContainer.',
+                  )
           }
         >
           {children}
@@ -70,21 +87,42 @@ interface FormContainerWithUseFormProps<
   TContext = any,
   TTransformedValues = TFieldValues,
 > extends UseFormProps<TFieldValues, TContext, TTransformedValues>,
-  Omit<
-    FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>,
-    'formContext'
-  > { }
+    Omit<
+      FormContainerWithoutUseFormProps<
+        TFieldValues,
+        TContext,
+        TTransformedValues
+      >,
+      'formContext'
+    > {}
 
 function FormContainerWithUseForm<
   TFieldValues extends FieldValues = FieldValues,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues = TFieldValues,
->(props: FormContainerWithUseFormProps<TFieldValues, TContext, TTransformedValues>) {
-  const { children, errorParser, formProps, onError, onSubmit, ...UseFormProps } = props;
+>(
+  props: FormContainerWithUseFormProps<
+    TFieldValues,
+    TContext,
+    TTransformedValues
+  >,
+) {
+  const {
+    children,
+    errorParser,
+    formProps,
+    onError = () => {
+      // do nothing
+    },
+    onSubmit = () => {
+      // do nothing
+    },
+    ...UseFormProps
+  } = props;
 
   const formContext = useForm<TFieldValues, TContext, TTransformedValues>({
-    ...UseFormProps
+    ...UseFormProps,
   });
 
   return (
@@ -107,9 +145,13 @@ export type FormContainerProps<
   TTransformedValues = TFieldValues,
 > =
   | FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>
-  | (FormContainerWithUseFormProps<TFieldValues, TContext, TTransformedValues> & {
-    formContext?: undefined;
-  });
+  | (FormContainerWithUseFormProps<
+      TFieldValues,
+      TContext,
+      TTransformedValues
+    > & {
+      formContext?: undefined;
+    });
 
 export function FormContainer<
   TFieldValues extends FieldValues = FieldValues,
@@ -124,6 +166,10 @@ export function FormContainer<
   }
 
   return (
-    <FormContainerWithoutUseForm errorParser={errorParser} formContext={formContext} {...rest} />
+    <FormContainerWithoutUseForm
+      errorParser={errorParser}
+      formContext={formContext}
+      {...rest}
+    />
   );
 }
