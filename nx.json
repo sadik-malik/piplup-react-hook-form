@@ -77,13 +77,19 @@
     }
   },
   "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"]
+    },
     "nx-release-publish": {
+      "cache": true,
       "dependsOn": ["^build"],
       "options": {
         "packageRoot": "{projectRoot}/dist"
       }
     },
     "typecheck": {
+      "cache": true,
       "dependsOn": ["^build"]
     },
     "e2e": {},
