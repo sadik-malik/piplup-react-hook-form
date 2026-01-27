@@ -1,3 +1,18 @@
+## 4.5.0 (2026-01-27)
+
+### 🚀 Features
+
+- updated modifier state to use invalid state for boolean error state ([487896f](https://github.com/sadik-malik/piplup-react-hook-form/commit/487896f))
+
+### 🩹 Fixes
+
+- typescript type issues with x-date-pickers ([67fd5b7](https://github.com/sadik-malik/piplup-react-hook-form/commit/67fd5b7))
+- type exports for loading-button ([7adbce9](https://github.com/sadik-malik/piplup-react-hook-form/commit/7adbce9))
+
+### ❤️ Thank You
+
+- sadik-malik
+
 ## 4.4.0 (2026-01-04)
 
 This was a version bump only, there were no code changes.
