@@ -13,5 +13,5 @@ if (process.env.NODE_ENV !== 'production') {
 
 export {
   useMuiButtonAdapter as useMuiLoadingButtonAdapter,
-  UseMuiButtonAdapterProps as UseMuiLoadingButtonAdapterProps,
+  type UseMuiButtonAdapterProps as UseMuiLoadingButtonAdapterProps,
 } from '../../mui-material/button';
