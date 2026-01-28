@@ -28,7 +28,7 @@ export interface MuiAutocompleteElementProps<
         FreeSolo,
         ChipComponent
       >,
-      'defaultValue' | 'style' | 'value'
+      'defaultValue' | 'renderInput' | 'style' | 'value'
     >,
     Omit<
       UseMuiAutocompleteProps<
@@ -109,6 +109,7 @@ function MuiAutocompleteComponent<
     onBlur,
     onChange,
     pattern,
+    renderInput,
     required,
     rules,
     shouldUnregister,
@@ -142,12 +143,13 @@ function MuiAutocompleteComponent<
       onBlur,
       onChange,
       pattern,
+      renderInput,
       required,
       rules,
       shouldUnregister,
       style,
       title,
-      transform,
+      transform
     },
     ref,
   );

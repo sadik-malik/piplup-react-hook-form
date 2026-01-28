@@ -2,6 +2,7 @@ import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiSelectElement } from './element';
+import { MuiFormHelperTextElement } from '../form-helper-text/element';
 
 describe('MuiSelectElement', () => {
   it('mounts and allows selecting an option', () => {
@@ -53,7 +54,7 @@ describe('MuiSelectElement', () => {
 
     cy.mount(
       <FormContainer>
-        <MuiSelectElement name="fruit" onChange={(e) => onChange(e)} value="">
+        <MuiSelectElement name="fruit" onChange={(e) => onChange(e)}>
           <MenuItem value="apple">Apple</MenuItem>
           <MenuItem value="banana">Banana</MenuItem>
         </MuiSelectElement>
@@ -70,5 +71,29 @@ describe('MuiSelectElement', () => {
     cy.then(() => {
       expect(onChange.called).to.equal(true);
     });
+  });
+
+  it('shows error message when field has a validation error', () => {
+    cy.mount(
+      <FormContainer defaultValues={{}}>
+        <MuiSelectElement
+          label="Fruit"
+          messages={{ required: 'Select a fruit' }}
+          name="fruit"
+          required
+        >
+          <MenuItem value="apple">Apple</MenuItem>
+          <MenuItem value="banana">Banana</MenuItem>
+        </MuiSelectElement>
+        <MuiFormHelperTextElement name="fruit" renderOnError />
+        <button type="submit">Submit</button>
+      </FormContainer>,
+    );
+
+    // trigger validation by submitting the form without selecting a value
+    cy.get('button[type="submit"]').click();
+
+    // the error message should be visible
+    cy.contains('Select a fruit').should('be.visible');
   });
 });

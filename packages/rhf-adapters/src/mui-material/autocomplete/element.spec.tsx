@@ -52,4 +52,24 @@ describe('MuiAutocompleteElement', () => {
     cy.contains('.MuiAutocomplete-tag', 'Apple').should('exist');
     cy.contains('.MuiAutocomplete-tag', 'Banana').should('exist');
   });
+
+  it('shows error message when field has a validation error', () => {
+    cy.mount(
+      <FormContainer defaultValues={{}}>
+        <MuiAutocompleteElement
+          name="fruit"
+          options={['Apple', 'Banana']}
+          renderInput={(params) => <TextField {...params} label="Fruit"/>}
+          rules={{ required: 'Select a fruit' }}
+        />
+        <button type="submit">Submit</button>
+      </FormContainer>,
+    );
+
+    // trigger validation by submitting the form without selecting a value
+    cy.get('button[type="submit"]').click();
+
+    // the error message should be visible
+    cy.contains('Select a fruit').should('be.visible');
+  });
 });

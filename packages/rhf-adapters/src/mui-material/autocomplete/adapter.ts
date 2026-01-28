@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { type AutocompleteRenderInputParams } from '@mui/material';
 import {
   useControllerAdapter,
   type UseControllerAdapterProps,
@@ -9,6 +10,12 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
+type AutocompleteExtendedRenderInputParams = AutocompleteRenderInputParams & {
+  error: boolean;
+  helperText?: React.ReactNode;
+  required?: boolean;
+};
+
 export interface UseMuiAutocompleteProps<
   TTransformedValue,
   Multiple extends boolean | undefined,
@@ -16,6 +23,9 @@ export interface UseMuiAutocompleteProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseControllerAdapterProps<TTransformedValue, TFieldValues, TName> {
   multiple?: Multiple;
+  renderInput: (
+    params: AutocompleteExtendedRenderInputParams,
+  ) => React.ReactNode;
 }
 
 export function useMuiAutocompleteAdapter<
@@ -25,7 +35,12 @@ export function useMuiAutocompleteAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiAutocompleteProps<TTransformedValue, Multiple, TFieldValues, TName>,
+  props: UseMuiAutocompleteProps<
+    TTransformedValue,
+    Multiple,
+    TFieldValues,
+    TName
+  >,
   ref?: React.Ref<RefType>,
 ) {
   const {
@@ -54,7 +69,11 @@ export function useMuiAutocompleteAdapter<
     [multiple],
   );
 
-  const adapter = useControllerAdapter<TTransformedValue, TFieldValues, TName>(
+  const { error, helperText, required, ...adapter } = useControllerAdapter<
+    TTransformedValue,
+    TFieldValues,
+    TName
+  >(
     {
       defaultValue: defaultValue as PathValue<TFieldValues, TName>,
       ...props,
@@ -70,5 +89,12 @@ export function useMuiAutocompleteAdapter<
     ...adapter,
     classes: props.classes,
     multiple,
+    renderInput: (params: AutocompleteRenderInputParams) =>
+      props.renderInput({
+        ...params,
+        error: !!error,
+        helperText,
+        required,
+      }),
   };
 }
