@@ -74,7 +74,7 @@
     "mui-chips-input": "^7.0.1",
     "mui-color-input": "^7.0.0",
     "mui-file-input": "^7.0.0",
-    "mui-one-time-password-input": "^5.0.0",
+    "mui-one-time-password-input": "^6.0.0",
     "mui-tel-input": "^9.0.1",
     "nx": "22.3.3",
     "prettier": "^3.6.2",
