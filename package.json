@@ -38,7 +38,7 @@
     "@piplup/utils": "3.2.4",
     "@swc-node/register": "1.11.1",
     "@swc/cli": "0.8.1",
-    "@swc/core": "1.15.26",
+    "@swc/core": "1.15.30",
     "@swc/helpers": "0.5.21",
     "@types/node": "24.12.2",
     "@types/react": "^19.2.7",
