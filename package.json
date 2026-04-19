@@ -47,7 +47,7 @@
     "@typescript-eslint/parser": "8.46.2",
     "@typescript-eslint/utils": "8.46.2",
     "@vitejs/plugin-react": "^5.1.0",
-    "@vitest/ui": "4.0.9",
+    "@vitest/ui": "4.1.4",
     "core-js": "^3.46.0",
     "cypress": "15.8.1",
     "cypress-real-events": "^1.15.0",
@@ -90,7 +90,7 @@
     "typescript-eslint": "8.46.2",
     "vite": "7.1.12",
     "vite-plugin-dts": "4.5.4",
-    "vitest": "4.0.9",
+    "vitest": "4.1.4",
     "yargs": "^18.0.0"
   },
   "overrides": {
