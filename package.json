@@ -72,7 +72,7 @@
     "jsonc-eslint-parser": "^2.4.1",
     "lint-staged": "^16.2.6",
     "mui-chips-input": "^7.0.1",
-    "mui-color-input": "^7.0.0",
+    "mui-color-input": "^8.0.0",
     "mui-file-input": "^7.0.0",
     "mui-one-time-password-input": "^5.0.0",
     "mui-tel-input": "^9.0.1",
