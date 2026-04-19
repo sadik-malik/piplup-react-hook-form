@@ -68,7 +68,7 @@
     "husky": "^9.1.7",
     "jiti": "2.6.1",
     "js-yaml": "^4.1.0",
-    "jsdom": "~27.0.1",
+    "jsdom": "~27.4.0",
     "jsonc-eslint-parser": "^2.4.1",
     "lint-staged": "^16.2.6",
     "mui-chips-input": "^7.0.1",
