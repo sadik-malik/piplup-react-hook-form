@@ -23,9 +23,9 @@
     "@emotion/styled": "11.14.1",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "~9.38.0",
-    "@mui/icons-material": "^7.3.4",
-    "@mui/material": "^7.3.4",
-    "@mui/x-date-pickers": "^8.25.0",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/material": "^9.0.0",
+    "@mui/x-date-pickers": "^9.0.0",
     "@nx/cypress": "22.3.3",
     "@nx/devkit": "22.3.3",
     "@nx/eslint": "22.3.3",
@@ -94,6 +94,6 @@
     "yargs": "^18.0.0"
   },
   "overrides": {
-    "@mui/x-date-pickers": "^8.15.0"
+    "@mui/x-date-pickers": "^9.0.0"
   }
 }
