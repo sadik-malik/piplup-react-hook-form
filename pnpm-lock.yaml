@@ -112,7 +112,7 @@ importers:
         version: 4.0.9(vitest@4.0.9)
       core-js:
         specifier: ^3.46.0
-        version: 3.46.0
+        version: 3.49.0
       cypress:
         specifier: 15.8.1
         version: 15.8.1
@@ -4019,8 +4019,8 @@ packages:
   core-js-compat@3.44.0:
     resolution: {integrity: sha512-JepmAj2zfl6ogy34qfWtcE7nHKAJnKsQFRn++scjVS2bZFllwptzw61BZcZFYBPpUznLfAvh0LGhxKppk04ClA==}
 
-  core-js@3.46.0:
-    resolution: {integrity: sha512-vDMm9B0xnqqZ8uSBpZ8sNtRtOdmfShrvT6h2TuQGLs0Is+cR0DYbj/KWP6ALVNbWPpqA/qPLoOuppJN07humpA==}
+  core-js@3.49.0:
+    resolution: {integrity: sha512-es1U2+YTtzpwkxVLwAFdSpaIMyQaq0PBgm3YD1W3Qpsn1NAmO3KSgZfu+oGSWVu6NvLHoHCV/aYcsE5wiB7ALg==}
 
   core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
@@ -12489,7 +12489,7 @@ snapshots:
     dependencies:
       browserslist: 4.28.2
 
-  core-js@3.46.0: {}
+  core-js@3.49.0: {}
 
   core-util-is@1.0.2: {}
 
