@@ -89,7 +89,7 @@
     "@piplup/rhf-core": "workspace:*",
     "mui-chips-input": ">=4.0.1 <8.0.0",
     "mui-color-input": ">=5.0.1 <8.0.0",
-    "mui-file-input": ">=6.0.0 <8.0.0",
+    "mui-file-input": ">=6.0.0 <9.0.0",
     "mui-one-time-password-input": "^5.0.0",
     "mui-tel-input": "^7.0.0 <9.0.0",
     "react": "^19.0.0",
