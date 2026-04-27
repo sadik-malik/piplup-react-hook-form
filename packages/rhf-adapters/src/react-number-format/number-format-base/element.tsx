@@ -14,10 +14,9 @@ export interface NumberFormatBaseElementProps<
   TTransformedValue extends null | number | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
-      NumberFormatBaseProps,
-      'defaultValue' | 'name' | 'pattern' | 'style'
-    >,
+>
+  extends
+    Omit<NumberFormatBaseProps, 'defaultValue' | 'name' | 'pattern' | 'style'>,
     Omit<
       UseNumberFormatBaseAdapterProps<TTransformedValue, TFieldValues, TName>,
       'onBlur' | 'onValueChange'

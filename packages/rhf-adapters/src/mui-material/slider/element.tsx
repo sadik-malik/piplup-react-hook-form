@@ -8,7 +8,9 @@ export interface MuiSliderElementProps<
   TTransformedValue extends number | number[] = number | number[],
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<SliderProps, 'defaultValue' | 'name' | 'style'>,
+>
+  extends
+    Omit<SliderProps, 'defaultValue' | 'name' | 'style'>,
     Omit<
       UseMuiSliderAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'

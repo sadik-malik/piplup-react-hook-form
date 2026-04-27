@@ -9,7 +9,9 @@ import {
 export interface MuiFormLabelElementProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<FormLabelProps, 'name' | 'style'>,
+>
+  extends
+    Omit<FormLabelProps, 'name' | 'style'>,
     Omit<
       UseMuiFormLabelAdapterProps<TFieldValues, TName>,
       | 'classes'

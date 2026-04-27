@@ -20,7 +20,9 @@ import {
  */
 export interface UseFormStateAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
-> extends UseFormStateProps<TFieldValues>,
+>
+  extends
+    UseFormStateProps<TFieldValues>,
     Omit<UseComposeModifierStateProps, 'fieldError' | 'isSubmitting'>,
     Omit<UseComposeClassNameProps, 'modifierState'>,
     Omit<UseComposeStyleProps, 'modifierState'>,

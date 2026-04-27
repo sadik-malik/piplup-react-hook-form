@@ -36,7 +36,9 @@ export interface UseControllerAdapterProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends UseComposeRulesProps<TFieldValues, TName>,
+>
+  extends
+    UseComposeRulesProps<TFieldValues, TName>,
     Omit<UseComposeModifierStateProps, 'fieldError' | 'isSubmitting'>,
     Omit<UseComposeClassNameProps, 'modifierState'>,
     Omit<UseComposeStyleProps, 'modifierState'>,

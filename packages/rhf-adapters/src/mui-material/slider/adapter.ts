@@ -14,9 +14,9 @@ export interface UseMuiSliderAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'max' | 'min'
-  > {
+  UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'max' | 'min'
+> {
   max?: number;
   min?: number;
 }

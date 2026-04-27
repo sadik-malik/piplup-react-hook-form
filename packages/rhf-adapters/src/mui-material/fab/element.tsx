@@ -5,7 +5,9 @@ import { useMuiFabAdapter, type UseMuiFabAdapterProps } from './adapter';
 
 export interface MuiFabElementProps<
   TFieldValues extends FieldValues = FieldValues,
-> extends Omit<FabProps, 'name' | 'onClick' | 'style'>,
+>
+  extends
+    Omit<FabProps, 'name' | 'onClick' | 'style'>,
     Omit<
       UseMuiFabAdapterProps<TFieldValues>,
       'classes' | 'composeClassName' | 'composeHelperText' | 'helperText'

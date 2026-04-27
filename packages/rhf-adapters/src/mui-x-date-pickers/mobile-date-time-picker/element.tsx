@@ -16,7 +16,9 @@ export interface MuiXMobileDateTimePickerElementProps<
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       MobileDateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'name' | 'value'
     >,

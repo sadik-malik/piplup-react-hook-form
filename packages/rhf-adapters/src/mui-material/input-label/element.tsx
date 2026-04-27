@@ -9,7 +9,9 @@ import {
 export interface MuiInputLabelElementProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<InputLabelProps, 'name' | 'style'>,
+>
+  extends
+    Omit<InputLabelProps, 'name' | 'style'>,
     Omit<
       UseMuiInputLabelAdapterProps<TFieldValues, TName>,
       | 'classes'

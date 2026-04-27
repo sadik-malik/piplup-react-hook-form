@@ -7,7 +7,9 @@ import {
 
 export interface HtmlButtonElementProps<
   TFieldValues extends FieldValues = FieldValues,
-> extends Omit<React.ComponentProps<'button'>, 'name' | 'style'>,
+>
+  extends
+    Omit<React.ComponentProps<'button'>, 'name' | 'style'>,
     Omit<
       UseHtmlButtonAdapterProps<TFieldValues>,
       | 'composeClassName'

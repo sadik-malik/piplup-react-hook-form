@@ -8,7 +8,9 @@ import {
 export interface HtmlFormHelperTextElementProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<React.ComponentProps<'p'>, 'style'>,
+>
+  extends
+    Omit<React.ComponentProps<'p'>, 'style'>,
     Omit<
       UseHtmlFormHelperTextProps<TFieldValues, TName>,
       | 'composeClassName'

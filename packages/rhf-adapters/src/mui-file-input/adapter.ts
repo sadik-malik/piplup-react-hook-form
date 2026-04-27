@@ -14,17 +14,17 @@ export interface UseMuiFileInputAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    | 'classes'
-    | 'composeClassName'
-    | 'internalClasses'
-    | 'max'
-    | 'maxLength'
-    | 'min'
-    | 'minLength'
-    | 'pattern'
-    | 'title'
-  > {
+  UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  | 'classes'
+  | 'composeClassName'
+  | 'internalClasses'
+  | 'max'
+  | 'maxLength'
+  | 'min'
+  | 'minLength'
+  | 'pattern'
+  | 'title'
+> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputRef?: React.Ref<any>;
   multiple?: boolean;

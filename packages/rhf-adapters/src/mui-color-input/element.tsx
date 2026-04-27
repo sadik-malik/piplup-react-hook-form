@@ -15,7 +15,9 @@ export interface MuiColorInputElementProps<
   TTransformedValue extends MuiColorInputValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       MuiColorInputProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
     >,

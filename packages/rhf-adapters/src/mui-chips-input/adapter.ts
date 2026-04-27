@@ -14,16 +14,16 @@ export interface UseMuiChipsInputAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    | 'classes'
-    | 'composeClassName'
-    | 'internalClasses'
-    | 'max'
-    | 'maxLength'
-    | 'min'
-    | 'minLength'
-    | 'pattern'
-  > {
+  UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  | 'classes'
+  | 'composeClassName'
+  | 'internalClasses'
+  | 'max'
+  | 'maxLength'
+  | 'min'
+  | 'minLength'
+  | 'pattern'
+> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputRef?: React.Ref<any>;
 }

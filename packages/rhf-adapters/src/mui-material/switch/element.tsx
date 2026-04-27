@@ -8,7 +8,9 @@ export interface MuiSwitchElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       SwitchProps,
       'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
     >,

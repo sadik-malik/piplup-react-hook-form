@@ -11,10 +11,10 @@ export interface UseMuiXMobileDateTimePickerAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseMuiXDateTimePickerAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  > {}
+  TTransformedValue,
+  TFieldValues,
+  TName
+> {}
 
 export function useMuiXMobileDateTimePickerAdapter<
   TTransformedValue extends PickerValidDate,

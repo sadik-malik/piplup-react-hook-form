@@ -15,7 +15,9 @@ export interface MuiXStaticDatePickerElementProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       StaticDatePickerProps,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,

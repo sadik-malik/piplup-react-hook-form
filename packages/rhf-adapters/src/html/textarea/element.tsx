@@ -9,7 +9,9 @@ export interface HtmlTextareaElementProps<
   TTransformedValue extends number | readonly string[] | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       React.ComponentProps<'textarea'>,
       'defaultValue' | 'name' | 'style' | 'type'
     >,

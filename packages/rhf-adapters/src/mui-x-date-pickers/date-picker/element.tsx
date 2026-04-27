@@ -16,7 +16,9 @@ export interface MuiXDatePickerElementProps<
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       DatePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,

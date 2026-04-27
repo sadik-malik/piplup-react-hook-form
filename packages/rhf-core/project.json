@@ -5,6 +5,9 @@
   "projectType": "library",
   "tags": ["scope:packages"],
   "targets": {
+    "lint": {
+      "executor": "nx-oxlint:lint"
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],

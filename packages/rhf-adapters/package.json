@@ -95,17 +95,13 @@
     "react": "^19.0.0",
     "react-hook-form": ">=7.65.0 <8.0.0",
     "react-number-format": ">=5.4.2 <6.0.0",
-    "@piplup/utils": "3.2.4",
-    "@types/react": "^19.0.0"
+    "@piplup/utils": "3.2.4"
   },
   "peerDependenciesMeta": {
     "@mui/material": {
       "optional": true
     },
     "@mui/x-date-pickers": {
-      "optional": true
-    },
-    "@types/react": {
       "optional": true
     },
     "mui-chips-input": {

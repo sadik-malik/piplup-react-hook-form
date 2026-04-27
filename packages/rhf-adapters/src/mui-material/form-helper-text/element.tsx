@@ -9,7 +9,9 @@ import {
 export interface MuiFormHelperTextElementProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<FormHelperTextProps, 'style'>,
+>
+  extends
+    Omit<FormHelperTextProps, 'style'>,
     Omit<
       UseMuiFormHelperTextProps<TFieldValues, TName>,
       'classes' | 'composeClassName' | 'composeHelperText'

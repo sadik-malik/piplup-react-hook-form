@@ -11,7 +11,9 @@ export interface MuiCheckboxElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       CheckboxProps,
       'checked' | 'defaultValue' | 'indeterminate' | 'name' | 'style' | 'value'
     >,

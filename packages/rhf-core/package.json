@@ -43,14 +43,9 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "react-hook-form": ">=7.65.0 <8.0.0",
-    "@types/react": "^19.0.0"
+    "react-hook-form": ">=7.65.0 <8.0.0"
   },
-  "peerDependenciesMeta": {
-    "@types/react": {
-      "optional": true
-    }
-  },
+  "peerDependenciesMeta": {},
   "publishConfig": {
     "access": "public"
   }

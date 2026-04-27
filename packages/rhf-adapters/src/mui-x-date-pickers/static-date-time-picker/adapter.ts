@@ -11,9 +11,9 @@ export interface UseMuiXStaticDateTimePickerAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBaseDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'helperText' | 'onBlur' | 'title'
-  > {}
+  UseBaseDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'helperText' | 'onBlur' | 'title'
+> {}
 
 export function useMuiXStaticDateTimePickerAdapter<
   TTransformedValue extends PickerValidDate,

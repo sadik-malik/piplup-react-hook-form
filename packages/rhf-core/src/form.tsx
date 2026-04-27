@@ -86,7 +86,9 @@ interface FormContainerWithUseFormProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues = TFieldValues,
-> extends UseFormProps<TFieldValues, TContext, TTransformedValues>,
+>
+  extends
+    UseFormProps<TFieldValues, TContext, TTransformedValues>,
     Omit<
       FormContainerWithoutUseFormProps<
         TFieldValues,

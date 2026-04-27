@@ -13,9 +13,9 @@ export interface UseMuiXDateTimePickerAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBaseDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'helperText' | 'onBlur' | 'title'
-  > {
+  UseBaseDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'helperText' | 'onBlur' | 'title'
+> {
   inputRef?: React.Ref<HTMLInputElement>;
   onClose?: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

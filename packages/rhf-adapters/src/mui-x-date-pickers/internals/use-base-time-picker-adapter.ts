@@ -21,7 +21,9 @@ export interface UseBaseTimePickerAdapterProps<
   TTransformedValue extends PickerValidValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends ValidationProps,
+>
+  extends
+    ValidationProps,
     Omit<
       UseBasePickerAdapterProps<
         TTransformedValue,

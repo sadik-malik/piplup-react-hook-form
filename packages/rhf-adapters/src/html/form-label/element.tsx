@@ -5,7 +5,9 @@ import { useHtmlFormLabelAdapter, type UseHtmlFormLabelProps } from './adapter';
 export interface HtmlFormLabelElementProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<React.ComponentProps<'label'>, 'style'>,
+>
+  extends
+    Omit<React.ComponentProps<'label'>, 'style'>,
     Omit<
       UseHtmlFormLabelProps<TFieldValues, TName>,
       | 'composeClassName'

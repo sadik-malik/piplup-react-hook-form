@@ -20,7 +20,9 @@ export interface MuiAutocompleteElementProps<
   ChipComponent extends React.ElementType = ChipTypeMap['defaultComponent'],
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       AutocompleteProps<
         TTransformedValue,
         Multiple,

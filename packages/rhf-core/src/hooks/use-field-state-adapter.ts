@@ -18,7 +18,9 @@ import { useFieldState, type UseFieldStateProps } from './use-field-state';
 export interface UseFieldStateAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends UseFieldStateProps<TFieldValues, TName>,
+>
+  extends
+    UseFieldStateProps<TFieldValues, TName>,
     Omit<UseComposeModifierStateProps, 'fieldError' | 'isSubmitting' | 'name'>,
     Omit<UseComposeClassNameProps, 'modifierState'>,
     Omit<UseComposeStyleProps, 'modifierState'>,

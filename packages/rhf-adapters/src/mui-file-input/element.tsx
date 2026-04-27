@@ -13,8 +13,8 @@ export type MuiFileInputValue<
 
 export type MuiFileInputElementProps<
   Multiple extends boolean | undefined = undefined,
-  TTransformedValue extends
-    MuiFileInputValue<Multiple> = MuiFileInputValue<Multiple>,
+  TTransformedValue extends MuiFileInputValue<Multiple> =
+    MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
@@ -39,8 +39,8 @@ export type MuiFileInputElementProps<
 
 function MuiFileInputComponent<
   Multiple extends boolean | undefined = undefined,
-  TTransformedValue extends
-    MuiFileInputValue<Multiple> = MuiFileInputValue<Multiple>,
+  TTransformedValue extends MuiFileInputValue<Multiple> =
+    MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(

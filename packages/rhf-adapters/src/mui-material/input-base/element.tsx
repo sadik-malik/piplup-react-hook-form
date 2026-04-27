@@ -11,7 +11,9 @@ export interface MuiInputBaseElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       InputBaseProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
     >,

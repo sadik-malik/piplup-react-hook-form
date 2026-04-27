@@ -7,9 +7,9 @@ export interface UseHtmlTextareaAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseHtmlInputAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'checked' | 'indeterminate' | 'type' | 'value'
-  > {}
+  UseHtmlInputAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'checked' | 'indeterminate' | 'type' | 'value'
+> {}
 
 export function useHtmlTextareaAdapter<
   TTransformedValue,

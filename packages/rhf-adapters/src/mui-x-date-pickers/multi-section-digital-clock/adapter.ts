@@ -11,9 +11,9 @@ export interface UseMuiXMultiSectionDigitalClockAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBaseTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'validator'
-  > {}
+  UseBaseTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'validator'
+> {}
 
 export function useMuiXMultiSectionDigitalClockAdapter<
   TTransformedValue extends PickerValidDate,

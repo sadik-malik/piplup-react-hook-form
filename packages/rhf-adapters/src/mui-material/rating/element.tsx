@@ -8,7 +8,9 @@ export interface MuiRatingElementProps<
   TTransformedValue extends null | number,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<RatingProps, 'defaultValue' | 'name' | 'style'>,
+>
+  extends
+    Omit<RatingProps, 'defaultValue' | 'name' | 'style'>,
     Omit<
       UseMuiRatingAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'

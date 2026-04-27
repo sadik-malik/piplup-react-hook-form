@@ -11,7 +11,9 @@ export interface MuiTextFieldElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       TextFieldProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
     >,

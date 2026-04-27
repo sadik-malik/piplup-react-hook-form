@@ -8,7 +8,9 @@ export interface MuiRadioElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       RadioProps,
       'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
     >,

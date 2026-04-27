@@ -11,9 +11,9 @@ export interface UseMuiXYearCalendarAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBaseDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'title' | 'validator'
-  > {}
+  UseBaseDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'title' | 'validator'
+> {}
 
 export function useMuiXYearCalendarAdapter<
   TTransformedValue extends PickerValidDate,

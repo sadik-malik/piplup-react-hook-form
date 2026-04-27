@@ -9,10 +9,10 @@ export interface UsePatternFormatAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseNumberFormatBaseAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  > {}
+  TTransformedValue,
+  TFieldValues,
+  TName
+> {}
 
 export function usePatternFormatAdapter<
   TTransformedValue,

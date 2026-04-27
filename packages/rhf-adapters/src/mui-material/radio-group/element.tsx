@@ -11,7 +11,9 @@ export interface MuiRadioGroupElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<RadioGroupProps, 'defaultValue' | 'name' | 'style'>,
+>
+  extends
+    Omit<RadioGroupProps, 'defaultValue' | 'name' | 'style'>,
     Omit<
       UseMuiRadioGroupAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'

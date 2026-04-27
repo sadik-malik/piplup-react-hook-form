@@ -15,9 +15,9 @@ export interface UseMuiCheckboxAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseHtmlInputAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'type'
-  > {}
+  UseHtmlInputAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'type'
+> {}
 
 export function useMuiCheckboxAdapter<
   TTransformedValue,

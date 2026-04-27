@@ -11,10 +11,10 @@ export interface UseMuiXDesktopDateTimePickerAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseMuiXDateTimePickerAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  > {}
+  TTransformedValue,
+  TFieldValues,
+  TName
+> {}
 
 export function useMuiXDesktopDateTimePickerAdapter<
   TTransformedValue extends PickerValidDate,

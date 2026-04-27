@@ -11,9 +11,9 @@ export interface UseMuiXDateFieldAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBaseDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'title' | 'validationProps' | 'validator'
-  > {
+  UseBaseDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'title' | 'validationProps' | 'validator'
+> {
   inputRef?: React.Ref<HTMLInputElement>;
 }
 

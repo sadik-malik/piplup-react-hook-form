@@ -11,10 +11,9 @@ export interface PatternFormatElementProps<
   TTransformedValue extends null | number | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
-      PatternFormatProps,
-      'defaultValue' | 'name' | 'pattern' | 'style'
-    >,
+>
+  extends
+    Omit<PatternFormatProps, 'defaultValue' | 'name' | 'pattern' | 'style'>,
     Omit<
       UsePatternFormatAdapterProps<TTransformedValue, TFieldValues, TName>,
       'onBlur' | 'onValueChange'

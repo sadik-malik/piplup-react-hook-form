@@ -16,7 +16,9 @@ export interface MuiXDesktopDateTimePickerElementProps<
   TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       DesktopDateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
       'defaultValue' | 'name' | 'value'
     >,

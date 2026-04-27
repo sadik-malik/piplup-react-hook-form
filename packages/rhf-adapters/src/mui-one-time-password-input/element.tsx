@@ -14,7 +14,9 @@ export interface MuiOtpInputElementProps<
   TTransformedValue extends string,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       MuiOtpInputProps,
       | 'checked'
       | 'composeHelperText'

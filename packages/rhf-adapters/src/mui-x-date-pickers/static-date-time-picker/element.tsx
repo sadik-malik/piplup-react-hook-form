@@ -15,7 +15,9 @@ export interface MuiXStaticDateTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<StaticDateTimePickerProps, 'defaultValue' | 'name' | 'value'>,
+>
+  extends
+    Omit<StaticDateTimePickerProps, 'defaultValue' | 'name' | 'value'>,
     Omit<
       UseMuiXStaticDateTimePickerAdapterProps<
         TTransformedValue,

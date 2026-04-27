@@ -11,9 +11,9 @@ export interface UseMuiXDigitalClockAdapterProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
-    UseBaseTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-    'onBlur'
-  > {}
+  UseBaseTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
+  'onBlur'
+> {}
 
 export function useMuiXDigitalClockAdapter<
   TTransformedValue extends PickerValidDate,

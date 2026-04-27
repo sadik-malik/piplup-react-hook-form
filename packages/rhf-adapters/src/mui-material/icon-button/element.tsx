@@ -8,7 +8,9 @@ import {
 
 export interface MuiIconButtonElementProps<
   TFieldValues extends FieldValues = FieldValues,
-> extends Omit<IconButtonProps, 'name' | 'style'>,
+>
+  extends
+    Omit<IconButtonProps, 'name' | 'style'>,
     Omit<
       UseMuiIconButtonAdapterProps<TFieldValues>,
       | 'classes'

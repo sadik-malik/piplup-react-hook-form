@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "moduleResolution": "bundler",
+    "esModuleInterop": true,
     "types": [
       "node",
       "@nx/react/typings/cssmodule.d.ts",

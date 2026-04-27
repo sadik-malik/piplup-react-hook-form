@@ -8,7 +8,9 @@ export interface MuiSelectElementProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<SelectProps, 'defaultValue' | 'name' | 'style'>,
+>
+  extends
+    Omit<SelectProps, 'defaultValue' | 'name' | 'style'>,
     Omit<
       UseMuiSelectAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'

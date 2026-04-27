@@ -5,7 +5,9 @@ import { useMuiButtonAdapter, type UseMuiButtonAdapterProps } from './adapter';
 
 export interface MuiButtonElementProps<
   TFieldValues extends FieldValues = FieldValues,
-> extends Omit<ButtonProps, 'name' | 'style'>,
+>
+  extends
+    Omit<ButtonProps, 'name' | 'style'>,
     Omit<
       UseMuiButtonAdapterProps<TFieldValues>,
       | 'classes'

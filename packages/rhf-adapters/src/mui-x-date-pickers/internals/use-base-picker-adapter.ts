@@ -22,7 +22,9 @@ export interface UseBasePickerAdapterProps<
   TValidationProps extends {},
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
+>
+  extends
+    Omit<
       UseComposePickerRules<
         TTransformedValue,
         TError,
