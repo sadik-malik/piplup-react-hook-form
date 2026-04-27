@@ -9,8 +9,14 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
+export type MuiFileInputValue<
+  Multiple extends boolean | undefined = undefined,
+> = Multiple extends true ? File[] : File | null;
+
 export interface UseMuiFileInputAdapterProps<
-  TTransformedValue,
+  Multiple extends boolean | undefined = undefined,
+  TTransformedValue extends MuiFileInputValue<Multiple> =
+    MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
@@ -27,16 +33,18 @@ export interface UseMuiFileInputAdapterProps<
 > {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputRef?: React.Ref<any>;
-  multiple?: boolean;
+  multiple?: Multiple;
 }
 
 export function useMuiFileInputAdapter<
-  TTransformedValue,
+  Multiple extends boolean | undefined = undefined,
+  TTransformedValue extends MuiFileInputValue<Multiple> =
+    MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiFileInputAdapterProps<TTransformedValue, TFieldValues, TName>,
+  props: UseMuiFileInputAdapterProps<Multiple, TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   const { inputRef, multiple, transform, ...rest } = props;
@@ -56,7 +64,7 @@ export function useMuiFileInputAdapter<
         if (multiple) {
           return (
             Array.isArray(fileOrFiles) ? fileOrFiles : []
-          ) as TTransformedValue;
+          ) as unknown as TTransformedValue;
         }
         return (fileOrFiles ?? null) as TTransformedValue;
       },

@@ -17,7 +17,7 @@ export type MuiXTimeFieldElementProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  TimeFieldProps<TEnableAccessibleFieldDOMStructure>,
+  TimeFieldProps,
   'defaultValue' | 'name' | 'value'
 > &
   Omit<
@@ -35,7 +35,7 @@ export type MuiXTimeFieldElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      TimeFieldProps<TEnableAccessibleFieldDOMStructure>['onChange'],
+      TimeFieldProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName

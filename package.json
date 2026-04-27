@@ -21,9 +21,9 @@
     "@cypress/webpack-dev-server": "5.6.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
-    "@mui/icons-material": "^7.3.4",
-    "@mui/material": "^7.3.4",
-    "@mui/x-date-pickers": "^8.25.0",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/material": "^9.0.0",
+    "@mui/x-date-pickers": "^9.0.2",
     "@nx/cypress": "22.7.0",
     "@nx/devkit": "22.7.0",
     "@nx/js": "22.7.0",
@@ -53,11 +53,11 @@
     "js-yaml": "^4.1.1",
     "jsdom": "~29.1.0",
     "lint-staged": "^16.4.0",
-    "mui-chips-input": "^7.0.1",
-    "mui-color-input": "^7.0.0",
-    "mui-file-input": "^7.0.0",
-    "mui-one-time-password-input": "^5.0.0",
-    "mui-tel-input": "^9.0.1",
+    "mui-chips-input": "^8.0.0",
+    "mui-color-input": "^8.0.0",
+    "mui-file-input": "^8.0.1",
+    "mui-one-time-password-input": "^7.0.0",
+    "mui-tel-input": "^11.0.0",
     "nx": "22.7.0",
     "nx-oxlint": "^0.1.1",
     "oxlint": "^1.61.0",
@@ -75,8 +75,5 @@
     "vite-plugin-dts": "4.5.4",
     "vitest": "4.1.5",
     "yargs": "^18.0.0"
-  },
-  "overrides": {
-    "@mui/x-date-pickers": "^8.15.0"
   }
 }

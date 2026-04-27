@@ -13,11 +13,10 @@ import {
 
 export type MuiXDateFieldElementProps<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  DateFieldProps<TEnableAccessibleFieldDOMStructure>,
+  DateFieldProps,
   'defaultValue' | 'helperText' | 'name' | 'value'
 > &
   Omit<
@@ -34,7 +33,7 @@ export type MuiXDateFieldElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      DateFieldProps<TEnableAccessibleFieldDOMStructure>['onChange'],
+      DateFieldProps['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -43,13 +42,11 @@ export type MuiXDateFieldElementProps<
 
 function MuiXDateFieldComponent<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDateFieldElementProps<
     TTransformedValue,
-    TEnableAccessibleFieldDOMStructure,
     TFieldValues,
     TName
   >,

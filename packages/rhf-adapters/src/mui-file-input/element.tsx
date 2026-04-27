@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { type Transform } from '@piplup/rhf-core';
-import { MuiFileInput, type MuiFileInputProps } from 'mui-file-input';
+import {
+  MuiFileInput,
+  type MuiFileInputProps,
+} from 'mui-file-input';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
   type UseMuiFileInputAdapterProps,
   useMuiFileInputAdapter,
+  type MuiFileInputValue,
 } from './adapter';
-
-export type MuiFileInputValue<
-  Multiple extends boolean | undefined = undefined,
-> = Multiple extends true ? File[] : File | null;
 
 export type MuiFileInputElementProps<
   Multiple extends boolean | undefined = undefined,
@@ -20,10 +20,9 @@ export type MuiFileInputElementProps<
 > = Omit<
   MuiFileInputProps,
   'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
-> & {
-  multiple?: Multiple;
-} & Omit<
-    UseMuiFileInputAdapterProps<TTransformedValue, TFieldValues, TName>,
+> &
+  Omit<
+    UseMuiFileInputAdapterProps<Multiple, TTransformedValue, TFieldValues, TName>,
     'composeHelperText' | 'onBlur' | 'onChange' | 'transform'
   > & {
     /**
@@ -71,7 +70,6 @@ function MuiFileInputComponent<
     required,
     rules,
     shouldUnregister,
-    slots,
     style,
     transform,
     ...rest
@@ -104,16 +102,9 @@ function MuiFileInputComponent<
     ref,
   );
 
-  return (
-    <MuiFileInput
-      {...rest}
-      {...adapter}
-      // TODO: remove this expect-error flag once it is removed from [mui-file-input](https://github.com/viclafouch/mui-file-input/blob/main/src/index.tsx#L188)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      slots={slots}
-    />
-  );
+  const inputProps = {...rest, ...adapter} as MuiFileInputProps
+
+  return <MuiFileInput {...inputProps} />;
 }
 
 export const MuiFileInputElement = React.forwardRef(

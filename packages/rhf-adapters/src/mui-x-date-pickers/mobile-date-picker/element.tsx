@@ -13,13 +13,12 @@ import {
 
 export interface MuiXMobileDatePickerElementProps<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
     Omit<
-      MobileDatePickerProps<TEnableAccessibleFieldDOMStructure>,
+      MobileDatePickerProps,
       'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
     >,
     Omit<
@@ -41,7 +40,7 @@ export interface MuiXMobileDatePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    MobileDatePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
+    MobileDatePickerProps['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -50,13 +49,11 @@ export interface MuiXMobileDatePickerElementProps<
 
 function MuiXMobileDatePickerComponent<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXMobileDatePickerElementProps<
     TTransformedValue,
-    TEnableAccessibleFieldDOMStructure,
     TFieldValues,
     TName
   >,

@@ -13,13 +13,12 @@ import {
 
 export interface MuiXDesktopDateTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
     Omit<
-      DesktopDateTimePickerProps<TEnableAccessibleFieldDOMStructure>,
+      DesktopDateTimePickerProps,
       'defaultValue' | 'name' | 'value'
     >,
     Omit<
@@ -43,7 +42,7 @@ export interface MuiXDesktopDateTimePickerElementProps<
    * Transformation functions for the field's input and output values.
    */
   transform?: Transform<
-    DesktopDateTimePickerProps<TEnableAccessibleFieldDOMStructure>['onChange'],
+    DesktopDateTimePickerProps['onChange'],
     TTransformedValue,
     TFieldValues,
     TName
@@ -52,13 +51,11 @@ export interface MuiXDesktopDateTimePickerElementProps<
 
 function MuiXDesktopDateTimePickerComponent<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXDesktopDateTimePickerElementProps<
     TTransformedValue,
-    TEnableAccessibleFieldDOMStructure,
     TFieldValues,
     TName
   >,

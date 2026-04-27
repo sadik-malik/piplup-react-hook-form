@@ -14,11 +14,10 @@ import {
 
 export type MuiXMobileTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  MobileTimePickerProps<TimeView, TEnableAccessibleFieldDOMStructure>,
+  MobileTimePickerProps<TimeView>,
   'defaultValue' | 'name' | 'value'
 > &
   Omit<
@@ -37,8 +36,7 @@ export type MuiXMobileTimePickerElementProps<
      */
     transform?: Transform<
       MobileTimePickerProps<
-        TimeView,
-        TEnableAccessibleFieldDOMStructure
+        TimeView
       >['onChange'],
       TTransformedValue,
       TFieldValues,
@@ -48,13 +46,11 @@ export type MuiXMobileTimePickerElementProps<
 
 function MuiXMobileTimePickerComponent<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   props: MuiXMobileTimePickerElementProps<
     TTransformedValue,
-    TEnableAccessibleFieldDOMStructure,
     TFieldValues,
     TName
   >,
