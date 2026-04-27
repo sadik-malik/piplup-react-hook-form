@@ -59,7 +59,7 @@ describe('MuiAutocompleteElement', () => {
         <MuiAutocompleteElement
           name="fruit"
           options={['Apple', 'Banana']}
-          renderInput={(params) => <TextField {...params} label="Fruit"/>}
+          renderInput={(params) => <TextField {...params} label="Fruit" />}
           rules={{ required: 'Select a fruit' }}
         />
         <button type="submit">Submit</button>

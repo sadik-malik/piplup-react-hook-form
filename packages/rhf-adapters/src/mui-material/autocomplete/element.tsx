@@ -149,7 +149,7 @@ function MuiAutocompleteComponent<
       shouldUnregister,
       style,
       title,
-      transform
+      transform,
     },
     ref,
   );
