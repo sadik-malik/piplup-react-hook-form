@@ -24,6 +24,36 @@ import semver from 'semver';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
+// ─── Colors ───────────────────────────────────────────────────────────────────
+
+const useColor = process.stdout.isTTY !== false;
+
+const c = {
+  reset: (s: string) => (useColor ? `\x1b[0m${s}\x1b[0m` : s),
+  bold: (s: string) => (useColor ? `\x1b[1m${s}\x1b[0m` : s),
+  dim: (s: string) => (useColor ? `\x1b[2m${s}\x1b[0m` : s),
+  red: (s: string) => (useColor ? `\x1b[31m${s}\x1b[0m` : s),
+  green: (s: string) => (useColor ? `\x1b[32m${s}\x1b[0m` : s),
+  yellow: (s: string) => (useColor ? `\x1b[33m${s}\x1b[0m` : s),
+  cyan: (s: string) => (useColor ? `\x1b[36m${s}\x1b[0m` : s),
+  white: (s: string) => (useColor ? `\x1b[37m${s}\x1b[0m` : s),
+};
+
+/** Colorize a unified diff string line-by-line. */
+function colorizeDiff(diff: string): string {
+  return diff
+    .split('\n')
+    .map((line) => {
+      if (line.startsWith('+++') || line.startsWith('---')) return c.bold(c.white(line));
+      if (line.startsWith('@@')) return c.cyan(line);
+      if (line.startsWith('diff ') || line.startsWith('index ')) return c.dim(line);
+      if (line.startsWith('+')) return c.green(line);
+      if (line.startsWith('-')) return c.red(line);
+      return line;
+    })
+    .join('\n');
+}
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -74,14 +104,14 @@ function runInherited(cmd: string, cwd: string = ROOT): void {
 // ─── Logging ──────────────────────────────────────────────────────────────────
 
 function logPhase(label: string): void {
-  const line = '═'.repeat(60);
+  const line = c.cyan('═'.repeat(60));
   console.log(`\n${line}`);
-  console.log(`  ${label}`);
+  console.log(`  ${c.bold(c.cyan(label))}`);
   console.log(`${line}\n`);
 }
 
 function step(msg: string): void {
-  console.log(`  ▸ ${msg}`);
+  console.log(`  ${c.green('▸')} ${msg}`);
 }
 
 // ─── Interactive Prompt Helpers ───────────────────────────────────────────────
@@ -190,6 +220,15 @@ async function phasePrompt(): Promise<Answers> {
 async function phasePrepare(answers: Answers): Promise<void> {
   logPhase('PHASE 2 — Prepare');
 
+  step('Checking git working tree…');
+  const dirty = run('git status --porcelain');
+  if (dirty) {
+    console.error('\n' + c.red(c.bold('  ✗ Working tree is not clean. Commit or stash your changes before releasing.')) + '\n');
+    console.error(c.dim(dirty) + '\n');
+    process.exit(1);
+  }
+  step('Working tree is clean.');
+
   step('Building packages…');
   runInherited('npm run build');
   step('Build complete.');
@@ -214,7 +253,7 @@ async function phaseVersion(answers: Answers): Promise<string> {
     throw new Error(`semver.inc failed for version "${currentVersion}" with bump "${answers.versionBump}"`);
   }
 
-  step(`Bumping: ${currentVersion} → ${newVersion}`);
+  step(`Bumping: ${c.yellow(currentVersion)} → ${c.green(c.bold(newVersion))}`);
 
   const releases = new Map(PACKAGES.map((p) => [p.name, newVersion]));
 
@@ -237,12 +276,12 @@ async function phaseVersion(answers: Answers): Promise<string> {
   // Show a readable summary + focused diff so the user can review changes
   const stat = run('git diff --stat');
   if (stat) {
-    console.log('\n' + stat);
+    console.log('\n' + c.bold(stat));
   }
   const pkgPaths = PACKAGES.map((p) => path.relative(ROOT, path.join(p.dir, 'package.json')));
   const pkgDiff = run(`git diff -- ${pkgPaths.join(' ')}`);
   if (pkgDiff) {
-    console.log('\n' + pkgDiff + '\n');
+    console.log('\n' + colorizeDiff(pkgDiff) + '\n');
   }
 
   return newVersion;
@@ -331,9 +370,9 @@ async function phaseRollback(state: ReleaseState, reason: 'dry-run' | 'error'): 
   if (state.tagged) {
     try {
       run(`git tag -d ${state.tagName}`);
-      step(`Deleted tag: ${state.tagName}`);
+      step(`Deleted tag: ${c.yellow(state.tagName)}`);
     } catch (e) {
-      step(`Warning: could not delete tag ${state.tagName} — ${e}`);
+      step(c.yellow(`Warning: could not delete tag ${state.tagName} — ${e}`));
     }
     state.tagged = false;
   }
@@ -342,11 +381,11 @@ async function phaseRollback(state: ReleaseState, reason: 'dry-run' | 'error'): 
   if (state.committed) {
     try {
       run('git reset --hard HEAD~1');
-      step('Reverted commit (git reset --hard HEAD~1).');
+      step(c.yellow('Reverted commit (git reset --hard HEAD~1).'));
       state.committed = false;
       state.filesModified = false;
     } catch (e) {
-      step(`Warning: could not revert commit — ${e}`);
+      step(c.yellow(`Warning: could not revert commit — ${e}`));
     }
     return;
   }
@@ -360,10 +399,10 @@ async function phaseRollback(state: ReleaseState, reason: 'dry-run' | 'error'): 
         'package-lock.json',
       ].join(' ');
       run(`git checkout HEAD -- ${filesToRestore}`);
-      step('Reverted file changes via git checkout.');
+      step(c.yellow('Reverted file changes via git checkout.'));
       state.filesModified = false;
     } catch (e) {
-      step(`Warning: could not revert file changes — ${e}`);
+      step(c.yellow(`Warning: could not revert file changes — ${e}`));
     }
     return;
   }
@@ -392,7 +431,7 @@ async function main(): Promise<void> {
   const dryRun = argv['dry-run'] as boolean;
 
   if (dryRun) {
-    console.log('\n  ⚠  DRY RUN — packages will NOT be published; all changes will be reverted.\n');
+    console.log('\n' + c.yellow(c.bold('  ⚠  DRY RUN — packages will NOT be published; all changes will be reverted.')) + '\n');
   }
 
   const state: ReleaseState = {
@@ -428,15 +467,15 @@ async function main(): Promise<void> {
     if (dryRun) {
       await phaseRollback(state, 'dry-run');
       logPhase('DRY RUN COMPLETE');
-      console.log('  Simulation finished successfully. Run without --dry-run to publish.\n');
+      console.log(c.green('  Simulation finished successfully. Run without --dry-run to publish.') + '\n');
     } else {
       logPhase('RELEASE COMPLETE');
-      console.log(`  v${newVersion} has been published to npm!`);
-      console.log('  Remember to push: git push && git push --tags\n');
+      console.log(c.green(c.bold(`  v${newVersion} has been published to npm!`)));
+      console.log(c.dim('  Remember to push: git push && git push --tags') + '\n');
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(`\n  ✗ Release failed: ${message}\n`);
+    console.error('\n' + c.red(c.bold(`  ✗ Release failed: ${message}`)) + '\n');
 
     if (state.filesModified || state.committed || state.tagged) {
       await phaseRollback(state, 'error');
