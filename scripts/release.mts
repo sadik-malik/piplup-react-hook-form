@@ -1,279 +1,449 @@
-#!/usr/bin/env tsx
-import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
-import { resolve, join } from 'node:path';
-import { createInterface } from 'node:readline';
+/**
+ * Release script for @piplup/rhf-core and @piplup/rhf-adapters.
+ *
+ * Phases:
+ *   1. Prompt    — interactive questions (tests, version bump, changelog)
+ *   2. Prepare   — build + optional test run
+ *   3. Version   — bump package.json versions, update cross-deps, show diff, update lockfile
+ *   4. Changelog — prepend entry to CHANGELOG.md
+ *   5. Commit    — git commit + tag
+ *   6. Release   — npm publish (skipped in dry-run)
+ *   7. Rollback  — revert everything (dry-run cleanup or error recovery)
+ *
+ * Usage:
+ *   npm run release          # full release
+ *   npm run release:dry      # dry run (reverts all changes at the end)
+ */
 
-interface PackageJson {
+import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as readline from 'node:readline';
+import { fileURLToPath } from 'node:url';
+import semver from 'semver';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+
+const PACKAGES: ReadonlyArray<{ name: string; dir: string }> = [
+  { name: '@piplup/rhf-core', dir: path.join(ROOT, 'packages', 'rhf-core') },
+  { name: '@piplup/rhf-adapters', dir: path.join(ROOT, 'packages', 'rhf-adapters') },
+];
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+type VersionBump = 'patch' | 'minor' | 'major';
+
+interface Answers {
+  runTests: boolean;
+  versionBump: VersionBump;
+  createChangelog: boolean;
+}
+
+interface ReleaseState {
+  filesModified: boolean;
+  committed: boolean;
+  tagged: boolean;
+  tagName: string;
+}
+
+type PackageJson = {
   name: string;
   version: string;
-  private?: boolean;
-  workspaces?: string[];
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
   [key: string]: unknown;
+};
+
+// ─── Shell Helpers ────────────────────────────────────────────────────────────
+
+/** Run a command and return its stdout (throws on non-zero exit). */
+function run(cmd: string, cwd: string = ROOT): string {
+  return execSync(cmd, { cwd, encoding: 'utf8', stdio: 'pipe' }).trim();
 }
 
-interface PackageEntry {
-  dir: string;
-  json: PackageJson;
-}
-interface UpdateEntry extends PackageEntry {
-  next: string;
+/** Run a command with output piped directly to the terminal. */
+function runInherited(cmd: string, cwd: string = ROOT): void {
+  execSync(cmd, { cwd, stdio: 'inherit' });
 }
 
-type BumpType = 'patch' | 'minor' | 'major';
+// ─── Logging ──────────────────────────────────────────────────────────────────
 
-// Absolute path to the monorepo root (one level above the scripts directory).
-const ROOT = resolve(import.meta.dirname, '..');
-
-/**
- * Execute a shell command in the repo root.
- * - `silent` runs the command and captures output instead of streaming it.
- * - `dryRun` prints the command and returns without executing.
- */
-function run(
-  cmd: string,
-  { silent = false, dryRun = false }: { silent?: boolean; dryRun?: boolean } = {},
-): string {
-  if (dryRun) {
-    console.log(`  [dry-run] ${cmd}`);
-    return '';
-  }
-  if (!silent) console.log(`  $ ${cmd}`);
-  return execSync(cmd, { cwd: ROOT, encoding: 'utf8', stdio: silent ? 'pipe' : 'inherit' }) ?? '';
+function logPhase(label: string): void {
+  const line = '═'.repeat(60);
+  console.log(`\n${line}`);
+  console.log(`  ${label}`);
+  console.log(`${line}\n`);
 }
 
-/**
- * Synchronously read and parse a JSON file.
- */
-function readJson<T = unknown>(path: string): T {
-  return JSON.parse(readFileSync(path, 'utf8')) as T;
+function step(msg: string): void {
+  console.log(`  ▸ ${msg}`);
 }
 
-/**
- * Write an object to disk as pretty-printed JSON (with trailing newline).
- */
-function writeJson(path: string, data: unknown): void {
-  writeFileSync(path, JSON.stringify(data, null, 2) + '\n', 'utf8');
+// ─── Interactive Prompt Helpers ───────────────────────────────────────────────
+
+function question(rl: readline.Interface, prompt: string): Promise<string> {
+  return new Promise((resolve) => rl.question(prompt, resolve));
 }
 
-/**
- * Simple interactive prompt wrapper returning a Promise for user input.
- */
-function prompt(question: string): Promise<string> {
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((res) =>
-    rl.question(question, (ans) => {
-      rl.close();
-      res(ans);
-    }),
-  );
-}
+async function selectChoice<T extends string>(
+  rl: readline.Interface,
+  prompt: string,
+  choices: ReadonlyArray<{ label: string; value: T }>
+): Promise<T> {
+  console.log(`\n  ${prompt}`);
+  choices.forEach((c, i) => console.log(`    ${i + 1}) ${c.label}`));
 
-/**
- * Bump a semver-like version string by the given `BumpType`
- * The function tolerates non-numeric prefixes (e.g., `v1.2.3`).
- */
-function bumpVersion(current: string, type: BumpType): string {
-  const [major, minor, patch] = current
-    .replace(/^[^0-9]*/, '')
-    .split('.')
-    .map(Number) as [number, number, number];
-  switch (type) {
-    case 'major':
-      return `${major + 1}.0.0`;
-    case 'minor':
-      return `${major}.${minor + 1}.0`;
-    case 'patch':
-      return `${major}.${minor}.${patch + 1}`;
-    default:
-      throw Error('Unknown version type');
+  while (true) {
+    const raw = await question(rl, `\n  Enter choice (1–${choices.length}): `);
+    const n = parseInt(raw.trim(), 10);
+    if (Number.isInteger(n) && n >= 1 && n <= choices.length) {
+      const chosen = choices[n - 1]!;
+      console.log(`  ✓ ${chosen.label}`);
+      return chosen.value;
+    }
+    console.log(`  Invalid input — please enter a number between 1 and ${choices.length}.`);
   }
 }
 
+async function selectYesNo(rl: readline.Interface, prompt: string): Promise<boolean> {
+  const value = await selectChoice(rl, prompt, [
+    { label: 'Yes', value: 'yes' as const },
+    { label: 'No', value: 'no' as const },
+  ]);
+  return value === 'yes';
+}
+
+// ─── Package JSON Helpers ─────────────────────────────────────────────────────
+
+function readPkg(dir: string): PackageJson {
+  return JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8')) as PackageJson;
+}
+
+function writePkg(dir: string, pkg: PackageJson): void {
+  fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify(pkg, null, 2) + '\n');
+}
+
 /**
- * Discover workspace packages by reading the root package.json `workspaces`.
- * Returns an array of `PackageEntry` with absolute directory paths and parsed
- * package.json objects. Optionally filter by package name.
+ * Update any workspace package entries inside a dependency group,
+ * skipping entries that use the `file:` protocol.
+ * The existing semver range prefix (^, ~, >=, …) is preserved.
  */
-function getPackages(filter?: string): PackageEntry[] {
-  const rootPkg = readJson<PackageJson>(join(ROOT, 'package.json'));
-  const packages: PackageEntry[] = [];
-  for (const pattern of rootPkg.workspaces ?? []) {
-    const base = pattern.replace(/\/\*$/, '');
-    try {
-      const glob = run(`ls -d ${join(ROOT, base)}/*/`, { silent: true });
-      for (const pkgDir of glob.trim().split('\n').filter(Boolean)) {
-        try {
-          const pkgJson = readJson<PackageJson>(join(pkgDir.trim(), 'package.json'));
-          if (!pkgJson.private && (!filter || pkgJson.name === filter)) {
-            packages.push({ dir: pkgDir.trim(), json: pkgJson });
-          }
-        } catch {
-          // ignore directories without package.json
-        }
-      }
-    } catch {
-      // ignore glob failures for missing workspace folders
+function applyVersionBumps(
+  deps: Record<string, string> | undefined,
+  releases: Map<string, string>
+): Record<string, string> | undefined {
+  if (!deps) return undefined;
+
+  let changed = false;
+  const result: Record<string, string> = { ...deps };
+
+  for (const [pkg, current] of Object.entries(result)) {
+    if (!releases.has(pkg)) continue;
+    // Never touch file: workspace links — they resolve locally
+    if (current.startsWith('file:')) continue;
+
+    const newVer = releases.get(pkg)!;
+    // Preserve range prefix: everything before the first digit
+    const prefix = /^([^\d]*)/.exec(current)![1];
+    const updated = prefix + newVer;
+
+    if (current !== updated) {
+      result[pkg] = updated;
+      changed = true;
     }
   }
-  return packages;
+
+  return changed ? result : deps;
 }
 
-/**
- * Run a series of checks before publishing: ensure clean git tree, typecheck,
- * lint, format, build, and test. `dryRun` allows skipping actual execution.
- */
-function preflight(dryRun: boolean): void {
-  console.log('\n📋 Running pre-flight checks...');
-  const status = run('git status --porcelain', { silent: true });
-  if (status.trim()) {
-    console.error('\n❌ Working tree is not clean.\n', status);
-    process.exit(1);
+// ─── Phase 1: Prompt ──────────────────────────────────────────────────────────
+
+async function phasePrompt(): Promise<Answers> {
+  logPhase('PHASE 1 — Prompt');
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  try {
+    const runTests = await selectYesNo(rl, 'Run tests before releasing?');
+
+    const versionBump = await selectChoice<VersionBump>(rl, 'Version bump type?', [
+      { label: 'Patch  (x.x.+1) — bug fixes only', value: 'patch' },
+      { label: 'Minor  (x.+1.0) — new backwards-compatible features', value: 'minor' },
+      { label: 'Major  (+1.0.0) — breaking changes', value: 'major' },
+    ]);
+
+    const createChangelog = await selectYesNo(rl, 'Update CHANGELOG.md?');
+
+    return { runTests, versionBump, createChangelog };
+  } finally {
+    rl.close();
   }
-  console.log('  🔍 Type-checking...');
-  run('npm run typecheck', { dryRun });
-  console.log('  🔍 Linting...');
-  run('npm run lint', { dryRun });
-  console.log('  🎨 Formatting...');
-  run('npm run format:check', { dryRun });
-  console.log('  🏗️  Building...');
-  run('npm run build', { dryRun });
-  console.log('  🧪 Testing...');
-  run('npm run test', { dryRun });
-  console.log('  ✅ All checks passed.\n');
 }
+
+// ─── Phase 2: Prepare ─────────────────────────────────────────────────────────
+
+async function phasePrepare(answers: Answers): Promise<void> {
+  logPhase('PHASE 2 — Prepare');
+
+  step('Building packages…');
+  runInherited('npm run build');
+  step('Build complete.');
+
+  if (answers.runTests) {
+    step('Running tests…');
+    runInherited('npm run test');
+    step('All tests passed.');
+  } else {
+    step('Tests skipped.');
+  }
+}
+
+// ─── Phase 3: Version ─────────────────────────────────────────────────────────
+
+async function phaseVersion(answers: Answers): Promise<string> {
+  logPhase('PHASE 3 — Version');
+
+  const currentVersion = readPkg(PACKAGES[0]!.dir).version;
+  const newVersion = semver.inc(currentVersion, answers.versionBump);
+  if (!newVersion) {
+    throw new Error(`semver.inc failed for version "${currentVersion}" with bump "${answers.versionBump}"`);
+  }
+
+  step(`Bumping: ${currentVersion} → ${newVersion}`);
+
+  const releases = new Map(PACKAGES.map((p) => [p.name, newVersion]));
+
+  for (const pkg of PACKAGES) {
+    const pkgJson = readPkg(pkg.dir);
+    pkgJson.version = newVersion;
+    const deps = applyVersionBumps(pkgJson.dependencies, releases);
+    const devDeps = applyVersionBumps(pkgJson.devDependencies, releases);
+    const peerDeps = applyVersionBumps(pkgJson.peerDependencies, releases);
+    if (deps !== undefined) pkgJson.dependencies = deps;
+    if (devDeps !== undefined) pkgJson.devDependencies = devDeps;
+    if (peerDeps !== undefined) pkgJson.peerDependencies = peerDeps;
+    writePkg(pkg.dir, pkgJson);
+    step(`Updated ${pkg.name}`);
+  }
+
+  step('Updating lockfile…');
+  runInherited('npm install --package-lock-only');
+
+  // Show a readable summary + focused diff so the user can review changes
+  const stat = run('git diff --stat');
+  if (stat) {
+    console.log('\n' + stat);
+  }
+  const pkgPaths = PACKAGES.map((p) => path.relative(ROOT, path.join(p.dir, 'package.json')));
+  const pkgDiff = run(`git diff -- ${pkgPaths.join(' ')}`);
+  if (pkgDiff) {
+    console.log('\n' + pkgDiff + '\n');
+  }
+
+  return newVersion;
+}
+
+// ─── Phase 4: Changelog ───────────────────────────────────────────────────────
+
+async function phaseChangelog(answers: Answers, newVersion: string): Promise<void> {
+  logPhase('PHASE 4 — Changelog');
+
+  if (!answers.createChangelog) {
+    step('Changelog update skipped.');
+    return;
+  }
+
+  const changelogPath = path.join(ROOT, 'CHANGELOG.md');
+  const today = new Date().toISOString().slice(0, 10);
+
+  let commits: string;
+  try {
+    const lastTag = run('git describe --tags --abbrev=0');
+    commits = run(`git log ${lastTag}..HEAD --format="- %s (%h)" --no-merges`);
+  } catch {
+    // No previous tag — use the last 20 commits as a fallback
+    commits = run('git log --format="- %s (%h)" --no-merges -20');
+  }
+
+  const entry = [
+    `## ${newVersion} (${today})`,
+    '',
+    commits || '- Version bump',
+    '',
+    '',
+  ].join('\n');
+
+  const existing = fs.existsSync(changelogPath) ? fs.readFileSync(changelogPath, 'utf8') : '';
+  fs.writeFileSync(changelogPath, entry + existing);
+
+  step(`CHANGELOG.md updated for v${newVersion}`);
+}
+
+// ─── Phase 5: Commit ──────────────────────────────────────────────────────────
+
+async function phaseCommit(newVersion: string, state: ReleaseState): Promise<void> {
+  logPhase('PHASE 5 — Commit');
+
+  const tag = `v${newVersion}`;
+
+  run('git add -A');
+  run(`git commit -m "chore: release ${tag}"`);
+  state.committed = true;
+  step(`Committed: "chore: release ${tag}"`);
+
+  run(`git tag ${tag}`);
+  state.tagged = true;
+  state.tagName = tag;
+  step(`Tagged: ${tag}`);
+}
+
+// ─── Phase 6: Release ─────────────────────────────────────────────────────────
+
+async function phaseRelease(dryRun: boolean): Promise<void> {
+  logPhase('PHASE 6 — Release');
+
+  if (dryRun) {
+    step('[DRY RUN] Skipping npm publish. Would have published:');
+    for (const pkg of PACKAGES) {
+      step(`  • ${pkg.name}`);
+    }
+    return;
+  }
+
+  for (const pkg of PACKAGES) {
+    step(`Publishing ${pkg.name}…`);
+    runInherited('npm publish --access public', pkg.dir);
+    step(`Published ${pkg.name}.`);
+  }
+}
+
+// ─── Phase 7: Rollback ────────────────────────────────────────────────────────
+
+async function phaseRollback(state: ReleaseState, reason: 'dry-run' | 'error'): Promise<void> {
+  logPhase(`PHASE 7 — Rollback (${reason})`);
+
+  // 1. Remove git tag (must happen before resetting the commit)
+  if (state.tagged) {
+    try {
+      run(`git tag -d ${state.tagName}`);
+      step(`Deleted tag: ${state.tagName}`);
+    } catch (e) {
+      step(`Warning: could not delete tag ${state.tagName} — ${e}`);
+    }
+    state.tagged = false;
+  }
+
+  // 2. Undo the release commit
+  if (state.committed) {
+    try {
+      run('git reset --hard HEAD~1');
+      step('Reverted commit (git reset --hard HEAD~1).');
+      state.committed = false;
+      state.filesModified = false;
+    } catch (e) {
+      step(`Warning: could not revert commit — ${e}`);
+    }
+    return;
+  }
+
+  // 3. If we modified files but never committed, restore them individually
+  if (state.filesModified) {
+    try {
+      const filesToRestore = [
+        ...PACKAGES.map((p) => path.relative(ROOT, path.join(p.dir, 'package.json'))),
+        'CHANGELOG.md',
+        'package-lock.json',
+      ].join(' ');
+      run(`git checkout HEAD -- ${filesToRestore}`);
+      step('Reverted file changes via git checkout.');
+      state.filesModified = false;
+    } catch (e) {
+      step(`Warning: could not revert file changes — ${e}`);
+    }
+    return;
+  }
+
+  step('Nothing to revert.');
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
-  const args = process.argv.slice(2);
-  const dryRun = args.includes('--dry-run');
-  const tagIdx = args.indexOf('--tag');
-  const distTag = tagIdx !== -1 ? (args[tagIdx + 1] ?? 'latest') : 'latest';
-  const pkgIdx = args.indexOf('--package');
-  const pkgFilter = pkgIdx !== -1 ? args[pkgIdx + 1] : undefined;
+  const argv = await yargs(hideBin(process.argv))
+    .scriptName('release')
+    .usage('Usage: $0 [options]')
+    .option('dry-run', {
+      alias: 'd',
+      type: 'boolean',
+      default: false,
+      description:
+        'Simulate the full release without publishing to npm. All changes are reverted at the end.',
+    })
+    .help()
+    .alias('h', 'help')
+    .strict()
+    .parse();
 
-  // Entry banner for the release flow.
-  console.log('🚀 Monorepo Release');
-  if (dryRun) console.log('   (DRY RUN)\n');
+  const dryRun = argv['dry-run'] as boolean;
 
-  const packages = getPackages(pkgFilter);
-  if (packages.length === 0) {
-    console.error('❌ No publishable packages found.');
+  if (dryRun) {
+    console.log('\n  ⚠  DRY RUN — packages will NOT be published; all changes will be reverted.\n');
+  }
+
+  const state: ReleaseState = {
+    filesModified: false,
+    committed: false,
+    tagged: false,
+    tagName: '',
+  };
+
+  try {
+    // ── Phase 1: Prompt ──────────────────────────────────────────────────────
+    const answers = await phasePrompt();
+
+    // ── Phase 2: Prepare ─────────────────────────────────────────────────────
+    await phasePrepare(answers);
+
+    // ── Phase 3: Version ─────────────────────────────────────────────────────
+    // Mark files as modified before we start writing so rollback triggers on
+    // any failure inside phaseVersion.
+    state.filesModified = true;
+    const newVersion = await phaseVersion(answers);
+
+    // ── Phase 4: Changelog ───────────────────────────────────────────────────
+    await phaseChangelog(answers, newVersion);
+
+    // ── Phase 5: Commit ──────────────────────────────────────────────────────
+    await phaseCommit(newVersion, state);
+
+    // ── Phase 6: Release ─────────────────────────────────────────────────────
+    await phaseRelease(dryRun);
+
+    // ── Phase 7: Rollback (dry-run cleanup) ──────────────────────────────────
+    if (dryRun) {
+      await phaseRollback(state, 'dry-run');
+      logPhase('DRY RUN COMPLETE');
+      console.log('  Simulation finished successfully. Run without --dry-run to publish.\n');
+    } else {
+      logPhase('RELEASE COMPLETE');
+      console.log(`  v${newVersion} has been published to npm!`);
+      console.log('  Remember to push: git push && git push --tags\n');
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`\n  ✗ Release failed: ${message}\n`);
+
+    if (state.filesModified || state.committed || state.tagged) {
+      await phaseRollback(state, 'error');
+    }
+
     process.exit(1);
   }
-
-  console.log(`📦 Packages (${packages.length}):`);
-  packages.forEach(({ json }) => console.log(`   - ${json.name}@${json.version}`));
-
-  // Ask the user what kind of version bump to perform.
-  const rawBump = (await prompt('\nBump type? [patch|minor|major] (default: patch): ')) || 'patch';
-  if (!['patch', 'minor', 'major'].includes(rawBump)) {
-    console.error(`❌ Invalid: ${rawBump}`);
-    process.exit(1);
-  }
-
-  const bumpType = rawBump as BumpType;
-  const updates: UpdateEntry[] = packages.map(({ dir, json }) => {
-    const next = bumpVersion(json.version, bumpType);
-    console.log(`   ${json.name}: ${json.version} → ${next}`);
-    return { dir, json, next };
-  });
-
-  if ((await prompt('\nProceed? [y/N]: ')).toLowerCase() !== 'y') {
-    console.log('Aborted.');
-    process.exit(0);
-  }
-
-  // preflight will be run inside `preparePhase` to avoid duplicate execution.
-
-  // Split main work into three phases: preparePhase, versionPhase, releasePhase.
-  // - preparePhase runs preflight checks (already run above for parity).
-  // - versionPhase applies version bumps to each package and returns a map of
-  //   package name -> new version for dependency rewrites.
-  // - releasePhase rewrites workspace dependency ranges, commits, tags,
-  //   publishes packages, and pushes the release.
-
-  function preparePhase(dry: boolean): void {
-    // Centralized place for additional pre-publish preparation steps.
-    preflight(dry);
-  }
-
-  function versionPhase(updatesList: UpdateEntry[], dry: boolean): Map<string, string> {
-    const map = new Map<string, string>();
-    for (const { json, next } of updatesList) map.set(json.name, next);
-    for (const { dir, json, next } of updatesList) {
-      json.version = next;
-      if (!dry) writeJson(join(dir, 'package.json'), json);
-    }
-    return map;
-  }
-
-  function releasePhase(
-    updatesList: UpdateEntry[],
-    nameToNextMap: Map<string, string>,
-    allPkgs: PackageEntry[],
-    dry: boolean,
-    tagName: string,
-  ): void {
-    // Rewrite `dependencies` and `peerDependencies` across workspace packages
-    // so that internal references point to the new versions. Skip `file:` links.
-    for (const { dir: otherDir, json: otherJson } of allPkgs) {
-      let changed = false;
-      for (const field of ['dependencies', 'peerDependencies'] as const) {
-        const deps = otherJson[field] as Record<string, string> | undefined;
-        if (!deps) continue;
-        for (const [pkgName, nextVersion] of nameToNextMap) {
-          const orig = deps[pkgName];
-          if (!orig) continue;
-          if (orig.startsWith('file:')) continue;
-          const usesWorkspace = orig.startsWith('workspace:');
-          const newVer = usesWorkspace ? `workspace:^${nextVersion}` : `^${nextVersion}`;
-          if (deps[pkgName] !== newVer) {
-            deps[pkgName] = newVer;
-            changed = true;
-            console.log(`  → Updated ${otherJson.name}:${field}.${pkgName} -> ${newVer}`);
-          }
-        }
-      }
-      if (changed && !dry) writeJson(join(otherDir, 'package.json'), otherJson);
-    }
-
-    // Write changelog and update lockfile before committing the release.
-    // Run changelog generator with --write to update CHANGELOG.md.
-    run('npx tsx scripts/changelog.mts --write', { dryRun: dry });
-
-    // Update lockfile to reflect package.json changes without performing a full install.
-    run('npm install --package-lock-only', { dryRun: dry });
-
-    // Commit, tag, publish, and push.
-    run('git add -A', { dryRun: dry });
-    run(`git commit -m "chore(release): ${tagName}"`, { dryRun: dry });
-    run(`git tag ${tagName}`, { dryRun: dry });
-
-    for (const { dir, json, next } of updatesList) {
-      console.log(`\n  Publishing ${json.name}@${next}...`);
-      run(`cd ${dir} && npm publish --access public --tag ${distTag}`, { dryRun: dry });
-    }
-
-    run('git push --follow-tags', { dryRun: dry });
-  }
-
-  // Execute the split phases.
-
-  const tag =
-    updates.length === 1
-      ? `${updates[0]!.json.name}@${updates[0]!.next}`
-      : `release@${updates[0]!.next}`;
-
-  // Compute all workspace packages once and reuse for dependency rewrites.
-  const allPackages = getPackages();
-  preparePhase(dryRun);
-  const nameToNext = versionPhase(updates, dryRun);
-  releasePhase(updates, nameToNext, allPackages, dryRun, tag);
-
-  console.log(`\n✅ Released ${tag}!\n`);
 }
 
-main().catch((err: Error) => {
-  console.error('\n❌ Release failed:', err.message);
-  process.exit(1);
-});
+main();
