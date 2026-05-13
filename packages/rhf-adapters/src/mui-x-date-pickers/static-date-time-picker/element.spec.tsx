@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
@@ -6,83 +8,83 @@ import dayjs from 'dayjs';
 import { MuiXStaticDateTimePickerElement } from './element';
 
 describe('MuiXStaticDateTimePickerElement', () => {
-  it('renders default date and time from defaultValues', () => {
-    const dt = dayjs('2021-02-14T08:30');
+  test('renders default date and time from defaultValues', async () => {
+    const target = dayjs('2021-02-14T08:30:00.000Z');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormContainer defaultValues={{ datetime: dt }}>
+        <FormContainer defaultValues={{ datetime: target }}>
           <MuiXStaticDateTimePickerElement name="datetime" />
         </FormContainer>
       </LocalizationProvider>,
     );
 
-    cy.contains(
-      '.MuiDateTimePickerToolbar-dateContainer',
-      dt.format('YYYY'),
-    ).should('exist');
-    cy.contains(
-      '.MuiDateTimePickerToolbar-dateContainer',
-      dt.format('MMM'),
-    ).should('exist');
-    cy.contains(
-      '.MuiDateTimePickerToolbar-dateContainer',
-      dt.format('D'),
-    ).should('exist');
-    cy.contains(
+    const year = screen.container.querySelector(
+      '.MuiDateTimePickerToolbar-dateContainer button:first-of-type',
+    ) as HTMLElement;
+    await expect.element(year).toBeInTheDocument();
+    await expect.element(year).toHaveTextContent(target.format('YYYY'));
+
+    const day = screen.container.querySelector(
+      '.MuiDateTimePickerToolbar-dateContainer button:last-of-type',
+    ) as HTMLElement;
+    await expect.element(day).toBeInTheDocument();
+    await expect.element(day).toHaveTextContent(target.format('MMM D'));
+
+    const timeDigits = screen.container.querySelector(
       '.MuiDateTimePickerToolbar-timeDigitsContainer',
-      dt.format('HH'),
-    ).should('exist');
-    cy.contains(
-      '.MuiDateTimePickerToolbar-timeDigitsContainer',
-      dt.format('mm'),
-    ).should('exist');
-    cy.contains(
+    ) as HTMLElement;
+    await expect.element(timeDigits).toBeInTheDocument();
+    await expect.element(timeDigits).toHaveTextContent(target.format('hh:mm'));
+
+    const meridiem = screen.container.querySelector(
       '.MuiDateTimePickerToolbar-ampmLabel[data-selected="true"]',
-      dt.format('A'),
-    ).should('exist');
+    ) as HTMLElement;
+    await expect.element(meridiem).toBeInTheDocument();
+    await expect.element(meridiem).toHaveTextContent(target.format('A'));
   });
 
-  it('selects a day and updates the input year', () => {
-    const target = dayjs('2021-03-14T00:00');
+  test('selects a day and updates the input year', async () => {
+    const target = dayjs('2021-03-14T00:00:00.000Z');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormContainer defaultValues={{ datetime: dayjs('2021-03-01') }}>
+        <FormContainer defaultValues={{ datetime: dayjs('2021-03-01T00:00:00.000Z') }}>
           <MuiXStaticDateTimePickerElement name="datetime" />
         </FormContainer>
       </LocalizationProvider>,
     );
 
     // Change datetime
-    cy.get('[role="rowgroup"]').within(() => {
-      cy.contains('button', target.format('D')).first().click();
-    });
+    await screen
+      .getByRole('gridcell', {
+        name: target.format('D'),
+      })
+      .click();
 
     // Verify changed datetime
-    cy.contains(
-      '.MuiDateTimePickerToolbar-dateContainer',
-      target.format('YYYY'),
-    ).should('exist');
-    cy.contains(
-      '.MuiDateTimePickerToolbar-dateContainer',
-      target.format('MMM'),
-    ).should('exist');
-    cy.contains(
-      '.MuiDateTimePickerToolbar-dateContainer',
-      target.format('D'),
-    ).should('exist');
-    cy.contains(
+    const year = screen.container.querySelector(
+      '.MuiDateTimePickerToolbar-dateContainer button:first-of-type',
+    ) as HTMLElement;
+    await expect.element(year).toBeInTheDocument();
+    await expect.element(year).toHaveTextContent(target.format('YYYY'));
+
+    const day = screen.container.querySelector(
+      '.MuiDateTimePickerToolbar-dateContainer button:last-of-type',
+    ) as HTMLElement;
+    await expect.element(day).toBeInTheDocument();
+    await expect.element(day).toHaveTextContent(target.format('MMM D'));
+
+    const timeDigits = screen.container.querySelector(
       '.MuiDateTimePickerToolbar-timeDigitsContainer',
-      target.format('HH'),
-    ).should('exist');
-    cy.contains(
-      '.MuiDateTimePickerToolbar-timeDigitsContainer',
-      target.format('mm'),
-    ).should('exist');
-    cy.contains(
+    ) as HTMLElement;
+    await expect.element(timeDigits).toBeInTheDocument();
+    await expect.element(timeDigits).toHaveTextContent(target.format('hh:mm'));
+
+    const meridiem = screen.container.querySelector(
       '.MuiDateTimePickerToolbar-ampmLabel[data-selected="true"]',
-      target.format('A'),
-    ).should('exist');
+    ) as HTMLElement;
+    await expect.element(meridiem).toBeInTheDocument();
+    await expect.element(meridiem).toHaveTextContent(target.format('A'));
   });
 });

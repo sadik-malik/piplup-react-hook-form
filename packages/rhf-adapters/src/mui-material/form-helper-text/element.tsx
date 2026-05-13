@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { FormHelperText, type FormHelperTextProps } from '@mui/material';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useMuiFormHelperTextAdapter,
-  type UseMuiFormHelperTextProps,
-} from './adapter';
+import { useMuiFormHelperTextAdapter, type UseMuiFormHelperTextProps } from './adapter';
 
 export interface MuiFormHelperTextElementProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -25,10 +22,7 @@ export interface MuiFormHelperTextElementProps<
 function MuiFormHelperTextComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(
-  props: MuiFormHelperTextElementProps<TFieldValues, TName>,
-  ref?: FormHelperTextProps['ref'],
-) {
+>(props: MuiFormHelperTextElementProps<TFieldValues, TName>, ref?: FormHelperTextProps['ref']) {
   const {
     children,
     classes,

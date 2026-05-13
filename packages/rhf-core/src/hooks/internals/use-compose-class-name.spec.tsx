@@ -1,10 +1,14 @@
 import * as React from 'react';
+import { render } from '@testing-library/react';
+import { describe, it, expect, afterEach } from 'vitest';
 import {
   useUnstableComposeClassName as useComposeClassName,
   type UseComposeClassNameProps,
 } from './use-compose-class-name';
 
-afterEach(() => Cypress.$.fn && Cypress.$.fn.detach);
+afterEach(() => {
+  // cleanup if needed
+});
 
 function Comp(props: UseComposeClassNameProps) {
   const cls = useComposeClassName(props);
@@ -13,7 +17,7 @@ function Comp(props: UseComposeClassNameProps) {
 
 describe('useComposeClassName', () => {
   it('returns provided className when composeClassName is false', () => {
-    cy.mount(
+    const { container } = render(
       <Comp
         classes={{ disabled: 'disabled', error: 'error', root: 'root' }}
         className="base"
@@ -21,11 +25,11 @@ describe('useComposeClassName', () => {
         modifierState={{ disabled: true, error: true }}
       />,
     );
-    cy.get('[data-cy=cls]').should('contain.text', 'base');
+    expect(container.querySelector('[data-cy=cls]')?.textContent).toContain('base');
   });
 
   it('composes classes from modifierState and classes map', () => {
-    cy.mount(
+    const { container } = render(
       <Comp
         classes={{ disabled: 'disabled', error: 'error', root: 'root' }}
         className="extra"
@@ -34,9 +38,10 @@ describe('useComposeClassName', () => {
       />,
     );
 
-    cy.get('[data-cy=cls]').should('contain.text', 'root');
-    cy.get('[data-cy=cls]').should('contain.text', 'disabled');
-    cy.get('[data-cy=cls]').should('contain.text', 'error');
-    cy.get('[data-cy=cls]').should('contain.text', 'extra');
+    const txt = container.querySelector('[data-cy=cls]')?.textContent || '';
+    expect(txt).toContain('root');
+    expect(txt).toContain('disabled');
+    expect(txt).toContain('error');
+    expect(txt).toContain('extra');
   });
 });

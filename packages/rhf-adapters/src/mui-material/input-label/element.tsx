@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { InputLabel, type InputLabelProps } from '@mui/material';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiInputLabelAdapterProps,
-  useMuiInputLabelAdapter,
-} from './adapter';
+import { type UseMuiInputLabelAdapterProps, useMuiInputLabelAdapter } from './adapter';
 
 export interface MuiInputLabelElementProps<
   TFieldValues extends FieldValues = FieldValues,

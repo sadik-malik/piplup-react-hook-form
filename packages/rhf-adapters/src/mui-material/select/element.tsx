@@ -26,22 +26,14 @@ export interface MuiSelectElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    SelectProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<SelectProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiSelectComponent<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(
-  props: MuiSelectElementProps<TTransformedValue, TFieldValues, TName>,
-  ref?: SelectProps['ref'],
-) {
+>(props: MuiSelectElementProps<TTransformedValue, TFieldValues, TName>, ref?: SelectProps['ref']) {
   const {
     classes,
     className,

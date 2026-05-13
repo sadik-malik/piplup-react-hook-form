@@ -1,24 +1,14 @@
 import * as React from 'react';
-import {
-  MonthCalendar,
-  type MonthCalendarProps,
-  type PickerValidDate,
-} from '@mui/x-date-pickers';
+import { MonthCalendar, type MonthCalendarProps, type PickerValidDate } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiXMonthCalendarAdapterProps,
-  useMuiXMonthCalendarAdapter,
-} from './adapter';
+import { type UseMuiXMonthCalendarAdapterProps, useMuiXMonthCalendarAdapter } from './adapter';
 
 export type MuiXMonthCalendarElementProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<
-  MonthCalendarProps,
-  'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-> &
+> = Omit<MonthCalendarProps, 'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'> &
   Omit<
     UseMuiXMonthCalendarAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -32,12 +22,7 @@ export type MuiXMonthCalendarElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      MonthCalendarProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<MonthCalendarProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiXMonthCalendarComponent<

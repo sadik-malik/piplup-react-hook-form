@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
 
 export interface UseMuiChipsInputAdapterProps<
   TTransformedValue,
@@ -41,11 +34,7 @@ export function useMuiChipsInputAdapter<
 
   const internalTransform = React.useMemo<
     Exclude<
-      UseControllerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >['transform'],
+      UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>['transform'],
       undefined
     >
   >(

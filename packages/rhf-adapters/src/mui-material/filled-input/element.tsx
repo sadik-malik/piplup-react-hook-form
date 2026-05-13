@@ -2,10 +2,7 @@ import * as React from 'react';
 import { FilledInput, type FilledInputProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiFilledInputAdapterProps,
-  useMuiFilledInputAdapter,
-} from './adapter';
+import { type UseMuiFilledInputAdapterProps, useMuiFilledInputAdapter } from './adapter';
 
 export interface MuiFilledInputElementProps<
   TTransformedValue,
@@ -31,12 +28,7 @@ export interface MuiFilledInputElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    FilledInputProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<FilledInputProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiFilledInputComponent<

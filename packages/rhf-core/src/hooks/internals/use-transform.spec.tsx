@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useUnstableTransform as useTransform,
-  type UseTransformProps,
-} from './use-transform';
+import { useUnstableTransform as useTransform, type UseTransformProps } from './use-transform';
 
 function Comp<
   TFieldValues extends FieldValues = FieldValues,
@@ -23,13 +21,9 @@ function Comp<
 
 describe('useTransform', () => {
   it('applies input transform to value', () => {
-    cy.mount(
-      <Comp
-        onChange={() => {}}
-        transform={{ input: (v) => String(v + 1) }}
-        value={1}
-      />,
+    const { container } = render(
+      <Comp onChange={() => {}} transform={{ input: (v) => String(v + 1) }} value={1} />,
     );
-    cy.get('[data-cy=val]').should('contain.text', '2');
+    expect(container.querySelector('[data-cy=val]')?.textContent).toContain('2');
   });
 });

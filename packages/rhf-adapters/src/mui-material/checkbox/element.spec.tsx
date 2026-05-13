@@ -1,76 +1,70 @@
 import * as React from 'react';
+import { test, expect, describe, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { userEvent } from 'vitest/browser';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiCheckboxElement } from './element';
 
 describe('MuiCheckboxElement', () => {
-  it('mounts and toggles checkbox', () => {
-    cy.mount(
+  test('mounts and toggles checkbox', async () => {
+    const screen = await render(
       <FormContainer>
-        <FormControlLabel
-          control={<MuiCheckboxElement name="agree" value />}
-          label="Agree"
-        />
+        <FormControlLabel control={<MuiCheckboxElement name="agree" value />} label="Agree" />
       </FormContainer>,
     );
 
-    cy.get('input[type=checkbox]').should('exist').and('not.be.checked');
-    cy.get('input[type=checkbox]').click();
-    cy.get('input[type=checkbox]').should('be.checked');
+    const checkbox = screen.getByRole('checkbox');
+
+    await expect.element(checkbox).not.toBeChecked();
+
+    await userEvent.click(checkbox);
+
+    await expect.element(checkbox).toBeChecked();
   });
 
-  it('honors defaultValue from form', () => {
-    cy.mount(
+  test('honors defaultValue from form', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ agree: [true] }}>
+        <FormControlLabel control={<MuiCheckboxElement name="agree" value />} label="Agree" />
+      </FormContainer>,
+    );
+
+    const checkbox = screen.getByRole('checkbox');
+
+    await expect.element(checkbox).toBeChecked();
+  });
+
+  test('forwards the name when provided via props', async () => {
+    const screen = await render(
+      <FormContainer>
+        <FormControlLabel control={<MuiCheckboxElement name="my-checkbox" value />} label="Chk" />
+      </FormContainer>,
+    );
+    const checkbox = screen.getByRole('checkbox');
+    await expect.element(checkbox).toHaveAttribute('name', 'my-checkbox');
+  });
+
+  test('fires onChange when clicked', async () => {
+    const onChange = vi.fn();
+
+    const screen = await render(
+      <FormContainer>
         <FormControlLabel
-          control={<MuiCheckboxElement name="agree" value />}
+          control={<MuiCheckboxElement name="agree" onChange={(e) => onChange(e)} value />}
           label="Agree"
         />
       </FormContainer>,
     );
 
-    cy.get('input[type=checkbox]').should('be.checked');
+    const checkbox = screen.getByRole('checkbox');
+    await checkbox.click();
+
+    await expect(onChange).toHaveBeenCalled();
   });
 
-  it('forwards the name when provided via props', () => {
-    cy.mount(
-      <FormContainer>
-        <FormControlLabel
-          control={<MuiCheckboxElement name="my-checkbox" value />}
-          label="Chk"
-        />
-      </FormContainer>,
-    );
-    cy.get('input[type=checkbox]').should('have.attr', 'name', 'my-checkbox');
-  });
-
-  it('fires onChange when clicked', () => {
-    const onChange = cy.stub();
-
-    cy.mount(
-      <FormContainer>
-        <FormControlLabel
-          control={
-            <MuiCheckboxElement
-              name="agree"
-              onChange={(e) => onChange(e)}
-              value
-            />
-          }
-          label="Agree"
-        />
-      </FormContainer>,
-    );
-
-    cy.get('input[type=checkbox]').click();
-
-    cy.then(() => {
-      expect(onChange.called).to.equal(true);
-    });
-  });
-
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <FormControlLabel
           control={<MuiCheckboxElement name="agree" disabled value />}
@@ -79,6 +73,7 @@ describe('MuiCheckboxElement', () => {
       </FormContainer>,
     );
 
-    cy.get('input[type=checkbox]').should('be.disabled');
+    const checkbox = screen.getByRole('checkbox');
+    await expect.element(checkbox).toBeDisabled();
   });
 });

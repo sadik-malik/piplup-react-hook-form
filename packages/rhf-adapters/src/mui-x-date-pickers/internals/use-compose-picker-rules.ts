@@ -5,39 +5,22 @@ import {
   type PickerValidDate,
   usePickerAdapter,
 } from '@mui/x-date-pickers';
-import {} from '@Mui/x-date-pickers/internals';
 
 import { getMessage } from '@piplup/rhf-core';
-import {
-  type FieldPath,
-  type FieldValues,
-  type RegisterOptions,
-} from 'react-hook-form';
+import { type FieldPath, type FieldValues, type RegisterOptions } from 'react-hook-form';
 
 /**
  * Customizable rules messages.
  */
-export type ComposePickerRulesMessages<
-  TPickValidDate extends null | PickerValidDate,
-> = {
+export type ComposePickerRulesMessages<TPickValidDate extends null | PickerValidDate> = {
   disableFuture?: ((date: TPickValidDate) => string) | string;
   disablePast?: ((date: TPickValidDate) => string) | string;
   invalidDate?: (date: TPickValidDate) => string;
-  maxDate?:
-    | ((date: TPickValidDate, maxDate?: TPickValidDate) => string)
-    | string;
-  maxTime?:
-    | ((date: TPickValidDate, maxTime?: TPickValidDate) => string)
-    | string;
-  minDate?:
-    | ((date: TPickValidDate, minDate?: TPickValidDate) => string)
-    | string;
-  minTime?:
-    | ((date: TPickValidDate, minTime?: TPickValidDate) => string)
-    | string;
-  minutesStep?:
-    | ((date: TPickValidDate, minutesStep?: number) => string)
-    | string;
+  maxDate?: ((date: TPickValidDate, maxDate?: TPickValidDate) => string) | string;
+  maxTime?: ((date: TPickValidDate, maxTime?: TPickValidDate) => string) | string;
+  minDate?: ((date: TPickValidDate, minDate?: TPickValidDate) => string) | string;
+  minTime?: ((date: TPickValidDate, minTime?: TPickValidDate) => string) | string;
+  minutesStep?: ((date: TPickValidDate, minutesStep?: number) => string) | string;
   shouldDisableDate?: ((date: TPickValidDate) => string) | string;
   shouldDisableMonth?: ((date: TPickValidDate) => string) | string;
   'shouldDisableTime-hours'?: ((date: TPickValidDate) => string) | string;
@@ -87,100 +70,66 @@ export function useUnstableComposePickerRules<
   TValidationProps extends {},
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(
-  props: UseComposePickerRules<
-    TTransformedValue,
-    TError,
-    TValidationProps,
-    TFieldValues,
-    TName
-  >,
-) {
-  const {
-    messages,
-    rules: rulesProp = {},
-    timezone,
-    validationProps,
-    validator,
-  } = props;
+>(props: UseComposePickerRules<TTransformedValue, TError, TValidationProps, TFieldValues, TName>) {
+  const { messages, rules: rulesProp = {}, timezone, validationProps, validator } = props;
 
   const adapter = usePickerAdapter();
 
-  const errorMessages: Required<
-    NonNullable<ComposePickerRulesMessages<TTransformedValue>>
-  > = React.useMemo(
-    () => ({
-      disableFuture: (date: TTransformedValue) =>
-        getMessage(
-          messages?.disableFuture ?? 'Future date is not allowed',
-          date,
-        ),
-      disablePast: (date: TTransformedValue) =>
-        getMessage(messages?.disablePast ?? 'Past date is not allowed', date),
-      invalidDate: (date: TTransformedValue) =>
-        getMessage(messages?.invalidDate ?? 'Date is not a valid date', date),
-      maxDate: (date: TTransformedValue) =>
-        getMessage(
-          messages?.maxDate ??
-            'Date should be earlier than the maximum allowed date',
-          date,
-          'maxDate' in validationProps ? validationProps.maxDate : undefined,
-        ),
-      maxTime: (date: TTransformedValue) =>
-        getMessage(
-          messages?.maxTime ?? 'Time is earlier than the minimum allowed time',
-          date,
-          'maxTime' in validationProps ? validationProps.maxTime : undefined,
-        ),
-      minDate: (date: TTransformedValue) =>
-        getMessage(
-          messages?.minDate ??
-            'Date must be later than the minimum allowed date',
-          date,
-          'minDate' in validationProps ? validationProps.minDate : undefined,
-        ),
-      minTime: (date: TTransformedValue) => {
-        return getMessage(
-          messages?.minTime ?? 'Time is later than the maximum allowed time',
-          date,
-          'minTime' in validationProps ? validationProps.minTime : undefined,
-        );
-      },
-      minutesStep: (date: TTransformedValue) =>
-        getMessage(
-          messages?.minutesStep ?? 'Minute step is not valid',
-          date,
-          'minutesStep' in validationProps
-            ? validationProps.minutesStep
-            : undefined,
-        ),
-      shouldDisableDate: (date: TTransformedValue) =>
-        getMessage(messages?.shouldDisableDate ?? 'Date is not allowed', date),
-      shouldDisableMonth: (date: TTransformedValue) =>
-        getMessage(
-          messages?.shouldDisableMonth ?? 'Month is not allowed',
-          date,
-        ),
-      'shouldDisableTime-hours': (date: TTransformedValue) =>
-        getMessage(
-          messages?.['shouldDisableTime-hours'] ?? 'Hour is disabled',
-          date,
-        ),
-      'shouldDisableTime-minutes': (date: TTransformedValue) =>
-        getMessage(
-          messages?.['shouldDisableTime-minutes'] ?? 'Minute is disabled',
-          date,
-        ),
-      'shouldDisableTime-seconds': (date: TTransformedValue) =>
-        getMessage(
-          messages?.['shouldDisableTime-seconds'] ?? 'Second is disabled',
-          date,
-        ),
-      shouldDisableYear: (date: TTransformedValue) =>
-        getMessage(messages?.shouldDisableYear ?? 'Year is not allowed', date),
-    }),
-    [messages, validationProps],
-  );
+  const errorMessages: Required<NonNullable<ComposePickerRulesMessages<TTransformedValue>>> =
+    React.useMemo(
+      () => ({
+        disableFuture: (date: TTransformedValue) =>
+          getMessage(messages?.disableFuture ?? 'Future date is not allowed', date),
+        disablePast: (date: TTransformedValue) =>
+          getMessage(messages?.disablePast ?? 'Past date is not allowed', date),
+        invalidDate: (date: TTransformedValue) =>
+          getMessage(messages?.invalidDate ?? 'Date is not a valid date', date),
+        maxDate: (date: TTransformedValue) =>
+          getMessage(
+            messages?.maxDate ?? 'Date should be earlier than the maximum allowed date',
+            date,
+            'maxDate' in validationProps ? validationProps.maxDate : undefined,
+          ),
+        maxTime: (date: TTransformedValue) =>
+          getMessage(
+            messages?.maxTime ?? 'Time is earlier than the minimum allowed time',
+            date,
+            'maxTime' in validationProps ? validationProps.maxTime : undefined,
+          ),
+        minDate: (date: TTransformedValue) =>
+          getMessage(
+            messages?.minDate ?? 'Date must be later than the minimum allowed date',
+            date,
+            'minDate' in validationProps ? validationProps.minDate : undefined,
+          ),
+        minTime: (date: TTransformedValue) => {
+          return getMessage(
+            messages?.minTime ?? 'Time is later than the maximum allowed time',
+            date,
+            'minTime' in validationProps ? validationProps.minTime : undefined,
+          );
+        },
+        minutesStep: (date: TTransformedValue) =>
+          getMessage(
+            messages?.minutesStep ?? 'Minute step is not valid',
+            date,
+            'minutesStep' in validationProps ? validationProps.minutesStep : undefined,
+          ),
+        shouldDisableDate: (date: TTransformedValue) =>
+          getMessage(messages?.shouldDisableDate ?? 'Date is not allowed', date),
+        shouldDisableMonth: (date: TTransformedValue) =>
+          getMessage(messages?.shouldDisableMonth ?? 'Month is not allowed', date),
+        'shouldDisableTime-hours': (date: TTransformedValue) =>
+          getMessage(messages?.['shouldDisableTime-hours'] ?? 'Hour is disabled', date),
+        'shouldDisableTime-minutes': (date: TTransformedValue) =>
+          getMessage(messages?.['shouldDisableTime-minutes'] ?? 'Minute is disabled', date),
+        'shouldDisableTime-seconds': (date: TTransformedValue) =>
+          getMessage(messages?.['shouldDisableTime-seconds'] ?? 'Second is disabled', date),
+        shouldDisableYear: (date: TTransformedValue) =>
+          getMessage(messages?.shouldDisableYear ?? 'Year is not allowed', date),
+      }),
+      [messages, validationProps],
+    );
 
   const rules: Omit<
     RegisterOptions<TFieldValues, TName>,
@@ -204,8 +153,7 @@ export function useUnstableComposePickerRules<
           props: validationProps,
           timezone:
             timezone ??
-            (value !== null &&
-            adapter.isValid(value as NonNullable<TTransformedValue>)
+            (value !== null && adapter.isValid(value as NonNullable<TTransformedValue>)
               ? adapter.getTimezone(value as NonNullable<TTransformedValue>)
               : 'default'),
           value,
@@ -213,10 +161,7 @@ export function useUnstableComposePickerRules<
 
         const messageFn =
           error &&
-          Object.prototype.hasOwnProperty.call(
-            errorMessages,
-            error as unknown as PropertyKey,
-          )
+          Object.prototype.hasOwnProperty.call(errorMessages, error as unknown as PropertyKey)
             ? errorMessages[error as keyof typeof errorMessages]
             : null;
         const message = typeof messageFn === 'function' ? messageFn(value) : '';

@@ -1,9 +1,6 @@
 import type * as React from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useHtmlInputAdapter,
-  type UseHtmlInputAdapterProps,
-} from '../../html/input/adapter';
+import { useHtmlInputAdapter, type UseHtmlInputAdapterProps } from '../../html/input/adapter';
 
 export type UseMuiInputBaseAdapterProps<
   TTransformedValue,
@@ -20,12 +17,7 @@ export function useMuiInputBaseAdapter<
   props: UseMuiInputBaseAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
-  const adapter = useHtmlInputAdapter<
-    TTransformedValue,
-    TFieldValues,
-    TName,
-    RefType
-  >(props, ref);
+  const adapter = useHtmlInputAdapter<TTransformedValue, TFieldValues, TName, RefType>(props, ref);
   return {
     ...adapter,
     classes: props.classes,

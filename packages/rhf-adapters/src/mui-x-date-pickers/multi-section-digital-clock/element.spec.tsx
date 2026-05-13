@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
@@ -6,33 +9,34 @@ import dayjs from 'dayjs';
 import { MuiXMultiSectionDigitalClockElement } from './element';
 
 describe('MuiXMultiSectionDigitalClockElement', () => {
-  it('renders default time from defaultValues', () => {
-    const dt = dayjs('2021-02-14T08:30');
+  test('renders default time from defaultValues', async () => {
+    const target = dayjs('2021-02-14T08:30');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormContainer defaultValues={{ time: dt }}>
+        <FormContainer defaultValues={{ time: target }}>
           <MuiXMultiSectionDigitalClockElement name="time" />
         </FormContainer>
       </LocalizationProvider>,
     );
 
-    cy.get('[aria-label="Select hours"]').within(() => {
-      cy.contains('[aria-selected="true"]', dt.format('HH')).should('exist');
-    });
-    cy.get('[aria-label="Select minutes"]').within(() => {
-      cy.contains('[aria-selected="true"]', dt.format('mm')).should('exist');
-    });
+    const selectHours = screen.getByLabelText('Select hours');
+    const targetHour = selectHours.getByText(target.format('HH'));
+    await expect.element(targetHour).toHaveAttribute('aria-selected', 'true');
 
-    cy.get('[aria-label="Select meridiem"]').within(() => {
-      cy.contains('[aria-selected="true"]', dt.format('A')).should('exist');
-    });
+    const selectMinutes = screen.getByLabelText('Select minutes');
+    const targetMinute = selectMinutes.getByText(target.format('mm'));
+    await expect.element(targetMinute).toHaveAttribute('aria-selected', 'true');
+
+    const selectMeridiem = screen.getByLabelText('Select meridiem');
+    const targetMerdiem = selectMeridiem.getByText(target.format('A'));
+    await expect.element(targetMerdiem).toHaveAttribute('aria-selected', 'true');
   });
 
-  it('elects a time option, updating the displayed time', () => {
+  test('elects a time option, updating the displayed time', async () => {
     const target = dayjs().hour(9).minute(15);
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer>
           <MuiXMultiSectionDigitalClockElement name="time" />
@@ -40,31 +44,21 @@ describe('MuiXMultiSectionDigitalClockElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.get('[aria-label="Select hours"]').within(() => {
-      cy.contains('[role="option"]', target.format('HH')).first().click();
-    });
-    cy.get('[aria-label="Select minutes"]').within(() => {
-      cy.contains('[role="option"]', target.format('mm')).first().click();
-    });
+    const selectHours = screen.getByLabelText('Select hours');
+    const targetHour = selectHours.getByText(target.format('HH'));
+    await userEvent.click(targetHour);
 
-    cy.get('[aria-label="Select meridiem"]').within(() => {
-      cy.contains('[role="option"]', target.format('A')).first().click();
-    });
+    const selectMinutes = screen.getByLabelText('Select minutes');
+    const targetMinute = selectMinutes.getByText(target.format('mm'));
+    await userEvent.click(targetMinute);
+
+    const selectMeridiem = screen.getByLabelText('Select meridiem');
+    const targetMerdiem = selectMeridiem.getByText(target.format('A'));
+    await userEvent.click(targetMerdiem);
 
     // Verify the values
-    cy.get('[aria-label="Select hours"]').within(() => {
-      cy.contains('[aria-selected="true"]', target.format('HH')).should(
-        'exist',
-      );
-    });
-    cy.get('[aria-label="Select minutes"]').within(() => {
-      cy.contains('[aria-selected="true"]', target.format('mm')).should(
-        'exist',
-      );
-    });
-
-    cy.get('[aria-label="Select meridiem"]').within(() => {
-      cy.contains('[aria-selected="true"]', target.format('A')).should('exist');
-    });
+    await expect.element(targetHour).toHaveAttribute('aria-selected', 'true');
+    await expect.element(targetMinute).toHaveAttribute('aria-selected', 'true');
+    await expect.element(targetMerdiem).toHaveAttribute('aria-selected', 'true');
   });
 });

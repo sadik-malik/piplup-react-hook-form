@@ -14,14 +14,8 @@ export function useMuiFormHelperTextAdapter<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
->(
-  props: UseHtmlFormHelperTextProps<TFieldValues, TName>,
-  ref?: React.Ref<RefType>,
-) {
-  const adapter = useHtmlFormHelperTextAdapter<TFieldValues, TName, RefType>(
-    props,
-    ref,
-  );
+>(props: UseHtmlFormHelperTextProps<TFieldValues, TName>, ref?: React.Ref<RefType>) {
+  const adapter = useHtmlFormHelperTextAdapter<TFieldValues, TName, RefType>(props, ref);
 
   return {
     ...adapter,

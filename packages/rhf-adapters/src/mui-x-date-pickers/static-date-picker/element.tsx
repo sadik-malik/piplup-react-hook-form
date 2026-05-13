@@ -17,16 +17,9 @@ export interface MuiXStaticDatePickerElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
+    Omit<StaticDatePickerProps, 'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'>,
     Omit<
-      StaticDatePickerProps,
-      'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-    >,
-    Omit<
-      UseMuiXStaticDatePickerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >,
+      UseMuiXStaticDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -38,12 +31,7 @@ export interface MuiXStaticDatePickerElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    StaticDatePickerProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<StaticDatePickerProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiXStaticDatePickerComponent<
@@ -51,11 +39,7 @@ function MuiXStaticDatePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXStaticDatePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXStaticDatePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

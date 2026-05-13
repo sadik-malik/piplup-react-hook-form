@@ -26,9 +26,7 @@ function defaultErrorParser<TFieldValues extends FieldValues = FieldValues>(
 /**
  * Props for the `useComposeHelperText` hook.
  */
-export type UseComposeHelperTextProps<
-  TFieldValues extends FieldValues = FieldValues,
-> = {
+export type UseComposeHelperTextProps<TFieldValues extends FieldValues = FieldValues> = {
   /**
    * Flag to determine whether to compose helper text based on error state.
    */
@@ -52,10 +50,7 @@ export type UseComposeHelperTextProps<
   /**
    * Name of the field
    */
-  name?:
-    | FieldPath<TFieldValues>
-    | FieldPath<TFieldValues>[]
-    | readonly FieldPath<TFieldValues>[];
+  name?: FieldPath<TFieldValues> | FieldPath<TFieldValues>[] | readonly FieldPath<TFieldValues>[];
 };
 
 /**
@@ -64,9 +59,9 @@ export type UseComposeHelperTextProps<
  * @param props - The properties for composing the helper text.
  * @returns The composed helper text or error message based on the current state.
  */
-export function useUnstableComposeHelperText<
-  TFieldValues extends FieldValues = FieldValues,
->(props: UseComposeHelperTextProps<TFieldValues>): React.ReactNode {
+export function useUnstableComposeHelperText<TFieldValues extends FieldValues = FieldValues>(
+  props: UseComposeHelperTextProps<TFieldValues>,
+): React.ReactNode {
   const {
     composeHelperText,
     errorParser = defaultErrorParser,
@@ -79,8 +74,7 @@ export function useUnstableComposeHelperText<
     FormErrorParserContext as React.Context<FormErrorParserFn<TFieldValues>>,
   );
 
-  const parser =
-    context && typeof context === 'function' ? context : errorParser;
+  const parser = context && typeof context === 'function' ? context : errorParser;
 
   if (!composeHelperText) {
     return helperText;
@@ -90,17 +84,14 @@ export function useUnstableComposeHelperText<
   if (name && typeof errors !== 'undefined') {
     if (Array.isArray(name)) {
       errors = Object.fromEntries(
-        Object.entries(errors).filter(([key]) =>
-          name.some((fieldName) => fieldName === key),
-        ),
+        Object.entries(errors).filter(([key]) => name.some((fieldName) => fieldName === key)),
       ) as FieldErrors<TFieldValues>;
     } else {
       errors = fieldError as FieldError;
     }
   }
 
-  const errorMessage =
-    typeof parser === 'function' ? parser(errors) : undefined;
+  const errorMessage = typeof parser === 'function' ? parser(errors) : undefined;
 
   if (errors && errorMessage) {
     return errorMessage;

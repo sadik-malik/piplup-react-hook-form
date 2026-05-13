@@ -1,73 +1,86 @@
 import * as React from 'react';
+import { describe, test, expect, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
+import { formHelperTextClasses } from '@mui/material';
 import { MuiTextFieldElement } from './element';
 
 describe('MuiTextFieldElement', () => {
-  it('mounts and allows typing', () => {
-    cy.mount(
+  test('mounts and allows typing', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiTextFieldElement name="first" placeholder="First" />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').type('hello');
-    cy.get('input').should('have.value', 'hello');
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toBeInTheDocument();
+
+    await userEvent.type(input, 'hello');
+    await expect.element(input).toHaveValue('hello');
   });
 
-  it('honors defaultValue from form', () => {
-    cy.mount(
+  test('honors defaultValue from form', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ first: 'prefilled' }}>
         <MuiTextFieldElement name="first" placeholder="First" />
       </FormContainer>,
     );
 
-    cy.get('input').should('have.value', 'prefilled');
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toHaveValue('prefilled');
   });
 
-  it('forwards the name from adapter when provided via props', () => {
+  test('forwards the name from adapter when provided via props', async () => {
     const WithName = () => (
       <FormContainer>
         <MuiTextFieldElement name="my-input" placeholder="My" />
       </FormContainer>
     );
 
-    cy.mount(<WithName />);
-    cy.get('input').should('have.attr', 'name', 'my-input');
+    const screen = await render(<WithName />);
+
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toHaveAttribute('name', 'my-input');
   });
 
-  it('fires onChange when typing', () => {
-    const onChange = cy.stub();
+  test('fires onChange when typing', async () => {
+    const onChange = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
         <MuiTextFieldElement name="first" onChange={(e) => onChange(e)} />
       </FormContainer>,
     );
 
-    cy.get('input').type('x');
+    const input = screen.getByRole('textbox');
+    await userEvent.type(input, 'x');
 
-    cy.then(() => {
-      expect(onChange.called).to.equal(true);
-    });
+    expect(onChange).toHaveBeenCalled();
   });
 
-  it('shows helperText when provided', () => {
-    cy.mount(
+  test('shows helperText when provided', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiTextFieldElement helperText="Helpful" name="h" />
       </FormContainer>,
     );
 
-    cy.get('.MuiFormHelperText-root').should('contain.text', 'Helpful');
+    const helperText = screen.container.querySelector(`.${formHelperTextClasses.root}`);
+    expect(helperText).toBeTruthy();
+    await expect.element(helperText as HTMLElement).toBeInTheDocument();
+    await expect.element(helperText as HTMLElement).toHaveTextContent('Helpful');
   });
 
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiTextFieldElement name="disabled" placeholder="Disabled" disabled />
       </FormContainer>,
     );
 
-    cy.get('input').should('be.disabled');
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toBeDisabled();
   });
 });

@@ -37,10 +37,7 @@ interface FormContainerWithoutUseFormProps<
     ReactHookFormProviderProps<TFieldValues, TContext, TTransformedValues>,
     'children'
   >;
-  formProps?: Omit<
-    React.FormHTMLAttributes<HTMLFormElement>,
-    'children' | 'onSubmit'
-  >;
+  formProps?: Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit'>;
   onError?: SubmitErrorHandler<TFieldValues>;
   onSubmit?: SubmitHandler<TTransformedValues>;
 }
@@ -50,15 +47,8 @@ function FormContainerWithoutUseForm<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues = TFieldValues,
->(
-  props: FormContainerWithoutUseFormProps<
-    TFieldValues,
-    TContext,
-    TTransformedValues
-  >,
-) {
-  const { children, errorParser, formContext, formProps, onError, onSubmit } =
-    props;
+>(props: FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>) {
+  const { children, errorParser, formContext, formProps, onError, onSubmit } = props;
   return (
     <ReactHookFormProvider {...formContext}>
       <FormErrorProvider errorParser={errorParser}>
@@ -68,10 +58,7 @@ function FormContainerWithoutUseForm<
           onSubmit={
             typeof onSubmit === 'function'
               ? formContext.handleSubmit(onSubmit, onError)
-              : () =>
-                  console.warn(
-                    'Callback `onValid` is missing from FormContainer.',
-                  )
+              : () => console.warn('Callback `onValid` is missing from FormContainer.')
           }
         >
           {children}
@@ -90,11 +77,7 @@ interface FormContainerWithUseFormProps<
   extends
     UseFormProps<TFieldValues, TContext, TTransformedValues>,
     Omit<
-      FormContainerWithoutUseFormProps<
-        TFieldValues,
-        TContext,
-        TTransformedValues
-      >,
+      FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>,
       'formContext'
     > {}
 
@@ -103,13 +86,7 @@ function FormContainerWithUseForm<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues = TFieldValues,
->(
-  props: FormContainerWithUseFormProps<
-    TFieldValues,
-    TContext,
-    TTransformedValues
-  >,
-) {
+>(props: FormContainerWithUseFormProps<TFieldValues, TContext, TTransformedValues>) {
   const {
     children,
     errorParser,
@@ -147,11 +124,7 @@ export type FormContainerProps<
   TTransformedValues = TFieldValues,
 > =
   | FormContainerWithoutUseFormProps<TFieldValues, TContext, TTransformedValues>
-  | (FormContainerWithUseFormProps<
-      TFieldValues,
-      TContext,
-      TTransformedValues
-    > & {
+  | (FormContainerWithUseFormProps<TFieldValues, TContext, TTransformedValues> & {
       formContext?: undefined;
     });
 
@@ -168,10 +141,6 @@ export function FormContainer<
   }
 
   return (
-    <FormContainerWithoutUseForm
-      errorParser={errorParser}
-      formContext={formContext}
-      {...rest}
-    />
+    <FormContainerWithoutUseForm errorParser={errorParser} formContext={formContext} {...rest} />
   );
 }

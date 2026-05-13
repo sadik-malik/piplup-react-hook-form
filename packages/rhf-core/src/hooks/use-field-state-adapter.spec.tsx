@@ -1,15 +1,10 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
-import {
-  type FieldPath,
-  type FieldValues,
-  useFormContext,
-} from 'react-hook-form';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect } from 'vitest';
+import { type FieldPath, type FieldValues, useFormContext } from 'react-hook-form';
 import { FormContainer } from '../form';
-import {
-  useFieldStateAdapter,
-  type UseFieldStateAdapterProps,
-} from './use-field-state-adapter';
+import { useFieldStateAdapter, type UseFieldStateAdapterProps } from './use-field-state-adapter';
 
 function AdapterConsumer<
   TFieldValues extends FieldValues = FieldValues,
@@ -43,18 +38,18 @@ const InputRequired = () => {
 
 describe('useFieldStateAdapter', () => {
   it('renders provided helperText', () => {
-    cy.mount(
+    const { container } = render(
       <FormContainer>
         <AdapterConsumer helperText="Helpful" name="a" />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=helper]').should('contain.text', 'Helpful');
-    cy.get('[data-cy=helper]').should('have.attr', 'data-error', 'false');
+    expect(container.querySelector('[data-cy=helper]')?.textContent).toContain('Helpful');
+    expect(container.querySelector('[data-cy=helper]')?.getAttribute('data-error')).toBe('false');
   });
 
-  it('reflects field error when validation fails', () => {
-    cy.mount(
+  it('reflects field error when validation fails', async () => {
+    const { container } = render(
       <FormContainer onSubmit={() => {}}>
         <InputRequired />
         <AdapterConsumer helperText="Required" name="name" />
@@ -62,29 +57,24 @@ describe('useFieldStateAdapter', () => {
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
-    cy.then(() => {
-      cy.get('[data-cy=helper]').should('have.attr', 'data-error', 'true');
-    });
+    await userEvent.click(container.querySelector('button[type=submit]') as HTMLButtonElement);
+    expect(container.querySelector('[data-cy=helper]')?.getAttribute('data-error')).toBe('true');
   });
 
-  it('applies styles conditionally in case of error', () => {
-    cy.mount(
+  it('applies styles conditionally in case of error', async () => {
+    const { container } = render(
       <FormContainer onSubmit={() => {}}>
         <InputRequired />
         <AdapterConsumer
-          style={(modifierState) =>
-            modifierState.error ? { color: 'rgb(255, 0, 0)' } : {}
-          }
+          style={(modifierState) => (modifierState.error ? { color: 'rgb(255, 0, 0)' } : {})}
           helperText="H"
           name="name"
         />
         <button type="submit">Submit</button>
       </FormContainer>,
     );
-    cy.get('button[type=submit]').click();
-    cy.then(() => {
-      cy.get('[data-cy=helper]').should('have.css', 'color', 'rgb(255, 0, 0)');
-    });
+    await userEvent.click(container.querySelector('button[type=submit]') as HTMLButtonElement);
+    const el = container.querySelector('[data-cy=helper]') as HTMLElement;
+    expect(getComputedStyle(el).color).toBe('rgb(255, 0, 0)');
   });
 });

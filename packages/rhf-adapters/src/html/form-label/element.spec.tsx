@@ -1,50 +1,61 @@
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { HtmlFormLabelElement } from './element';
 
 describe('HtmlFormLabelElement', () => {
-  it('renders children and forwards htmlFor', () => {
-    cy.mount(
+  test('renders children and forwards htmlFor', async () => {
+    const screen = await render(
       <FormContainer>
-        <HtmlFormLabelElement htmlFor="input-id">
+        <HtmlFormLabelElement name="name" htmlFor="input-id">
           Full Name
         </HtmlFormLabelElement>
       </FormContainer>,
     );
 
-    cy.get('label').should('contain.text', 'Full Name');
-    cy.get('label').should('have.attr', 'for', 'input-id');
+    const label = screen.getByText('Full Name');
+    await expect(label).toBeInTheDocument();
+    await expect(label).toHaveAttribute('for', 'input-id');
   });
 
-  it('forwards className to the label', () => {
-    cy.mount(
+  test('forwards className to the label', async () => {
+    const screen = await render(
       <FormContainer>
-        <HtmlFormLabelElement className="my-label">Label</HtmlFormLabelElement>
+        <HtmlFormLabelElement name="name" className="my-label">
+          Label
+        </HtmlFormLabelElement>
       </FormContainer>,
     );
-    cy.get('label').should('have.class', 'my-label');
+    await expect(screen.getByText('Label')).toHaveClass('my-label');
   });
 
-  it('sets aria-disabled when disabled prop is true', () => {
-    cy.mount(
+  test('sets aria-disabled when disabled prop is true', async () => {
+    const screen = await render(
       <FormContainer>
-        <HtmlFormLabelElement disabled>Disabled Label</HtmlFormLabelElement>
+        <HtmlFormLabelElement name="name" disabled>
+          Disabled Label
+        </HtmlFormLabelElement>
       </FormContainer>,
     );
-    cy.get('label').should('have.attr', 'aria-disabled', 'true');
+    await expect(screen.getByText('Disabled Label')).toHaveAttribute('aria-disabled', 'true');
   });
 
-  it('works inside a form and links to input via htmlFor', () => {
-    cy.mount(
+  test('works inside a form and links to input via htmlFor', async () => {
+    const screen = await render(
       <FormContainer>
         <div>
-          <input data-cy="linked-input" id="linked" />
-          <HtmlFormLabelElement htmlFor="linked">Linked</HtmlFormLabelElement>
+          <input data-testid="linked-input" id="linked" />
+          <HtmlFormLabelElement name="name" htmlFor="linked">
+            Linked
+          </HtmlFormLabelElement>
         </div>
       </FormContainer>,
     );
 
-    cy.get('label').click();
-    cy.get('[data-cy=linked-input]').should('have.focus');
+    const label = screen.getByText('Linked');
+    const input = screen.getByTestId('linked-input');
+    await label.click();
+    expect(input).toHaveFocus();
   });
 });

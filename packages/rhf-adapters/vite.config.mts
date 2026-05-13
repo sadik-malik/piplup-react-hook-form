@@ -1,16 +1,9 @@
-/// <reference types='vitest' />
-
-// @ts-check
 import { readFileSync } from 'node:fs';
 import * as path from 'path';
-import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import packageJSON from './package.json';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import modifyOutputPackageJson from '../../scripts/modify-output-package-json.mjs';
 
 const license = readFileSync(path.resolve('./LICENSE'), {
   encoding: 'utf-8',
@@ -20,29 +13,10 @@ const banner = ['/*', '@license', license, '*/', "'use client';"].join('\n');
 const external = [
   ...new Set([
     ...Object.keys(packageJSON.peerDependencies),
-    'react',
-    'react-dom',
     'react/jsx-runtime',
+    '@mui/x-date-pickers/internals',
   ]),
 ];
-
-/**
- * @type {Record<string, string}
- */
-const globals = {
-  '@piplup/utils': 'PiplupUtils',
-  react: 'React',
-  'react/jsx-runtime': 'jsxRuntime',
-};
-
-external.forEach((pkg) => {
-  globals[pkg] = pkg
-    .replace(/@/g, '')
-    .replace(/\//g, '-')
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('');
-});
 
 export default defineConfig({
   // Uncomment this if you are using workers.
@@ -59,7 +33,17 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: {
+        html: 'src/html/index.ts',
         index: 'src/index.ts',
+        'mui-chips-input': 'src/mui-chips-input/index.ts',
+        'mui-color-input': 'src/mui-color-input/index.ts',
+        'mui-file-input': 'src/mui-file-input/index.ts',
+        'mui-lab': 'src/mui-lab/index.ts',
+        'mui-material': 'src/mui-material/index.ts',
+        'mui-one-time-password-input': 'src/mui-one-time-password-input/index.ts',
+        'mui-tel-input': 'src/mui-tel-input/index.ts',
+        'mui-x-date-pickers': 'src/mui-x-date-pickers/index.ts',
+        'react-number-format': 'src/react-number-format/index.ts',
       },
       fileName: (format, entryName) => {
         const extension = format === 'es' ? 'mjs' : 'js';
@@ -70,7 +54,6 @@ export default defineConfig({
       formats: ['es', 'cjs'],
       name: 'test',
     },
-    minify: true,
     outDir: './dist',
     reportCompressedSize: true,
     rollupOptions: {
@@ -78,21 +61,17 @@ export default defineConfig({
       external,
       output: {
         banner,
-        globals,
         sourcemapExcludeSources: true,
       },
     },
   },
-  cacheDir: '../../node_modules/.vite/packages/rhf-core',
+  cacheDir: '../../node_modules/.vite/packages/rhf-adapters',
   plugins: [
     react(),
-    nxViteTsPaths(),
-    nxCopyAssetsPlugin(['README.md', 'LICENSE']),
     dts({
       entryRoot: 'src',
       tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
     }),
-    modifyOutputPackageJson(),
   ],
   root: __dirname,
 });

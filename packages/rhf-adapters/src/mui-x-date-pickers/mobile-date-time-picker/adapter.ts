@@ -10,11 +10,7 @@ export interface UseMuiXMobileDateTimePickerAdapterProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends UseMuiXDateTimePickerAdapterProps<
-  TTransformedValue,
-  TFieldValues,
-  TName
-> {}
+> extends UseMuiXDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName> {}
 
 export function useMuiXMobileDateTimePickerAdapter<
   TTransformedValue extends PickerValidDate,
@@ -22,11 +18,7 @@ export function useMuiXMobileDateTimePickerAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiXMobileDateTimePickerAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: UseMuiXMobileDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   return useMuiXDateTimePickerAdapter(props, ref);

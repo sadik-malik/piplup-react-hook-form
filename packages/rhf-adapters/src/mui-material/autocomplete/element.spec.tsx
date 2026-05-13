@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { TextField } from '@mui/material';
+import { test, expect, describe } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { TextField, autocompleteClasses } from '@mui/material';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiAutocompleteElement } from './element';
+import { userEvent } from 'vitest/browser';
 
 describe('MuiAutocompleteElement', () => {
-  it('mounts and allows selecting an option', () => {
-    cy.mount(
+  test('mounts and allows selecting an option', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiAutocompleteElement
           name="fruit"
@@ -14,14 +17,19 @@ describe('MuiAutocompleteElement', () => {
         />
       </FormContainer>,
     );
+    const input = screen.getByRole('combobox');
+    await expect.element(input).toBeInTheDocument();
 
-    cy.get('input').should('exist').click();
-    cy.contains('li', 'Banana').click();
-    cy.get('input').invoke('val').should('contain', 'Banana');
+    await userEvent.click(input);
+    const option = await screen.getByRole('option', {
+      name: 'Banana',
+    });
+    await userEvent.click(option);
+    await expect.element(input).toHaveValue('Banana');
   });
 
-  it('renders initial defaultValue', () => {
-    cy.mount(
+  test('renders initial defaultValue', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ fruit: 'Apple' }}>
         <MuiAutocompleteElement
           name="fruit"
@@ -31,11 +39,13 @@ describe('MuiAutocompleteElement', () => {
       </FormContainer>,
     );
 
-    cy.get('input').invoke('val').should('contain', 'Apple');
+    const input = screen.getByRole('combobox');
+
+    await expect.element(input).toHaveValue('Apple');
   });
 
-  it('supports multiple values and shows default chips', () => {
-    cy.mount(
+  test('supports multiple values and shows default chips', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ fruit: ['Apple'] }}>
         <MuiAutocompleteElement
           name="fruit"
@@ -46,15 +56,26 @@ describe('MuiAutocompleteElement', () => {
       </FormContainer>,
     );
 
-    cy.get('.MuiAutocomplete-root').first().realClick();
-    cy.contains('.MuiAutocomplete-option', 'Banana').first().realClick();
+    const input = screen.getByRole('combobox');
 
-    cy.contains('.MuiAutocomplete-tag', 'Apple').should('exist');
-    cy.contains('.MuiAutocomplete-tag', 'Banana').should('exist');
+    await userEvent.click(input);
+
+    const bananaOption = await screen.getByRole('option', {
+      name: 'Banana',
+    });
+
+    await userEvent.click(bananaOption);
+
+    const chips = screen.container.querySelectorAll(`.${autocompleteClasses.tag}`);
+
+    const chipValues = Array.from(chips).map((chip) => chip.textContent);
+
+    await expect(chipValues).toContain('Apple');
+    await expect(chipValues).toContain('Banana');
   });
 
-  it('shows error message when field has a validation error', () => {
-    cy.mount(
+  test('shows error message when field has a validation error', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{}}>
         <MuiAutocompleteElement
           name="fruit"
@@ -66,10 +87,12 @@ describe('MuiAutocompleteElement', () => {
       </FormContainer>,
     );
 
-    // trigger validation by submitting the form without selecting a value
-    cy.get('button[type="submit"]').click();
+    const submitButton = screen.getByRole('button', {
+      name: 'Submit',
+    });
 
-    // the error message should be visible
-    cy.contains('Select a fruit').should('be.visible');
+    await userEvent.click(submitButton);
+
+    expect(await screen.getByText('Select a fruit')).toBeInTheDocument();
   });
 });

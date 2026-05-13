@@ -1,22 +1,13 @@
 import * as React from 'react';
 import { type FieldValues } from 'react-hook-form';
-import {
-  useHtmlButtonAdapter,
-  type UseHtmlButtonAdapterProps,
-} from './adapter';
+import { useHtmlButtonAdapter, type UseHtmlButtonAdapterProps } from './adapter';
 
-export interface HtmlButtonElementProps<
-  TFieldValues extends FieldValues = FieldValues,
->
+export interface HtmlButtonElementProps<TFieldValues extends FieldValues = FieldValues>
   extends
     Omit<React.ComponentProps<'button'>, 'name' | 'style'>,
     Omit<
       UseHtmlButtonAdapterProps<TFieldValues>,
-      | 'composeClassName'
-      | 'composeHelperText'
-      | 'helperText'
-      | 'internalClasses'
-      | 'onClick'
+      'composeClassName' | 'composeHelperText' | 'helperText' | 'internalClasses' | 'onClick'
     > {}
 
 function HtmlButtonComponent<TFieldValues extends FieldValues = FieldValues>(

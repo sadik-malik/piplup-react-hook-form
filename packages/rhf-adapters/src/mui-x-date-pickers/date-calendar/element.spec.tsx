@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
@@ -6,10 +8,10 @@ import dayjs from 'dayjs';
 import { MuiXDateCalendarElement } from './element';
 
 describe('MuiXDateCalendarElement', () => {
-  it('renders with a default selected date', () => {
+  test('renders with a default selected date', async () => {
     const date = dayjs('2021-02-14');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer defaultValues={{ date }}>
           <MuiXDateCalendarElement name="date" />
@@ -17,17 +19,17 @@ describe('MuiXDateCalendarElement', () => {
       </LocalizationProvider>,
     );
 
-    // The selected day button should have aria-selected="true"
-    cy.get('button[aria-selected="true"]').should(
-      'contain',
-      String(date.date()),
-    );
+    const selectedDay = screen.getByRole('gridcell', {
+      selected: true,
+    });
+
+    await expect.element(selectedDay).toHaveTextContent(String(date.date()));
   });
 
-  it('selects a day when clicked (renders specified month)', () => {
+  test('selects a day when clicked (renders specified month)', async () => {
     const target = dayjs('2021-03-10');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer
           defaultValues={{
@@ -39,18 +41,16 @@ describe('MuiXDateCalendarElement', () => {
       </LocalizationProvider>,
     );
 
-    // Click the visible day button inside the calendar grid
-    cy.get('[role="grid"]').within(() => {
-      cy.contains('button', String(target.date()))
-        .filter(':visible')
-        .first()
-        .click();
+    const dayButton = screen.getByText(String(target.date()));
+
+    await expect.element(dayButton).toBeVisible();
+
+    await dayButton.click();
+
+    const selectedDay = screen.getByRole('gridcell', {
+      selected: true,
     });
 
-    // Verify the clicked day becomes the selected date
-    cy.get('button[aria-selected="true"]').should(
-      'contain',
-      String(target.date()),
-    );
+    await expect.element(selectedDay).toHaveTextContent(String(target.date()));
   });
 });

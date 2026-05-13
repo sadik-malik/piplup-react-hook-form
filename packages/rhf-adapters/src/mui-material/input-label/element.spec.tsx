@@ -1,45 +1,51 @@
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiInputLabelElement } from './element';
 
 describe('MuiInputLabelElement', () => {
-  it('renders children and forwards htmlFor', () => {
-    cy.mount(
+  test('renders children and forwards htmlFor', async () => {
+    const screen = await render(
       <FormContainer>
-        <MuiInputLabelElement htmlFor="input-id" name="fullName">
+        <MuiInputLabelElement data-testid="label" htmlFor="input-id" name="fullName">
           Full Name
         </MuiInputLabelElement>
       </FormContainer>,
     );
 
-    cy.get('label').should('contain.text', 'Full Name');
-    cy.get('label').should('have.attr', 'for', 'input-id');
+    const label = screen.getByTestId('label');
+    await expect.element(label).toHaveTextContent('Full Name');
+    await expect.element(label).toHaveAttribute('for', 'input-id');
   });
 
-  it('forwards className to the label', () => {
-    cy.mount(
+  test('forwards className to the label', async () => {
+    const screen = await render(
       <FormContainer>
-        <MuiInputLabelElement className="my-label" name="my-label">
+        <MuiInputLabelElement data-testid="label" className="my-label" name="my-label">
           Label
         </MuiInputLabelElement>
       </FormContainer>,
     );
-    cy.get('label').should('have.class', 'my-label');
+
+    const label = screen.getByTestId('label');
+    await expect.element(label).toHaveClass('my-label');
   });
 
-  it('works inside a form and links to input via htmlFor', () => {
-    cy.mount(
+  test('works inside a form and links to input via htmlFor', async () => {
+    const screen = await render(
       <FormContainer>
         <div>
-          <input data-cy="linked-input" id="linked" />
-          <MuiInputLabelElement htmlFor="linked" name="linked">
+          <MuiInputLabelElement data-testid="label" htmlFor="linked" name="linked">
             Linked
           </MuiInputLabelElement>
+          <input data-testid="linked-input" id="linked" />
         </div>
       </FormContainer>,
     );
 
-    cy.get('label').click();
-    cy.get('[data-cy=linked-input]').should('have.focus');
+    const label = screen.getByTestId('label');
+    await label.click();
+    await expect.element(screen.getByTestId('linked-input')).toHaveFocus();
   });
 });

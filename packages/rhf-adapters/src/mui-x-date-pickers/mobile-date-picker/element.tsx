@@ -17,16 +17,9 @@ export interface MuiXMobileDatePickerElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
+    Omit<MobileDatePickerProps, 'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'>,
     Omit<
-      MobileDatePickerProps,
-      'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-    >,
-    Omit<
-      UseMuiXMobileDatePickerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >,
+      UseMuiXMobileDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -39,12 +32,7 @@ export interface MuiXMobileDatePickerElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    MobileDatePickerProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<MobileDatePickerProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiXMobileDatePickerComponent<
@@ -52,11 +40,7 @@ function MuiXMobileDatePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXMobileDatePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXMobileDatePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

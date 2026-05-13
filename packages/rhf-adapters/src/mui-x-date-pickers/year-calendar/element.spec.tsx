@@ -1,3 +1,6 @@
+import { describe, expect, test } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { userEvent } from 'vitest/browser';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
@@ -5,24 +8,27 @@ import dayjs from 'dayjs';
 import { MuiXYearCalendarElement } from './element';
 
 describe('MuiXYearCalendarElement', () => {
-  it('renders with a default selected year', () => {
-    const dt = dayjs('2021-02-14');
+  test('renders with a default selected year', async () => {
+    const target = dayjs('2021-02-14');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormContainer defaultValues={{ date: dt }}>
+        <FormContainer defaultValues={{ date: target }}>
           <MuiXYearCalendarElement name="date" />
         </FormContainer>
       </LocalizationProvider>,
     );
 
-    cy.get('button[aria-checked="true"]').should('contain', dt.format('YYYY'));
+    const year = screen.getByRole('radio', {
+      name: target.format('YYYY'),
+    });
+    await expect.element(year).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('selects a year when clicked', () => {
+  test('selects a year when clicked', async () => {
     const target = dayjs('2025-01-01');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer defaultValues={{ date: dayjs('2021-01-01') }}>
           <MuiXYearCalendarElement name="date" />
@@ -30,16 +36,10 @@ describe('MuiXYearCalendarElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.get('[role="radiogroup"]').within(() => {
-      cy.contains('button', target.format('YYYY'))
-        .filter(':visible')
-        .first()
-        .click();
+    const year = screen.getByRole('radio', {
+      name: target.format('YYYY'),
     });
-
-    cy.get('button[aria-checked="true"]').should(
-      'contain',
-      target.format('YYYY'),
-    );
+    await userEvent.click(year);
+    await expect.element(year).toHaveAttribute('aria-checked', 'true');
   });
 });

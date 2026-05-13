@@ -1,15 +1,8 @@
 import * as React from 'react';
-import {
-  type DatePickerProps,
-  DatePicker,
-  type PickerValidDate,
-} from '@mui/x-date-pickers';
+import { type DatePickerProps, DatePicker, type PickerValidDate } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiXDatePickerAdapterProps,
-  useMuiXDatePickerAdapter,
-} from './adapter';
+import { type UseMuiXDatePickerAdapterProps, useMuiXDatePickerAdapter } from './adapter';
 
 export interface MuiXDatePickerElementProps<
   TTransformedValue extends PickerValidDate,
@@ -17,28 +10,15 @@ export interface MuiXDatePickerElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
-    Omit<
-      DatePickerProps,
-      'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-    >,
+    Omit<DatePickerProps, 'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'>,
     Omit<
       UseMuiXDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-      | 'classes'
-      | 'composeClassName'
-      | 'composeHelperText'
-      | 'onChange'
-      | 'slotProps'
-      | 'transform'
+      'classes' | 'composeClassName' | 'composeHelperText' | 'onChange' | 'slotProps' | 'transform'
     > {
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    DatePickerProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<DatePickerProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiXDatePickerComponent<
@@ -46,11 +26,7 @@ function MuiXDatePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXDatePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXDatePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

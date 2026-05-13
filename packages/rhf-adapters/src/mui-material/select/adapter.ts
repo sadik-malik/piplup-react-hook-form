@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
 
 export interface UseMuiSelectAdapterProps<
   TTransformedValue,
@@ -36,21 +29,14 @@ export function useMuiSelectAdapter<
         }
         return value;
       },
-      output(
-        event: React.ChangeEvent<HTMLInputElement>,
-      ): PathValue<TFieldValues, TName> {
+      output(event: React.ChangeEvent<HTMLInputElement>): PathValue<TFieldValues, TName> {
         return event.target.value as PathValue<TFieldValues, TName>;
       },
     }),
     [multiple],
   );
 
-  const adapter = useControllerAdapter<
-    TTransformedValue,
-    TFieldValues,
-    TName,
-    RefType
-  >(
+  const adapter = useControllerAdapter<TTransformedValue, TFieldValues, TName, RefType>(
     {
       ...props,
       transform: {

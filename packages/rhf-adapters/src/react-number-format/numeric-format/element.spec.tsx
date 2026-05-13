@@ -1,27 +1,33 @@
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { NumericFormatElement } from './element';
 
 describe('NumericFormatElement', () => {
-  it('renders initial defaultValue formatted', () => {
-    cy.mount(
+  test('renders initial defaultValue formatted', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ value: 12345 }}>
         <NumericFormatElement name="value" thousandSeparator />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').and('have.value', '12,345');
+    await expect(screen.getByRole('textbox')).toHaveValue('12,345');
   });
 
-  it('formats typed numbers', () => {
-    cy.mount(
+  test('formats typed numbers', async () => {
+    const screen = await render(
       <FormContainer>
         <NumericFormatElement name="value" thousandSeparator />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').clear();
-    cy.get('input').type('98765{enter}');
-    cy.get('input').should('have.value', '98,765');
+    const input = screen.getByRole('textbox');
+    await userEvent.clear(input);
+    await userEvent.type(input, '98765');
+    await userEvent.keyboard('{Enter}');
+
+    expect(input).toHaveValue('98,765');
   });
 });

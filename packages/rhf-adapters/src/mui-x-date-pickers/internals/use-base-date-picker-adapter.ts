@@ -20,12 +20,7 @@ type ValidationProps = Omit<
   ValidateDateProps,
   'disableFuture' | 'disablePast' | 'maxDate' | 'minDate'
 > &
-  Partial<
-    Pick<
-      ValidateDateProps,
-      'disableFuture' | 'disablePast' | 'maxDate' | 'minDate'
-    >
-  >;
+  Partial<Pick<ValidateDateProps, 'disableFuture' | 'disablePast' | 'maxDate' | 'minDate'>>;
 
 export interface UseBaseDatePickerAdapterProps<
   TTransformedValue extends PickerValidValue,

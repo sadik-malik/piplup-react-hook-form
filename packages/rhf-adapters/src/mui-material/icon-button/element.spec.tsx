@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { describe, test, expect, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { useForm } from 'react-hook-form';
 import { MuiIconButtonElement } from './element';
+import { HtmlInputElement } from '../../html';
+import { userEvent } from 'vitest/browser';
 
 describe('MuiIconButtonElement', () => {
-  it('calls provided onClick and does not reset when type is button', () => {
-    const onClick = cy.stub();
+  test('calls provided onClick and does not reset when type is button', async () => {
+    const onClick = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
         <MuiIconButtonElement onClick={(e) => onClick(e)} type="button">
           Icon
@@ -16,21 +20,20 @@ describe('MuiIconButtonElement', () => {
       </FormContainer>,
     );
 
-    cy.get('button').click();
+    const button = screen.getByRole('button');
+    await button.click();
 
-    cy.then(() => {
-      expect(onClick.called).to.equal(true);
-    });
+    await expect(onClick).toHaveBeenCalled();
   });
 
-  it('resets the form when type is reset', () => {
+  test('resets the form when type is reset', async () => {
     const SubmitForm = () => {
-      const { control, handleSubmit, register } = useForm<{ foo: string }>({
+      const { control, handleSubmit } = useForm<{ foo: string }>({
         defaultValues: { foo: 'bar' },
       });
       return (
         <form onSubmit={handleSubmit(() => {})} noValidate>
-          <input data-cy="foo" placeholder="foo" {...register('foo')} />
+          <HtmlInputElement data-testid="foo" placeholder="foo" name="foo" control={control} />
           <MuiIconButtonElement control={control} type="reset">
             Reset
           </MuiIconButtonElement>
@@ -38,17 +41,17 @@ describe('MuiIconButtonElement', () => {
       );
     };
 
-    cy.mount(<SubmitForm />);
+    const screen = await render(<SubmitForm />);
 
-    cy.get('[data-cy=foo]').clear();
-    cy.get('[data-cy=foo]').type('changed');
-    cy.get('button[type=reset]').click();
-    cy.then(() => {
-      cy.get('[data-cy=foo]').should('have.value', 'bar');
-    });
+    const input = screen.getByTestId('foo');
+    await userEvent.clear(input);
+    await userEvent.type(input, 'changed');
+
+    await screen.getByRole('button').click();
+    await expect.element(input).toHaveValue('bar');
   });
 
-  it('forwards the name from adapter when provided via props', () => {
+  test('forwards the name from adapter when provided via props', async () => {
     const WithName = () => {
       return (
         <FormContainer>
@@ -57,33 +60,31 @@ describe('MuiIconButtonElement', () => {
       );
     };
 
-    cy.mount(<WithName />);
-    cy.get('button').should('have.attr', 'name', 'my-icon');
+    const screen = await render(<WithName />);
+    const button = screen.getByRole('button');
+    await expect.element(button).toHaveAttribute('name', 'my-icon');
   });
 
-  it('submits the parent form when type is submit', () => {
-    const onSubmit = cy.stub();
+  test('submits the parent form when type is submit', async () => {
+    const onSubmit = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer onSubmit={onSubmit}>
         <MuiIconButtonElement type="submit">Submit</MuiIconButtonElement>
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
-
-    cy.then(() => {
-      expect(onSubmit.called).to.equal(true);
-    });
+    await screen.getByRole('button').click();
+    expect(onSubmit).toHaveBeenCalled();
   });
 
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiIconButtonElement disabled>Disabled</MuiIconButtonElement>
       </FormContainer>,
     );
 
-    cy.get('button').should('be.disabled');
+    await expect.element(screen.getByRole('button')).toBeDisabled();
   });
 });

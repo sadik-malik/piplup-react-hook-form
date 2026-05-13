@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
@@ -6,10 +9,10 @@ import dayjs from 'dayjs';
 import { MuiXMonthCalendarElement } from './element';
 
 describe('MuiXMonthCalendarElement', () => {
-  it('renders with a default selected month', () => {
+  test('renders with a default selected month', async () => {
     const date = dayjs('2021-02-14');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer defaultValues={{ date }}>
           <MuiXMonthCalendarElement name="date" />
@@ -17,13 +20,15 @@ describe('MuiXMonthCalendarElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.get('button[aria-checked="true"]').should('contain', date.format('MMM'));
+    const month = screen.getByLabelText(date.format('MMMM'));
+    expect(month).toBeTruthy();
+    await expect.element(month).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('selects a month when clicked', () => {
+  test('selects a month when clicked', async () => {
     const target = dayjs('2021-07-01');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer defaultValues={{ date: dayjs('2021-01-01') }}>
           <MuiXMonthCalendarElement name="date" />
@@ -31,16 +36,10 @@ describe('MuiXMonthCalendarElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.get('[role="radiogroup"]').within(() => {
-      cy.contains('button', target.format('MMM'))
-        .filter(':visible')
-        .first()
-        .click();
-    });
+    const monthButton = screen.getByText(target.format('MMM'));
+    await expect.element(monthButton).toBeVisible();
+    await userEvent.click(monthButton);
 
-    cy.get('button[aria-checked="true"]').should(
-      'contain',
-      target.format('MMM'),
-    );
+    await expect.element(monthButton).toHaveAttribute('aria-checked', 'true');
   });
 });

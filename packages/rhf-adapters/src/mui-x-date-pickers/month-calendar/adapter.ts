@@ -10,10 +10,7 @@ export interface UseMuiXMonthCalendarAdapterProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
-  UseBaseDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
-  'title'
-> {}
+> extends Omit<UseBaseDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>, 'title'> {}
 
 export function useMuiXMonthCalendarAdapter<
   TTransformedValue extends PickerValidDate,
@@ -21,11 +18,7 @@ export function useMuiXMonthCalendarAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiXMonthCalendarAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: UseMuiXMonthCalendarAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   const adapter = useBaseDatePickerAdapter(props, ref);

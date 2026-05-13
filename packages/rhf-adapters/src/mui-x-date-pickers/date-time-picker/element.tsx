@@ -6,10 +6,7 @@ import {
 } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiXDateTimePickerAdapterProps,
-  useMuiXDateTimePickerAdapter,
-} from './adapter';
+import { type UseMuiXDateTimePickerAdapterProps, useMuiXDateTimePickerAdapter } from './adapter';
 
 export interface MuiXDateTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
@@ -17,10 +14,7 @@ export interface MuiXDateTimePickerElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
-    Omit<
-      DateTimePickerProps,
-      'defaultValue' | 'name' | 'value'
-    >,
+    Omit<DateTimePickerProps, 'defaultValue' | 'name' | 'value'>,
     Omit<
       UseMuiXDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
@@ -36,12 +30,7 @@ export interface MuiXDateTimePickerElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    DateTimePickerProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<DateTimePickerProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiXDateTimePickerComponent<
@@ -49,11 +38,7 @@ function MuiXDateTimePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXDateTimePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXDateTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

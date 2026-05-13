@@ -2,12 +2,15 @@
 
 ### 🚀 Features
 
-- updated modifier state to use invalid state for boolean error state ([487896f](https://github.com/sadik-malik/piplup-react-hook-form/commit/487896f))
+- updated modifier state to use invalid state for boolean error state
+  ([487896f](https://github.com/sadik-malik/piplup-react-hook-form/commit/487896f))
 
 ### 🩹 Fixes
 
-- typescript type issues with x-date-pickers ([67fd5b7](https://github.com/sadik-malik/piplup-react-hook-form/commit/67fd5b7))
-- type exports for loading-button ([7adbce9](https://github.com/sadik-malik/piplup-react-hook-form/commit/7adbce9))
+- typescript type issues with x-date-pickers
+  ([67fd5b7](https://github.com/sadik-malik/piplup-react-hook-form/commit/67fd5b7))
+- type exports for loading-button
+  ([7adbce9](https://github.com/sadik-malik/piplup-react-hook-form/commit/7adbce9))
 
 ### ❤️ Thank You
 
@@ -21,7 +24,8 @@ This was a version bump only, there were no code changes.
 
 ### 🩹 Fixes
 
-- typescript warnings for useComposePickerRules ([c18e9a0](https://github.com/sadik-malik/piplup-react-hook-form/commit/c18e9a0))
+- typescript warnings for useComposePickerRules
+  ([c18e9a0](https://github.com/sadik-malik/piplup-react-hook-form/commit/c18e9a0))
 
 ### ❤️ Thank You
 
@@ -31,7 +35,8 @@ This was a version bump only, there were no code changes.
 
 ### 🩹 Fixes
 
-- react 19 upgrade issues ([c1b758f](https://github.com/sadik-malik/piplup-react-hook-form/commit/c1b758f))
+- react 19 upgrade issues
+  ([c1b758f](https://github.com/sadik-malik/piplup-react-hook-form/commit/c1b758f))
 
 ### ❤️ Thank You
 
@@ -41,7 +46,9 @@ This was a version bump only, there were no code changes.
 
 ### 🚀 Features
 
-- dropped react 18 support, react-hook-form minimum version will be 7.65.0 and configured workspace for cypress based component testing ([ad8a8a3](https://github.com/sadik-malik/piplup-react-hook-form/commit/ad8a8a3))
+- dropped react 18 support, react-hook-form minimum version will be 7.65.0 and
+  configured workspace for cypress based component testing
+  ([ad8a8a3](https://github.com/sadik-malik/piplup-react-hook-form/commit/ad8a8a3))
 
 ### ❤️ Thank You
 
@@ -51,7 +58,8 @@ This was a version bump only, there were no code changes.
 
 ### 🩹 Fixes
 
-- **rhf-adapters:** export path for html adapters and components ([adaea70](https://github.com/sadik-malik/piplup-react-hook-form/commit/adaea70))
+- **rhf-adapters:** export path for html adapters and components
+  ([adaea70](https://github.com/sadik-malik/piplup-react-hook-form/commit/adaea70))
 
 ### ❤️ Thank You
 
@@ -61,9 +69,12 @@ This was a version bump only, there were no code changes.
 
 ### 🚀 Features
 
-- add release script ([e31ccea](https://github.com/sadik-malik/piplup-react-hook-form/commit/e31ccea))
-- added CI & release workflow ([bcb5a57](https://github.com/sadik-malik/piplup-react-hook-form/commit/bcb5a57))
-- **rhf-core:** added useFormSetFocus hook ([187081e](https://github.com/sadik-malik/piplup-react-hook-form/commit/187081e))
+- add release script
+  ([e31ccea](https://github.com/sadik-malik/piplup-react-hook-form/commit/e31ccea))
+- added CI & release workflow
+  ([bcb5a57](https://github.com/sadik-malik/piplup-react-hook-form/commit/bcb5a57))
+- **rhf-core:** added useFormSetFocus hook
+  ([187081e](https://github.com/sadik-malik/piplup-react-hook-form/commit/187081e))
 
 ### ❤️ Thank You
 

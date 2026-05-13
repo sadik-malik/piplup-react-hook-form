@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect } from 'vitest';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../form';
 import { useFormStateAdapter } from './use-form-state-adapter';
@@ -22,19 +25,18 @@ function Input({ name }: { name: string }) {
 }
 
 describe('useFormStateAdapter', () => {
-  it('renders helperText when provided and no errors', () => {
-    cy.mount(
+  it('renders helperText when provided and no errors', async () => {
+    const { findByText } = render(
       <FormContainer onSubmit={() => {}}>
         <Consumer helperText="help" />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=out]').should('contain.text', 'help');
-    cy.get('[data-cy=out]').should('have.attr', 'data-error', '0');
+    await findByText(/help/);
   });
 
-  it('reflects form errors and composes helper text', () => {
-    cy.mount(
+  it('reflects form errors and composes helper text', async () => {
+    const { container } = render(
       <FormContainer onSubmit={() => {}}>
         <Input name="x" />
         <Consumer helperText="fallback" name="x" />
@@ -42,9 +44,7 @@ describe('useFormStateAdapter', () => {
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
-    cy.then(() => {
-      cy.get('[data-cy=out]').should('have.attr', 'data-error', '1');
-    });
+    await userEvent.click(container.querySelector('button[type=submit]') as HTMLButtonElement);
+    expect(container.querySelector('[data-cy=out]')?.getAttribute('data-error')).toBe('1');
   });
 });

@@ -17,16 +17,9 @@ export interface MuiXDesktopDateTimePickerElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
+    Omit<DesktopDateTimePickerProps, 'defaultValue' | 'name' | 'value'>,
     Omit<
-      DesktopDateTimePickerProps,
-      'defaultValue' | 'name' | 'value'
-    >,
-    Omit<
-      UseMuiXDesktopDateTimePickerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >,
+      UseMuiXDesktopDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -54,11 +47,7 @@ function MuiXDesktopDateTimePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXDesktopDateTimePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXDesktopDateTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
@@ -146,6 +135,5 @@ export const MuiXDesktopDateTimePickerElement = React.forwardRef(
 ) as typeof MuiXDesktopDateTimePickerComponent & { displayName?: string };
 
 if (process.env.NODE_ENV !== 'production') {
-  MuiXDesktopDateTimePickerElement.displayName =
-    'MuiXDesktopDateTimePickerElement';
+  MuiXDesktopDateTimePickerElement.displayName = 'MuiXDesktopDateTimePickerElement';
 }

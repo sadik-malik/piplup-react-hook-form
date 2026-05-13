@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import {
   useUnstableComposeStyle as useComposeStyle,
   type UseComposeStyleProps,
@@ -11,22 +13,19 @@ function Comp(props: UseComposeStyleProps) {
 
 describe('useComposeStyle', () => {
   it('applies style object directly', () => {
-    cy.mount(
-      <Comp
-        modifierState={{ disabled: false, error: false }}
-        style={{ color: 'red' }}
-      />,
+    const { container } = render(
+      <Comp modifierState={{ disabled: false, error: false }} style={{ color: 'red' }} />,
     );
-    cy.get('[data-cy=s]').should('contain.text', 'red');
+    expect(container.querySelector('[data-cy=s]')?.textContent).toContain('red');
   });
 
   it('calls style function with modifierState', () => {
-    cy.mount(
+    const { container } = render(
       <Comp
         modifierState={{ disabled: true, error: false }}
         style={(m) => ({ color: m.disabled ? 'gray' : 'blue' })}
       />,
     );
-    cy.get('[data-cy=s]').should('contain.text', 'gray');
+    expect(container.querySelector('[data-cy=s]')?.textContent).toContain('gray');
   });
 });

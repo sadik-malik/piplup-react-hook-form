@@ -59,8 +59,7 @@ export function useFieldState<
       disabled: {
         enumerable: true,
         get: () =>
-          typeof formState.disabled === 'boolean' ||
-          typeof disabled === 'boolean'
+          typeof formState.disabled === 'boolean' || typeof disabled === 'boolean'
             ? formState.disabled || disabled
             : undefined,
       },

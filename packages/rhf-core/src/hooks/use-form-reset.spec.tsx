@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect } from 'vitest';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer } from '../form';
 import { useFormReset } from './use-form-reset';
@@ -15,16 +18,12 @@ function ResetButtons() {
       <button data-cy="reset" onClick={() => reset()} type="button">
         Reset
       </button>
-      <button
-        data-cy="reset-new"
-        onClick={() => reset({ name: 'new-value' })}
-        type="button"
-      >
+      <button data-cy="reset-new" onClick={() => reset({ name: 'new-value' })} type="button">
         Reset To New
       </button>
       <button
         data-cy="reset-fn"
-        onClick={() => reset((prev) => ({ ...(prev || {}), name: 'from-fn' }))}
+        onClick={() => reset((prev) => ({ ...prev, name: 'from-fn' }))}
         type="button"
       >
         Reset Fn
@@ -34,50 +33,51 @@ function ResetButtons() {
 }
 
 describe('useFormReset', () => {
-  it('resets form values to default values', () => {
-    cy.mount(
+  it('resets form values to default values', async () => {
+    const { container } = render(
       <FormContainer defaultValues={{ name: 'init' }}>
         <InputRegister name="name" />
         <ResetButtons />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=name]').should('have.value', 'init');
-    cy.get('[data-cy=name]').clear();
-    cy.get('[data-cy=name]').type('changed');
-    cy.get('[data-cy=name]').should('have.value', 'changed');
+    const input = container.querySelector('[data-cy=name]') as HTMLInputElement;
+    expect(input.value).toBe('init');
+    await userEvent.clear(input);
+    await userEvent.type(input, 'changed');
+    expect(input.value).toBe('changed');
 
-    cy.get('[data-cy=reset]').click();
-    cy.then(() => {
-      cy.get('[data-cy=name]').should('have.value', 'init');
-    });
+    await userEvent.click(container.querySelector('[data-cy=reset]') as HTMLButtonElement);
+    expect((container.querySelector('[data-cy=name]') as HTMLInputElement).value).toBe('init');
   });
 
-  it('resets to provided values when passed an object', () => {
-    cy.mount(
+  it('resets to provided values when passed an object', async () => {
+    const { container } = render(
       <FormContainer defaultValues={{ name: 'init' }}>
         <InputRegister name="name" />
         <ResetButtons />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=name]').clear();
-    cy.get('[data-cy=name]').type('changed');
-    cy.get('[data-cy=reset-new]').click();
-    cy.get('[data-cy=name]').should('have.value', 'new-value');
+    const input = container.querySelector('[data-cy=name]') as HTMLInputElement;
+    await userEvent.clear(input);
+    await userEvent.type(input, 'changed');
+    await userEvent.click(container.querySelector('[data-cy=reset-new]') as HTMLButtonElement);
+    expect((container.querySelector('[data-cy=name]') as HTMLInputElement).value).toBe('new-value');
   });
 
-  it('resets using a function argument', () => {
-    cy.mount(
+  it('resets using a function argument', async () => {
+    const { container } = render(
       <FormContainer defaultValues={{ name: 'init' }}>
         <InputRegister name="name" />
         <ResetButtons />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=name]').clear();
-    cy.get('[data-cy=name]').type('something');
-    cy.get('[data-cy=reset-fn]').click();
-    cy.get('[data-cy=name]').should('have.value', 'from-fn');
+    const input = container.querySelector('[data-cy=name]') as HTMLInputElement;
+    await userEvent.clear(input);
+    await userEvent.type(input, 'something');
+    await userEvent.click(container.querySelector('[data-cy=reset-fn]') as HTMLButtonElement);
+    expect((container.querySelector('[data-cy=name]') as HTMLInputElement).value).toBe('from-fn');
   });
 });

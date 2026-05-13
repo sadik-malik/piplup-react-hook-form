@@ -10,10 +10,7 @@ export interface MuiSwitchElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
-    Omit<
-      SwitchProps,
-      'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
-    >,
+    Omit<SwitchProps, 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'>,
     Omit<
       UseMuiSwitchAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
@@ -28,12 +25,7 @@ export interface MuiSwitchElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    SwitchProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<SwitchProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiSwitchComponent<

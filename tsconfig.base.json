@@ -1,50 +1,46 @@
 {
-  "compileOnSave": false,
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // Shared base — all packages extend this file.
+  // Do NOT add "include" / "exclude" / "references" here; those belong in each
+  // package's own tsconfig.json so that project references work correctly.
   "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "ES2015",
-    "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "paths": {
-      "@piplup/rhf-core": ["./packages/rhf-core/src/index.ts"],
-      "@piplup/rhf-adapters": ["./packages/rhf-adapters/src/index.ts"],
-      "@piplup/rhf-adapters/mui-chips-input": [
-        "./packages/rhf-adapters/src/mui-chips-input/index.ts"
-      ],
-      "@piplup/rhf-adapters/mui-color-input": [
-        "./packages/rhf-adapters/src/mui-color-input/index.ts"
-      ],
-      "@piplup/rhf-adapters/mui-file-input": [
-        "./packages/rhf-adapters/src/mui-file-input/index.ts"
-      ],
-      "@piplup/rhf-adapters/mui-lab": [
-        "./packages/rhf-adapters/src/mui-lab/index.ts"
-      ],
-      "@piplup/rhf-adapters/mui-material": [
-        "./packages/rhf-adapters/src/mui-material/index.ts"
-      ],
-      "@piplup/rhf-adapters/mui-one-time-password-input": [
-        "./packages/rhf-adapters/src/mui-one-time-password-input/index.ts"
-      ],
-      "@piplup/rhf-adapters/mui-tel-input": [
-        "./packages/rhf-adapters/src/mui-tel-input/index.ts"
-      ],
-      "@piplup/rhf-adapters/mui-x-date-pickers": [
-        "./packages/rhf-adapters/src/mui-x-date-pickers/index.ts"
-      ],
-      "@piplup/rhf-adapters/react-number-format": [
-        "./packages/rhf-adapters/src/react-number-format/index.ts"
-      ],
-      "@piplup/rhf-adapters/html": ["./packages/rhf-adapters/src/html/index.ts"]
-    }
-  },
-  "exclude": ["node_modules", "tmp"]
+    // ─── Language & Environment ──────────────────────────────────────────────
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "useDefineForClassFields": true,
+
+    // ─── Emit ────────────────────────────────────────────────────────────────
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+
+    // ─── Emit ────────────────────────────────────────────────────────────────
+    "baseUrl": ".",
+
+    // ─── Interop ─────────────────────────────────────────────────────────────
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    // ─── Strictness ──────────────────────────────────────────────────────────
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+
+    // ─── Project References ───────────────────────────────────────────────────
+    "composite": true,
+    "incremental": true,
+
+    // ─── Skip lib checks for faster builds ───────────────────────────────────
+    "skipLibCheck": true
+  }
 }

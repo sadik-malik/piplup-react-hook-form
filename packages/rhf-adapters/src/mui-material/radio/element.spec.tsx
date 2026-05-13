@@ -1,89 +1,76 @@
 import * as React from 'react';
+import { describe, expect, test, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiRadioElement } from './element';
 
 describe('MuiRadioElement', () => {
-  it('mounts and allows selecting an option', () => {
-    cy.mount(
+  test('mounts and allows selecting an option', async () => {
+    const screen = await render(
       <FormContainer>
         <div>
-          <FormControlLabel
-            control={<MuiRadioElement name="choice" value="a" />}
-            label="A"
-          />
-          <FormControlLabel
-            control={<MuiRadioElement name="choice" value="b" />}
-            label="B"
-          />
+          <FormControlLabel control={<MuiRadioElement name="choice" value="a" />} label="A" />
+          <FormControlLabel control={<MuiRadioElement name="choice" value="b" />} label="B" />
         </div>
       </FormContainer>,
     );
 
-    cy.get('input[type=radio][value="b"]').click();
-    cy.get('input[type=radio][value="b"]').should('be.checked');
+    const b = screen.getByRole('radio', {
+      name: 'B',
+    });
+    await b.click();
+    await expect.element(b).toBeChecked();
   });
 
-  it('honors defaultValue from form', () => {
-    cy.mount(
+  test('honors defaultValue from form', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ choice: 'a' }}>
         <div>
-          <FormControlLabel
-            control={<MuiRadioElement name="choice" value="a" />}
-            label="A"
-          />
-          <FormControlLabel
-            control={<MuiRadioElement name="choice" value="b" />}
-            label="B"
-          />
+          <FormControlLabel control={<MuiRadioElement name="choice" value="a" />} label="A" />
+          <FormControlLabel control={<MuiRadioElement name="choice" value="b" />} label="B" />
         </div>
       </FormContainer>,
     );
 
-    cy.get('input[type=radio][value="a"]').should('be.checked');
+    const a = screen.getByRole('radio', {
+      name: 'A',
+    });
+    await expect.element(a).toBeChecked();
   });
 
-  it('forwards the name from adapter when provided via props', () => {
+  test('forwards the name from adapter when provided via props', async () => {
     const WithName = () => (
       <FormContainer>
-        <FormControlLabel
-          control={<MuiRadioElement name="my-radio" value="x" />}
-          label="X"
-        />
+        <FormControlLabel control={<MuiRadioElement name="my-radio" value="x" />} label="X" />
       </FormContainer>
     );
 
-    cy.mount(<WithName />);
-    cy.get('input[type=radio]').should('have.attr', 'name', 'my-radio');
+    const screen = await render(<WithName />);
+    const radio = screen.getByRole('radio');
+    await expect.element(radio).toHaveAttribute('name', 'my-radio');
   });
 
-  it('fires onChange when clicked', () => {
-    const onChange = cy.stub();
+  test('fires onChange when clicked', async () => {
+    const onChange = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
         <FormControlLabel
-          control={
-            <MuiRadioElement
-              name="choice"
-              onChange={(e) => onChange(e)}
-              value="a"
-            />
-          }
+          control={<MuiRadioElement name="choice" onChange={(e) => onChange(e)} value="a" />}
           label="X"
         />
       </FormContainer>,
     );
 
-    cy.get('input[type=radio]').click();
+    const radio = screen.getByRole('radio');
+    await radio.click();
 
-    cy.then(() => {
-      expect(onChange.called).to.equal(true);
-    });
+    await expect(onChange).toHaveBeenCalled();
   });
 
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <FormControlLabel
           control={<MuiRadioElement name="disabled" value="d" disabled />}
@@ -92,6 +79,7 @@ describe('MuiRadioElement', () => {
       </FormContainer>,
     );
 
-    cy.get('input[type=radio]').should('be.disabled');
+    const radio = screen.getByRole('radio');
+    await expect.element(radio).toBeDisabled();
   });
 });

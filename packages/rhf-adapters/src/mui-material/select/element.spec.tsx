@@ -1,80 +1,94 @@
 import * as React from 'react';
-import MenuItem from '@mui/material/MenuItem';
+import { expect, test, describe, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
+import { MenuItem, inputBaseClasses } from '@mui/material';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiSelectElement } from './element';
 import { MuiFormHelperTextElement } from '../form-helper-text/element';
 
 describe('MuiSelectElement', () => {
-  it('mounts and allows selecting an option', () => {
-    cy.mount(
-      <FormContainer>
+  test('mounts and allows selecting an option', async () => {
+    const screen = await render(
+      <FormContainer defaultValues={{ fruit: '' }}>
         <MuiSelectElement name="fruit" value="">
+          <MenuItem value="">Select Fruit</MenuItem>
           <MenuItem value="apple">Apple</MenuItem>
           <MenuItem value="banana">Banana</MenuItem>
         </MuiSelectElement>
       </FormContainer>,
     );
 
-    cy.get('.MuiInputBase-root').first().realClick();
-    cy.get('.MuiMenu-root')
-      .first()
-      .within(() => {
-        cy.contains('li', 'Banana').first().click();
-      });
-    cy.get('input').first().invoke('val').should('equal', 'banana');
+    const inputBase = screen.container.querySelector(`.${inputBaseClasses.root}`);
+    await expect(inputBase).toBeTruthy();
+    await userEvent.click(inputBase as HTMLElement);
+
+    const bananaOption = screen.getByRole('option', {
+      name: 'Banana',
+    });
+    await userEvent.click(bananaOption);
+
+    const input = screen.getByRole('combobox');
+    await expect.element(input).toBeInTheDocument();
+    await expect.element(input).toHaveTextContent('Banana');
   });
 
-  it('honors defaultValue from form', () => {
-    cy.mount(
+  test('honors defaultValue from form', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ fruit: 'apple' }}>
         <MuiSelectElement name="fruit" value="">
+          <MenuItem value="">Select Fruit</MenuItem>
           <MenuItem value="apple">Apple</MenuItem>
           <MenuItem value="banana">Banana</MenuItem>
         </MuiSelectElement>
       </FormContainer>,
     );
 
-    cy.get('input').first().invoke('val').should('equal', 'apple');
+    const input = screen.getByRole('combobox');
+    await expect.element(input).toHaveTextContent('Apple');
   });
 
-  it('forwards the name from adapter when provided via props', () => {
-    cy.mount(
-      <FormContainer>
+  test('forwards the name from adapter when provided via props', async () => {
+    const screen = await render(
+      <FormContainer defaultValues={{ 'my-select': '' }}>
         <MuiSelectElement name="my-select" value="">
+          <MenuItem value="">Select value</MenuItem>
           <MenuItem value="x">X</MenuItem>
         </MuiSelectElement>
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').should('have.attr', 'name', 'my-select');
+    const input = screen.container.querySelector('input[name="my-select"]');
+
+    await expect(input).toBeTruthy();
+    await expect(input).toHaveAttribute('name', 'my-select');
   });
 
-  it('fires onChange when selecting', () => {
-    const onChange = cy.stub();
+  test('fires onChange when selecting', async () => {
+    const onChange = vi.fn();
 
-    cy.mount(
-      <FormContainer>
+    const screen = await render(
+      <FormContainer defaultValues={{ fruit: '' }}>
         <MuiSelectElement name="fruit" onChange={(e) => onChange(e)}>
+          <MenuItem value="">Select Fruit</MenuItem>
           <MenuItem value="apple">Apple</MenuItem>
           <MenuItem value="banana">Banana</MenuItem>
         </MuiSelectElement>
       </FormContainer>,
     );
 
-    cy.get('.MuiInputBase-root').first().realClick();
-    cy.get('.MuiMenu-root')
-      .first()
-      .within(() => {
-        cy.contains('li', 'Banana').first().click();
-      });
+    const combobox = screen.getByRole('combobox');
+    await userEvent.click(combobox);
 
-    cy.then(() => {
-      expect(onChange.called).to.equal(true);
+    const bananaOption = screen.getByRole('option', {
+      name: 'Banana',
     });
+    await userEvent.click(bananaOption);
+    await expect(onChange).toHaveBeenCalled();
   });
 
-  it('shows error message when field has a validation error', () => {
-    cy.mount(
+  test('shows error message when field has a validation error', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{}}>
         <MuiSelectElement
           label="Fruit"
@@ -82,6 +96,7 @@ describe('MuiSelectElement', () => {
           name="fruit"
           required
         >
+          <MenuItem value="">Select Fruit</MenuItem>
           <MenuItem value="apple">Apple</MenuItem>
           <MenuItem value="banana">Banana</MenuItem>
         </MuiSelectElement>
@@ -90,10 +105,14 @@ describe('MuiSelectElement', () => {
       </FormContainer>,
     );
 
-    // trigger validation by submitting the form without selecting a value
-    cy.get('button[type="submit"]').click();
+    const submitButton = screen.getByRole('button', {
+      name: 'Submit',
+    });
 
-    // the error message should be visible
-    cy.contains('Select a fruit').should('be.visible');
+    await userEvent.click(submitButton);
+
+    const error = screen.getByText('Select a fruit');
+
+    await expect.element(error).toBeVisible();
   });
 });

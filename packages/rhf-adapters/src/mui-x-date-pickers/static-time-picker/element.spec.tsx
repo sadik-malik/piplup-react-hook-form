@@ -1,40 +1,48 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
 import dayjs from 'dayjs';
 import { MuiXStaticTimePickerElement } from './element';
+import { mouse } from 'vitest-browser-commands/playwright';
 
 describe('MuiXStaticTimePickerElement', () => {
-  it('renders default time from defaultValues', () => {
-    const dt = dayjs('2021-02-14T08:30');
+  test('renders default time from defaultValues', async () => {
+    const target = dayjs('2021-02-14T08:30:00.000Z');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormContainer defaultValues={{ time: dt }}>
+        <FormContainer defaultValues={{ time: target }}>
           <MuiXStaticTimePickerElement name="time" />
         </FormContainer>
       </LocalizationProvider>,
     );
 
-    cy.contains(
-      '.MuiTimePickerToolbar-hourMinuteLabel',
-      dt.format('HH'),
-    ).should('exist');
-    cy.contains(
-      '.MuiTimePickerToolbar-hourMinuteLabel',
-      dt.format('mm'),
-    ).should('exist');
-    cy.contains(
+    const hour = screen.container.querySelector(
+      '.MuiTimePickerToolbar-hourMinuteLabel button:first-of-type',
+    ) as HTMLElement;
+    await expect.element(hour).toBeInTheDocument();
+    await expect.element(hour).toHaveTextContent(target.format('hh'));
+
+    const minute = screen.container.querySelector(
+      '.MuiTimePickerToolbar-hourMinuteLabel button:last-of-type',
+    ) as HTMLElement;
+    await expect.element(minute).toBeInTheDocument();
+    await expect.element(minute).toHaveTextContent(target.format('mm'));
+
+    const meridium = screen.container.querySelector(
       '.MuiTimePickerToolbar-ampmLabel[data-selected="true"]',
-      dt.format('A'),
-    ).should('exist');
+    ) as HTMLElement;
+    await expect.element(meridium).toBeInTheDocument();
+    await expect.element(meridium).toHaveTextContent(target.format('A'));
   });
 
-  it('selects a time option and updates the displayed time', () => {
+  test('selects a time option and updates the displayed time', async () => {
     const target = dayjs().hour(9).minute(30);
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer>
           <MuiXStaticTimePickerElement name="time" />
@@ -43,27 +51,36 @@ describe('MuiXStaticTimePickerElement', () => {
     );
 
     // Static time picker renders selectable options; match the combined time label
-    cy.get(`[aria-label="${target.format('H')} hours"]`)
-      .first()
-      .realClick();
-    cy.then(() => {
-      cy.get(`[aria-label="${target.format('mm')} minutes"]`)
-        .first()
-        .realClick();
-    });
+    const hourBtn = screen.getByLabelText(`${target.format('h')} hours`);
+    await expect.element(hourBtn).toBeInTheDocument();
+    const hourBtnRect = hourBtn.element().getBoundingClientRect();
+    mouse.click(hourBtnRect.left + hourBtnRect.width / 2, hourBtnRect.top + hourBtnRect.height / 2);
+
+    const minuteBtn = screen.getByLabelText(`${target.format('mm')} minutes`);
+    await expect.element(minuteBtn).toBeInTheDocument();
+    const minuteBtnRect = minuteBtn.element().getBoundingClientRect();
+    mouse.click(
+      minuteBtnRect.left + minuteBtnRect.width / 2,
+      minuteBtnRect.top + minuteBtnRect.height / 2,
+    );
 
     // Verify time
-    cy.contains(
-      '.MuiTimePickerToolbar-hourMinuteLabel',
-      target.format('HH'),
-    ).should('exist');
-    cy.contains(
-      '.MuiTimePickerToolbar-hourMinuteLabel',
-      target.format('mm'),
-    ).should('exist');
-    cy.contains(
+    const hour = screen.container.querySelector(
+      '.MuiTimePickerToolbar-hourMinuteLabel button:first-of-type',
+    ) as HTMLElement;
+    await expect.element(hour).toBeInTheDocument();
+    await expect.element(hour).toHaveTextContent(target.format('hh'));
+
+    const minute = screen.container.querySelector(
+      '.MuiTimePickerToolbar-hourMinuteLabel button:last-of-type',
+    ) as HTMLElement;
+    await expect.element(minute).toBeInTheDocument();
+    await expect.element(minute).toHaveTextContent(target.format('mm'));
+
+    const meridium = screen.container.querySelector(
       '.MuiTimePickerToolbar-ampmLabel[data-selected="true"]',
-      target.format('A'),
-    ).should('exist');
+    ) as HTMLElement;
+    await expect.element(meridium).toBeInTheDocument();
+    await expect.element(meridium).toHaveTextContent(target.format('A'));
   });
 });

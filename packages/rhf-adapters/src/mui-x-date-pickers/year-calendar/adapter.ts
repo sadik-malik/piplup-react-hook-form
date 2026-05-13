@@ -21,11 +21,7 @@ export function useMuiXYearCalendarAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiXYearCalendarAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: UseMuiXYearCalendarAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   const adapter = useBaseDatePickerAdapter(props, ref);

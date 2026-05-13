@@ -3,11 +3,9 @@ import { Fab, type FabProps } from '@mui/material';
 import { type FieldValues } from 'react-hook-form';
 import { useMuiFabAdapter, type UseMuiFabAdapterProps } from './adapter';
 
-export interface MuiFabElementProps<
-  TFieldValues extends FieldValues = FieldValues,
->
+export interface MuiFabElementProps<TFieldValues extends FieldValues = FieldValues>
   extends
-    Omit<FabProps, 'name' | 'onClick' | 'style'>,
+    Omit<FabProps, 'name' | 'onClick' | 'style' | 'type'>,
     Omit<
       UseMuiFabAdapterProps<TFieldValues>,
       'classes' | 'composeClassName' | 'composeHelperText' | 'helperText'
@@ -61,9 +59,7 @@ function MuiFabComponent<TFieldValues extends FieldValues = FieldValues>(
   return <Fab {...rest} {...adapter} />;
 }
 
-export const MuiFabElement = React.forwardRef(
-  MuiFabComponent,
-) as typeof MuiFabComponent & {
+export const MuiFabElement = React.forwardRef(MuiFabComponent) as typeof MuiFabComponent & {
   displayName?: string;
 };
 

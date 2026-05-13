@@ -19,11 +19,7 @@ export interface MuiXStaticDateTimePickerElementProps<
   extends
     Omit<StaticDateTimePickerProps, 'defaultValue' | 'name' | 'value'>,
     Omit<
-      UseMuiXStaticDateTimePickerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >,
+      UseMuiXStaticDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -50,11 +46,7 @@ function MuiXStaticDateTimePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXStaticDateTimePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXStaticDateTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
@@ -142,6 +134,5 @@ export const MuiXStaticDateTimePickerElement = React.forwardRef(
 ) as typeof MuiXStaticDateTimePickerComponent & { displayName?: string };
 
 if (process.env.NODE_ENV !== 'production') {
-  MuiXStaticDateTimePickerElement.displayName =
-    'MuiXStaticDateTimePickerElement';
+  MuiXStaticDateTimePickerElement.displayName = 'MuiXStaticDateTimePickerElement';
 }

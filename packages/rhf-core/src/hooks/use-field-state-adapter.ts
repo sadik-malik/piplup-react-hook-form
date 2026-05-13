@@ -37,10 +37,7 @@ export function useFieldStateAdapter<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
->(
-  props: UseFieldStateAdapterProps<TFieldValues, TName>,
-  ref?: React.Ref<RefType>,
-) {
+>(props: UseFieldStateAdapterProps<TFieldValues, TName>, ref?: React.Ref<RefType>) {
   const {
     classes,
     className,

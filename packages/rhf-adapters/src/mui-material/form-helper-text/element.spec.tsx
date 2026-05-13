@@ -1,35 +1,38 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { describe, expect, test } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { useForm } from 'react-hook-form';
 import { MuiFormHelperTextElement } from './element';
 
 describe('MuiFormHelperTextElement', () => {
-  it('renders children as helper text when no error', () => {
-    cy.mount(
+  test('renders children as helper text when no error', async () => {
+    const screen = await render(
       <FormContainer>
-        <MuiFormHelperTextElement name="helperText">
+        <MuiFormHelperTextElement data-testid="helperText" name="helperText">
           Helpful text
         </MuiFormHelperTextElement>
       </FormContainer>,
     );
 
-    cy.get('p').should('contain.text', 'Helpful text');
+    const helperText = screen.getByTestId('helperText');
+    await expect.element(helperText).toHaveTextContent('Helpful text');
   });
 
-  it('does not render when renderOnError is true and there is no error', () => {
-    cy.mount(
+  test('does not render when renderOnError is true and there is no error', async () => {
+    const screen = await render(
       <FormContainer>
-        <MuiFormHelperTextElement name="missing" renderOnError>
+        <MuiFormHelperTextElement data-testid="helperText" name="missing" renderOnError>
           Should not show
         </MuiFormHelperTextElement>
       </FormContainer>,
     );
 
-    cy.get('p').should('not.exist');
+    const helperText = screen.getByTestId('helperText');
+    await expect.element(helperText).not.toBeInTheDocument();
   });
 
-  it('shows helper text when field has validation error and renderOnError is true', () => {
+  test('shows helper text when field has validation error and renderOnError is true', async () => {
     const SubmitForm = () => {
       const { control, handleSubmit, register } = useForm<{ name: string }>({
         defaultValues: { name: '' },
@@ -37,7 +40,12 @@ describe('MuiFormHelperTextElement', () => {
       return (
         <form onSubmit={handleSubmit(() => {})} noValidate>
           <input data-cy="name" {...register('name', { required: true })} />
-          <MuiFormHelperTextElement control={control} name="name" renderOnError>
+          <MuiFormHelperTextElement
+            data-testid="helperText"
+            control={control}
+            name="name"
+            renderOnError
+          >
             Required
           </MuiFormHelperTextElement>
           <button type="submit">Submit</button>
@@ -45,27 +53,24 @@ describe('MuiFormHelperTextElement', () => {
       );
     };
 
-    cy.mount(<SubmitForm />);
+    const screen = await render(<SubmitForm />);
 
-    cy.get('button[type=submit]').click();
-    cy.then(() => {
-      cy.get('p').should('contain.text', 'Required');
-    });
+    await screen.getByRole('button').click();
+    const helperText = screen.getByTestId('helperText');
+    await expect.element(helperText).toHaveTextContent('Required');
   });
 
-  it('uses provided errorParser to render parsed message', () => {
+  test('uses provided errorParser to render parsed message', async () => {
     const SubmitForm = () => {
       const methods = useForm<{ name: string }>({
         defaultValues: { name: '' },
       });
       return (
         <form onSubmit={methods.handleSubmit(() => {})} noValidate>
-          <input
-            data-cy="name"
-            {...methods.register('name', { required: true })}
-          />
+          <input data-cy="name" {...methods.register('name', { required: true })} />
           <MuiFormHelperTextElement
             control={methods.control}
+            data-testid="helperText"
             errorParser={() => 'parsed-message'}
             name="name"
             renderOnError
@@ -77,11 +82,10 @@ describe('MuiFormHelperTextElement', () => {
       );
     };
 
-    cy.mount(<SubmitForm />);
+    const screen = await render(<SubmitForm />);
+    await screen.getByRole('button').click();
 
-    cy.get('button[type=submit]').click();
-    cy.then(() => {
-      cy.get('p').should('contain.text', 'parsed-message');
-    });
+    const helperText = screen.getByTestId('helperText');
+    await expect.element(helperText).toHaveTextContent('parsed-message');
   });
 });

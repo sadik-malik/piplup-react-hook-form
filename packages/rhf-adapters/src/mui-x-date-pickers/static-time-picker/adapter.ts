@@ -21,11 +21,7 @@ export function useMuiXStaticTimePickerAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiXStaticTimePickerAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: UseMuiXStaticTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   const adapter = useBaseTimePickerAdapter(

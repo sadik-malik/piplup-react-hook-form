@@ -1,54 +1,66 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { test, vi, expect, describe } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { useForm } from 'react-hook-form';
 import { HtmlButtonElement } from './element';
+import { HtmlInputElement } from '../input';
 
 describe('HtmlButtonElement', () => {
-  it('calls provided onClick and does not reset when type is button', () => {
-    const onClick = cy.stub();
+  test('calls provided onClick and does not reset when type is button', async () => {
+    const onClick = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
-        <HtmlButtonElement onClick={(e) => onClick(e)} type="button">
-          Click
+        <label>
+          Name
+          <HtmlInputElement name="name" />
+        </label>
+        <HtmlButtonElement onClick={onClick} type="button" data-testid="">
+          Submit
         </HtmlButtonElement>
       </FormContainer>,
     );
 
-    cy.get('button').click();
+    await screen.getByRole('textbox', { name: 'Name' }).fill('Test');
+    await screen.getByRole('button', { name: /submit/i }).click();
 
-    cy.then(() => {
-      expect(onClick.called).to.equal(true);
-    });
+    expect(onClick).toHaveBeenCalled();
+    await expect.element(screen.getByRole('textbox', { name: 'Name' })).toHaveValue('Test');
   });
 
-  it('resets the form when type is reset', () => {
+  test('resets the form when type is reset', async () => {
+    const onClick = vi.fn();
+
     const SubmitForm = () => {
-      const { control, handleSubmit, register } = useForm<{ foo: string }>({
+      const { control, handleSubmit } = useForm<{ foo: string }>({
         defaultValues: { foo: 'bar' },
       });
       return (
         <form onSubmit={handleSubmit(() => {})} noValidate>
-          <input data-cy="foo" placeholder="foo" {...register('foo')} />
-          <HtmlButtonElement control={control} type="reset">
+          <label>
+            Input
+            <HtmlInputElement control={control} name="foo" data-testid="foo" />
+          </label>
+          <HtmlButtonElement data-testid="reset" control={control} type="reset" onClick={onClick}>
             Reset
           </HtmlButtonElement>
         </form>
       );
     };
 
-    cy.mount(<SubmitForm />);
+    const screen = await render(<SubmitForm />);
+    const input = screen.getByTestId('foo');
 
-    cy.get('[data-cy=foo]').clear();
-    cy.get('[data-cy=foo]').type('changed');
-    cy.get('button[type=reset]').click();
-    cy.then(() => {
-      cy.get('[data-cy=foo]').should('have.value', 'bar');
-    });
+    await input.clear();
+    await input.fill('baz');
+    await screen.getByTestId('reset').click();
+    expect(onClick).toHaveBeenCalled();
+
+    await expect.element(input).toHaveValue('bar');
   });
 
-  it('forwards the name from adapter when provided via props', () => {
+  test('forwards the name from adapter when provided via props', async () => {
     const WithName = () => {
       return (
         <FormContainer>
@@ -57,23 +69,20 @@ describe('HtmlButtonElement', () => {
       );
     };
 
-    cy.mount(<WithName />);
-    cy.get('button').should('have.attr', 'name', 'my-button');
+    const screen = await render(<WithName />);
+    expect(screen.getByRole('button')).toHaveAttribute('name', 'my-button');
   });
 
-  it('submits the parent form when type is submit', () => {
-    const onSubmit = cy.stub();
+  test('submits the parent form when type is submit', async () => {
+    const onSubmit = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer onSubmit={onSubmit}>
         <HtmlButtonElement type="submit">Submit</HtmlButtonElement>
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
-
-    cy.then(() => {
-      expect(onSubmit.called).to.equal(true);
-    });
+    await screen.getByRole('button', { name: /submit/i }).click();
+    expect(onSubmit).toHaveBeenCalled();
   });
 });

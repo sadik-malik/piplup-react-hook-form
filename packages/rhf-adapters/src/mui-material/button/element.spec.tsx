@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { test, expect, describe, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { useForm } from 'react-hook-form';
 import { MuiButtonElement } from './element';
+import { HtmlInputElement } from '../../html';
 
 describe('MuiButtonElement', () => {
-  it('calls provided onClick and does not reset when type is button', () => {
-    const onClick = cy.stub();
+  test('calls provided onClick and does not reset when type is button', async () => {
+    const onClick = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
         <MuiButtonElement onClick={(e) => onClick(e)} type="button">
           Click
@@ -16,21 +20,19 @@ describe('MuiButtonElement', () => {
       </FormContainer>,
     );
 
-    cy.get('button').click();
+    await screen.getByRole('button').click();
 
-    cy.then(() => {
-      expect(onClick.called).to.equal(true);
-    });
+    expect(onClick).toHaveBeenCalled();
   });
 
-  it('resets the form when type is reset', () => {
+  test('resets the form when type is reset', async () => {
     const SubmitForm = () => {
-      const { control, handleSubmit, register } = useForm<{ foo: string }>({
+      const { control, handleSubmit } = useForm<{ foo: string }>({
         defaultValues: { foo: 'bar' },
       });
       return (
         <form onSubmit={handleSubmit(() => {})} noValidate>
-          <input data-cy="foo" placeholder="foo" {...register('foo')} />
+          <HtmlInputElement placeholder="foo" control={control} name="foo" />
           <MuiButtonElement control={control} type="reset">
             Reset
           </MuiButtonElement>
@@ -38,17 +40,17 @@ describe('MuiButtonElement', () => {
       );
     };
 
-    cy.mount(<SubmitForm />);
+    const screen = await render(<SubmitForm />);
 
-    cy.get('[data-cy=foo]').clear();
-    cy.get('[data-cy=foo]').type('changed');
-    cy.get('button[type=reset]').click();
-    cy.then(() => {
-      cy.get('[data-cy=foo]').should('have.value', 'bar');
-    });
+    const input = screen.getByPlaceholder('foo');
+    await userEvent.clear(input);
+    await userEvent.type(input, 'changed');
+    await userEvent.click(screen.getByRole('button', { name: /reset/i }));
+
+    expect(input).toHaveValue('bar');
   });
 
-  it('forwards the name from adapter when provided via props', () => {
+  test('forwards the name from adapter when provided via props', async () => {
     const WithName = () => {
       return (
         <FormContainer>
@@ -57,32 +59,30 @@ describe('MuiButtonElement', () => {
       );
     };
 
-    cy.mount(<WithName />);
-    cy.get('button').should('have.attr', 'name', 'my-button');
+    const screen = await render(<WithName />);
+    expect(screen.getByRole('button')).toHaveAttribute('name', 'my-button');
   });
 
-  it('submits the parent form when type is submit', () => {
-    const onSubmit = cy.stub();
+  test('submits the parent form when type is submit', async () => {
+    const onSubmit = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer onSubmit={onSubmit}>
         <MuiButtonElement type="submit">Submit</MuiButtonElement>
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
+    await userEvent.click(screen.getByRole('button', { name: /submit/i }));
 
-    cy.then(() => {
-      expect(onSubmit.called).to.equal(true);
-    });
+    expect(onSubmit).toHaveBeenCalled();
   });
 
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiButtonElement disabled>Disabled</MuiButtonElement>
       </FormContainer>,
     );
-    cy.get('button').should('be.disabled');
+    expect(screen.getByRole('button')).toBeDisabled();
   });
 });

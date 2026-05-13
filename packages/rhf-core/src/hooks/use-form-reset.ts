@@ -1,19 +1,13 @@
 import * as React from 'react';
-import {
-  type Control,
-  type FieldValues,
-  type UseFormReset,
-  useFormContext,
-} from 'react-hook-form';
+import { type Control, type FieldValues, type UseFormReset, useFormContext } from 'react-hook-form';
 
 /**
  * Defines the properties for the `useFormReset` hook.
  */
-export type UseFormResetProps<TFieldValues extends FieldValues = FieldValues> =
-  {
-    /** The control object from react-hook-form. */
-    control?: Control<TFieldValues>;
-  };
+export type UseFormResetProps<TFieldValues extends FieldValues = FieldValues> = {
+  /** The control object from react-hook-form. */
+  control?: Control<TFieldValues>;
+};
 
 /**
  * Defines the result type of the `useFormReset` hook.
@@ -41,13 +35,14 @@ export function useFormReset<TFieldValues extends FieldValues = FieldValues>(
   const reset: UseFormReset<TFieldValues> = React.useCallback(
     (formValues, keepStateOptions) => {
       const _reset = control._reset;
+      const options = control._options;
       _reset(
         typeof formValues === 'function'
           ? (formValues as (values: TFieldValues) => TFieldValues)(
               control._formValues as TFieldValues,
             )
           : formValues,
-        keepStateOptions,
+        { ...options?.resetOptions, ...keepStateOptions },
       );
     },
     [control._reset, control._formValues],

@@ -1,10 +1,7 @@
 import type * as React from 'react';
 import { useFormControl } from '@mui/material';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useHtmlInputAdapter,
-  type UseHtmlInputAdapterProps,
-} from '../../html/input/adapter';
+import { useHtmlInputAdapter, type UseHtmlInputAdapterProps } from '../../html/input/adapter';
 
 export type UseMuiOutlinedInputAdapterProps<
   TTransformedValue,
@@ -18,11 +15,7 @@ export function useMuiOutlinedInputAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiOutlinedInputAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: UseMuiOutlinedInputAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   const { disabled: disabledProp, required: requiredProp, ...rest } = props;
@@ -41,12 +34,7 @@ export function useMuiOutlinedInputAdapter<
     }
   }
 
-  const adapter = useHtmlInputAdapter<
-    TTransformedValue,
-    TFieldValues,
-    TName,
-    RefType
-  >(
+  const adapter = useHtmlInputAdapter<TTransformedValue, TFieldValues, TName, RefType>(
     {
       ...rest,
       disabled,

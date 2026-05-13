@@ -9,9 +9,7 @@ import {
 /**
  * Defines the properties for the `useFormSetFocus` hook.
  */
-export type UseFormSetFocusProps<
-  TFieldValues extends FieldValues = FieldValues,
-> = {
+export type UseFormSetFocusProps<TFieldValues extends FieldValues = FieldValues> = {
   /** The control object from react-hook-form. */
   control?: Control<TFieldValues>;
 };
@@ -19,9 +17,8 @@ export type UseFormSetFocusProps<
 /**
  * Defines the result type of the `useFormSetFocus` hook.
  */
-export type UseFormSetFocusResult<
-  TFieldValues extends FieldValues = FieldValues,
-> = UseFormSetFocus<TFieldValues>;
+export type UseFormSetFocusResult<TFieldValues extends FieldValues = FieldValues> =
+  UseFormSetFocus<TFieldValues>;
 
 /**
  * Hook to provide a function to focus the form field.
@@ -42,15 +39,13 @@ export function useFormSetFocus<TFieldValues extends FieldValues = FieldValues>(
     const fieldReference = field && field._f;
 
     if (fieldReference) {
-      const fieldRef = fieldReference.refs
-        ? fieldReference.refs[0]
-        : fieldReference.ref;
+      const fieldRef = fieldReference.refs ? fieldReference.refs[0] : fieldReference.ref;
 
       if (fieldRef.focus) {
         fieldRef.focus();
-        options.shouldSelect &&
-          typeof fieldRef.select === 'function' &&
+        if (options.shouldSelect && typeof fieldRef.select === 'function') {
           fieldRef.select();
+        }
       }
     }
   };

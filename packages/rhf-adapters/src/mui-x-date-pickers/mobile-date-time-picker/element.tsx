@@ -17,16 +17,9 @@ export interface MuiXMobileDateTimePickerElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
+    Omit<MobileDateTimePickerProps, 'defaultValue' | 'name' | 'value'>,
     Omit<
-      MobileDateTimePickerProps,
-      'defaultValue' | 'name' | 'value'
-    >,
-    Omit<
-      UseMuiXMobileDateTimePickerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >,
+      UseMuiXMobileDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -54,11 +47,7 @@ function MuiXMobileDateTimePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXMobileDateTimePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXMobileDateTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {
@@ -146,6 +135,5 @@ export const MuiXMobileDateTimePickerElement = React.forwardRef(
 ) as typeof MuiXMobileDateTimePickerComponent & { displayName?: string };
 
 if (process.env.NODE_ENV !== 'production') {
-  MuiXMobileDateTimePickerElement.displayName =
-    'MuiXDesktopDateTimePickerElement';
+  MuiXMobileDateTimePickerElement.displayName = 'MuiXDesktopDateTimePickerElement';
 }

@@ -1,13 +1,17 @@
 import * as React from 'react';
+import { test, expect, describe, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { useForm } from 'react-hook-form';
 import { MuiFabElement } from './element';
+import { HtmlInputElement } from '../../html';
 
 describe('MuiFabElement', () => {
-  it('calls provided onClick and does not reset when type is button', () => {
-    const onClick = cy.stub();
+  test('calls provided onClick and does not reset when type is button', async () => {
+    const onClick = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
         <MuiFabElement onClick={(e) => onClick(e)} type="button">
           Click
@@ -15,16 +19,13 @@ describe('MuiFabElement', () => {
       </FormContainer>,
     );
 
-    cy.get('button').click();
-
-    cy.then(() => {
-      expect(onClick.called).to.equal(true);
-    });
+    await screen.getByRole('button').click();
+    await expect(onClick).toHaveBeenCalled();
   });
 
-  it('resets the form when type is reset', () => {
+  test('resets the form when type is reset', async () => {
     const SubmitForm = () => {
-      const { control, handleSubmit, register } = useForm<{ foo: string }>({
+      const { control, handleSubmit } = useForm<{ foo: string }>({
         defaultValues: { foo: 'bar' },
       });
       return (
@@ -34,7 +35,7 @@ describe('MuiFabElement', () => {
           })}
           noValidate
         >
-          <input data-cy="foo" placeholder="foo" {...register('foo')} />
+          <HtmlInputElement data-testid="foo" placeholder="foo" control={control} name="foo" />
           <MuiFabElement control={control} type="reset">
             Reset
           </MuiFabElement>
@@ -42,17 +43,15 @@ describe('MuiFabElement', () => {
       );
     };
 
-    cy.mount(<SubmitForm />);
-
-    cy.get('[data-cy=foo]').clear();
-    cy.get('[data-cy=foo]').type('changed');
-    cy.get('button[type=reset]').click();
-    cy.then(() => {
-      cy.get('[data-cy=foo]').should('have.value', 'bar');
-    });
+    const screen = await render(<SubmitForm />);
+    const input = screen.getByTestId('foo');
+    await userEvent.clear(input);
+    await userEvent.type(input, 'changed');
+    await screen.getByRole('button').click();
+    await expect.element(input).toHaveValue('bar');
   });
 
-  it('forwards the name from adapter when provided via props', () => {
+  test('forwards the name from adapter when provided via props', async () => {
     const WithName = () => {
       return (
         <FormContainer>
@@ -61,33 +60,32 @@ describe('MuiFabElement', () => {
       );
     };
 
-    cy.mount(<WithName />);
-    cy.get('button').should('have.attr', 'name', 'my-fab');
+    const screen = await render(<WithName />);
+    const button = screen.getByRole('button');
+    await expect.element(button).toHaveAttribute('name', 'my-fab');
   });
 
-  it('submits the parent form when type is submit', () => {
-    const onSubmit = cy.stub();
+  test('submits the parent form when type is submit', async () => {
+    const onSubmit = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer onSubmit={onSubmit}>
         <MuiFabElement type="submit">Submit</MuiFabElement>
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
-
-    cy.then(() => {
-      expect(onSubmit.called).to.equal(true);
-    });
+    await screen.getByRole('button').click();
+    await expect(onSubmit).toHaveBeenCalled();
   });
 
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiFabElement disabled>Disabled</MuiFabElement>
       </FormContainer>,
     );
 
-    cy.get('button').should('be.disabled');
+    const button = screen.getByRole('button');
+    await expect.element(button).toBeDisabled();
   });
 });

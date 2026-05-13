@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // Root tsconfig — defines base compiler options.
+  // All packages extend from tsconfig.base.json (also at root).
+  // This file also acts as the project-references entry point so that
+  // `tsc --build` from the root builds every package in dependency order.
+  "files": [],
+  "references": [
+    { "path": "./packages/rhf-core" },
+    { "path": "./packages/rhf-adapters" }
+  ]
+}

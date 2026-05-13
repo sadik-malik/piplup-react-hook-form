@@ -1,7 +1,4 @@
-import {
-  useFieldStateAdapter,
-  type UseFieldStateAdapterProps,
-} from '@piplup/rhf-core';
+import { useFieldStateAdapter, type UseFieldStateAdapterProps } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
 export interface UseHtmlFormLabelProps<

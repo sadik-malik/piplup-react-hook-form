@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useHtmlFormHelperTextAdapter,
-  type UseHtmlFormHelperTextProps,
-} from './adapter';
+import { useHtmlFormHelperTextAdapter, type UseHtmlFormHelperTextProps } from './adapter';
 
 export interface HtmlFormHelperTextElementProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -13,10 +10,7 @@ export interface HtmlFormHelperTextElementProps<
     Omit<React.ComponentProps<'p'>, 'style'>,
     Omit<
       UseHtmlFormHelperTextProps<TFieldValues, TName>,
-      | 'composeClassName'
-      | 'composeHelperText'
-      | 'helperText'
-      | 'internalClasses'
+      'composeClassName' | 'composeHelperText' | 'helperText' | 'internalClasses'
     > {
   /**
    * Render component only, if there is an error

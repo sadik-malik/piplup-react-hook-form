@@ -18,7 +18,11 @@ export function validateChipValues(
     const length = valuesArray.length;
 
     while (i < length) {
-      const validationData = validationFunc(valuesArray[i++]);
+      const value = valuesArray[i++];
+      if (typeof value !== 'string') {
+        continue;
+      }
+      const validationData = validationFunc(value);
 
       if (validationData === undefined) continue;
 

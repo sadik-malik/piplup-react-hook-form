@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
 import { useForm, useFormContext } from 'react-hook-form';
 import { FormErrorParserContext } from './context/form-error-parser-context';
 import { FormContainer } from './form';
@@ -15,44 +18,42 @@ const ChildRequired = () => {
 };
 
 describe('FormContainer', () => {
-  it('submits form data via onSubmit', () => {
-    const onSubmit = cy.stub();
+  it('submits form data via onSubmit', async () => {
+    const onSubmit = vi.fn();
 
-    cy.mount(
+    const { container } = render(
       <FormContainer onSubmit={(data) => onSubmit(data)}>
         <Child />
         <button type="submit">Submit</button>
       </FormContainer>,
     );
 
-    cy.get('[data-cy=name]').type('Alice');
-    cy.get('button[type=submit]').click();
-    cy.then(() => {
-      expect(onSubmit).to.have.been.calledWith({ name: 'Alice' });
-    });
+    const input = container.querySelector('[data-cy="name"]') as HTMLInputElement;
+    await userEvent.type(input, 'Alice');
+    await userEvent.click(screen.getByRole('button', { name: /submit/i }));
+
+    expect(onSubmit).toHaveBeenCalledWith({ name: 'Alice' });
   });
 
-  it('calls onError when validation fails', () => {
-    const onError = cy.stub();
+  it('calls onError when validation fails', async () => {
+    const onError = vi.fn();
 
-    cy.mount(
+    render(
       <FormContainer onError={(err) => onError(err)} onSubmit={() => {}}>
         <ChildRequired />
         <button type="submit">Submit</button>
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
+    await userEvent.click(screen.getByRole('button', { name: /submit/i }));
 
-    cy.then(() => {
-      expect(onError.called).to.equal(true);
-      const err = onError.getCall(0).args[0];
-      expect(err).to.have.property('name');
-    });
+    expect(onError).toHaveBeenCalled();
+    const err = onError.mock.calls[0][0];
+    expect(err).toHaveProperty('name');
   });
 
-  it('accepts a provided formContext prop and submits correctly', () => {
-    const onSubmit = cy.stub();
+  it('accepts a provided formContext prop and submits correctly', async () => {
+    const onSubmit = vi.fn();
 
     const WithForm = () => {
       const form = useForm();
@@ -64,18 +65,17 @@ describe('FormContainer', () => {
       );
     };
 
-    cy.mount(<WithForm />);
+    const { container } = render(<WithForm />);
 
-    cy.get('[data-cy=name]').type('Bob');
-    cy.get('button[type=submit]').click();
+    const input = container.querySelector('[data-cy="name"]') as HTMLInputElement;
+    await userEvent.type(input, 'Bob');
+    await userEvent.click(screen.getByRole('button', { name: /submit/i }));
 
-    cy.then(() => {
-      expect(onSubmit).to.have.been.calledWith({ name: 'Bob' });
-    });
+    expect(onSubmit).toHaveBeenCalledWith({ name: 'Bob' });
   });
 
-  it('provides the errorParser via context when passed', () => {
-    const parser = cy.stub().returns('parsed');
+  it('provides the errorParser via context when passed', async () => {
+    const parser = vi.fn().mockReturnValue('parsed');
 
     const ParserConsumer = () => {
       const parse = React.useContext(FormErrorParserContext);
@@ -86,12 +86,13 @@ describe('FormContainer', () => {
       return <div data-cy="parser">{t}</div>;
     };
 
-    cy.mount(
+    render(
       <FormContainer errorParser={parser} onSubmit={() => {}}>
         <ParserConsumer />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=parser]').should('contain', 'function');
+    const parserEl = await screen.findByText(/function/);
+    expect(parserEl).toBeTruthy();
   });
 });

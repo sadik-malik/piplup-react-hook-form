@@ -33,10 +33,7 @@ export function useMuiXDatePickerAdapter<
 ) {
   const { inputRef, onClose, slotProps } = props;
 
-  const { error, helperText, onBlur, ...adapter } = useBaseDatePickerAdapter(
-    props,
-    inputRef,
-  );
+  const { error, helperText, onBlur, ...adapter } = useBaseDatePickerAdapter(props, inputRef);
 
   const composedSlotProps = useComposePickerSlotProps({
     error,

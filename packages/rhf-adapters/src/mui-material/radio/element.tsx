@@ -10,10 +10,7 @@ export interface MuiRadioElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
-    Omit<
-      RadioProps,
-      'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
-    >,
+    Omit<RadioProps, 'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'>,
     Omit<
       UseMuiRadioAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
@@ -28,12 +25,7 @@ export interface MuiRadioElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    RadioProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<RadioProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiRadioComponent<
@@ -115,9 +107,7 @@ function MuiRadioComponent<
   return <Radio {...rest} {...adapter} />;
 }
 
-export const MuiRadioElement = React.forwardRef(
-  MuiRadioComponent,
-) as typeof MuiRadioComponent & {
+export const MuiRadioElement = React.forwardRef(MuiRadioComponent) as typeof MuiRadioComponent & {
   displayName?: string;
 };
 

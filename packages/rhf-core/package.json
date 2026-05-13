@@ -5,22 +5,28 @@
   "description": "Core library containing hooks and utility functions designed to streamline the integration of react-hook-form with UI frameworks, by managing boilerplate code.",
   "keywords": [
     "react-hook-form",
-    "react-hook-form core",
     "react-hook-form adapters",
-    "react-hook-form mui",
+    "react-hook-form core",
     "react-hook-form material",
+    "react-hook-form mui",
     "rhf-adapters",
     "rhf-core"
   ],
   "homepage": "https://www.piplupjs.com",
+  "license": "MIT",
   "repository": {
     "url": "git+https://github.com/sadik-malik/piplup-react-hook-form.git",
     "directory": "packages/rhf-core"
   },
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./package.json": "./dist/package.json",
+    "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
@@ -32,21 +38,32 @@
       "require": "./dist/utils/index.js"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest"
+  },
   "dependencies": {
     "@piplup/utils": "3.2.4"
   },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "jsdom": "^29.1.1",
+    "vite": "^8.0.12",
+    "vite-plugin-dts": "^5.0.0",
+    "vitest": "^4.1.6"
+  },
   "peerDependencies": {
     "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-hook-form": ">=7.65.0 <8.0.0"
   },
-  "peerDependenciesMeta": {},
-  "publishConfig": {
-    "access": "public"
-  }
+  "peerDependenciesMeta": {}
 }

@@ -1,53 +1,39 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+packages/**/node_modules/
+.npm/
 
-# compiled output
-dist
-tmp
-/out-tsc
+# Build outputs
+dist/
+packages/**/dist/
+*.tsbuildinfo
 
-# dependencies
-node_modules
+# Cypress
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# Coverage
+coverage/
+.nyc_output/
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# Env files
+.env
+.env.local
+.env.*.local
 
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
+# Logs
+*.log
+npm-debug.log*
 
-# System Files
+# OS
 .DS_Store
 Thumbs.db
 
-.nx/cache
-.nx/workspace-data
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
 
-vite.config.*.timestamp*
-.vercel
-
-vitest.config.*.timestamp*
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
-.claude/worktrees
-.claude/settings.local.json
-.nx/polygraph
-.nx/self-healing
+# Release
+CHANGELOG.md.bak

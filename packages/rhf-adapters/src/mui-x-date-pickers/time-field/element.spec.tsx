@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { keyboard, mouse } from 'vitest-browser-commands/playwright';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
@@ -6,27 +9,26 @@ import dayjs from 'dayjs';
 import { MuiXTimeFieldElement } from './element';
 
 describe('MuiXTimeFieldElement', () => {
-  it('renders default time from defaultValues', () => {
-    const dt = dayjs('2021-02-14T08:30');
+  test('renders default time from defaultValues', async () => {
+    const target = dayjs('2021-02-14T08:30:00.000Z');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormContainer defaultValues={{ time: dt }}>
+        <FormContainer defaultValues={{ time: target }}>
           <MuiXTimeFieldElement name="time" />
         </FormContainer>
       </LocalizationProvider>,
     );
 
-    cy.get('input')
-      .should('exist')
-      .invoke('val')
-      .should('contain', dt.format('HH:mm'));
+    const field = screen.getByRole('group');
+    await expect.element(field).toBeInTheDocument();
+    await expect.element(field).toHaveTextContent(target.format('hh:mm A'));
   });
 
-  it('opens the time selector and selects a time option, updating the displayed time', () => {
+  test('opens the time selector and selects a time option, updating the displayed time', async () => {
     const target = dayjs().hour(11).minute(45);
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer>
           <MuiXTimeFieldElement name="time" />
@@ -34,10 +36,14 @@ describe('MuiXTimeFieldElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.get('.MuiPickersTextField-root').first().realClick();
-    cy.realType(target.format('HHmm'));
-    cy.realType(target.format('A') === 'AM' ? '{uparrow}' : '{downarrow}');
+    const field = screen.getByRole('group');
+    await expect.element(field).toBeInTheDocument();
 
-    cy.get('input').invoke('val').should('contain', target.format('HH:mm'));
+    const fieldRect = field.element().getBoundingClientRect();
+    await mouse.click(fieldRect.left + fieldRect.width / 2, fieldRect.top + fieldRect.height / 2);
+    await keyboard.type(target.format('HHmm'));
+    await keyboard.type(target.format('A') === 'AM' ? '{uparrow}' : '{downarrow}');
+
+    await expect.element(field).toHaveTextContent(target.format('hh:mm A'));
   });
 });

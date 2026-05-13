@@ -1,14 +1,17 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { FormContainer } from '@piplup/rhf-core';
 import dayjs from 'dayjs';
 import { MuiXDatePickerElement } from './element';
+import { userEvent } from 'vitest/browser';
 
 describe('MuiXDatePickerElement', () => {
-  it('renders initial defaultValue and includes the year', () => {
+  test('renders initial defaultValue and includes the year', async () => {
     const date = dayjs('2021-02-14');
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer defaultValues={{ date }}>
           <MuiXDatePickerElement name="date" />
@@ -16,16 +19,14 @@ describe('MuiXDatePickerElement', () => {
       </LocalizationProvider>,
     );
 
-    // Assert the input contains the deterministic formatted date
-    cy.get('input')
-      .should('exist')
-      .invoke('val')
-      .should('contain', date.format('MM/DD/YYYY'));
+    const input = screen.container.querySelector('input');
+    expect(input).toBeTruthy();
+    await expect.element(input).toHaveValue(date.format('MM/DD/YYYY'));
   });
 
-  it('opens the calendar and selects a day, updating the displayed year', () => {
+  test('opens the calendar and selects a day, updating the displayed year', async () => {
     const date = dayjs();
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer>
           <MuiXDatePickerElement name="date" />
@@ -33,19 +34,14 @@ describe('MuiXDatePickerElement', () => {
       </LocalizationProvider>,
     );
 
-    // Open the calendar popover by clicking the calendar icon button
-    cy.get('[data-testid="CalendarIcon"]')
-      .should('exist')
-      .closest('button')
-      .click();
+    const openButton = screen.getByLabelText(/choose date/i);
+    await userEvent.click(openButton);
 
-    cy.get('[role="dialog"]').within(() => {
-      cy.contains('button', String(date.date()))
-        .filter(':visible')
-        .first()
-        .click();
-    });
+    const dayButton = screen.getByText(String(date.date()));
+    await userEvent.click(dayButton);
 
-    cy.get('input').invoke('val').should('contain', date.format('YYYY'));
+    const input = screen.container.querySelector('input');
+    expect(input).toBeTruthy();
+    await expect.element(input).toHaveValue(expect.stringContaining(date.format('YYYY')));
   });
 });

@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {
-  type FieldValues,
-  type RegisterOptions,
-  useFormContext,
-} from 'react-hook-form';
+import { render, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+import { type FieldValues, type RegisterOptions, useFormContext } from 'react-hook-form';
 import { FormContainer } from '../form';
 import { useFieldState } from './use-field-state';
 
@@ -32,41 +31,42 @@ function FieldStateConsumer({ name }: { name: string }) {
 
 describe('useFieldState', () => {
   it('initially has no error, not dirty, not touched', () => {
-    cy.mount(
+    const { container } = render(
       <FormContainer>
         <InputRegister name="name" />
         <FieldStateConsumer name="name" />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=error]').should('contain.text', '0');
-    cy.get('[data-cy=invalid]').should('contain.text', '0');
-    cy.get('[data-cy=dirty]').should('contain.text', '0');
-    cy.get('[data-cy=touched]').should('contain.text', '0');
+    expect(container.querySelector('[data-cy=error]')?.textContent).toContain('0');
+    expect(container.querySelector('[data-cy=invalid]')?.textContent).toContain('0');
+    expect(container.querySelector('[data-cy=dirty]')?.textContent).toContain('0');
+    expect(container.querySelector('[data-cy=touched]')?.textContent).toContain('0');
   });
 
-  it('marks dirty when value changes and touched on blur', () => {
-    cy.mount(
+  it('marks dirty when value changes and touched on blur', async () => {
+    const { container } = render(
       <FormContainer>
         <InputRegister name="name" />
         <FieldStateConsumer name="name" />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=dirty]').should('contain.text', '0');
-    cy.get('[data-cy=input]').type('X');
-    cy.get('[data-cy=dirty]').should('contain.text', '1');
+    expect(container.querySelector('[data-cy=dirty]')?.textContent).toContain('0');
+    const input = container.querySelector('[data-cy=input]') as HTMLInputElement;
+    await userEvent.type(input, 'X');
+    expect(container.querySelector('[data-cy=dirty]')?.textContent).toContain('1');
 
-    cy.get('[data-cy=touched]').should('contain.text', '0');
-    cy.get('[data-cy=input]').blur();
-    cy.get('[data-cy=touched]').should('contain.text', '1');
+    expect(container.querySelector('[data-cy=touched]')?.textContent).toContain('0');
+    fireEvent.blur(input);
+    expect(container.querySelector('[data-cy=touched]')?.textContent).toContain('1');
   });
 
-  it('reports validation error when submit without required value', () => {
-    const onSubmit = cy.stub();
-    const onError = cy.stub();
+  it('reports validation error when submit without required value', async () => {
+    const onSubmit = vi.fn();
+    const onError = vi.fn();
 
-    cy.mount(
+    const { container } = render(
       <FormContainer onError={(e) => onError(e)} onSubmit={() => onSubmit()}>
         <InputRegister name="name" rules={{ required: true }} />
         <FieldStateConsumer name="name" />
@@ -74,16 +74,14 @@ describe('useFieldState', () => {
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
+    await userEvent.click(container.querySelector('button[type=submit]') as HTMLButtonElement);
 
-    cy.then(() => {
-      expect(onSubmit.called).to.equal(false);
-      expect(onError.called).to.equal(true);
-      const err = onError.getCall(0).args[0];
-      expect(err).to.have.property('name');
-    });
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(onError).toHaveBeenCalled();
+    const err = onError.mock.calls[0][0];
+    expect(err).toHaveProperty('name');
 
-    cy.get('[data-cy=error]').should('contain.text', '1');
-    cy.get('[data-cy=invalid]').should('contain.text', '1');
+    expect(container.querySelector('[data-cy=error]')?.textContent).toContain('1');
+    expect(container.querySelector('[data-cy=invalid]')?.textContent).toContain('1');
   });
 });

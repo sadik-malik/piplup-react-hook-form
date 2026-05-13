@@ -6,7 +6,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "types": ["vite/client"],
-    "moduleResolution": "node",
     "paths": {}
   },
   "files": [],
@@ -14,9 +13,6 @@
   "references": [
     {
       "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./cypress/tsconfig.json"
     }
   ],
   "extends": "../../tsconfig.base.json"

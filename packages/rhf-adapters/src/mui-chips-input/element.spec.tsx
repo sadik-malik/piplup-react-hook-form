@@ -1,26 +1,32 @@
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiChipsInputElement } from './element';
 
 describe('MuiChipsInputElement', () => {
-  it('mounts and accepts new chips via typing + Enter', () => {
-    cy.mount(
+  test('mounts and accepts new chips via typing + Enter', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiChipsInputElement name="tags" />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').type('foo{enter}');
-    cy.contains('foo').should('exist');
+    const input = screen.getByRole('textbox');
+    await input.fill('foo');
+    await userEvent.keyboard('{Enter}');
+
+    await expect(screen.getByText('foo')).toBeInTheDocument();
   });
 
-  it('renders initial defaultValue chips', () => {
-    cy.mount(
+  test('renders initial defaultValue chips', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ tags: ['bar'] }}>
         <MuiChipsInputElement name="tags" />
       </FormContainer>,
     );
 
-    cy.contains('bar').should('exist');
+    await expect(screen.getByText('bar')).toBeInTheDocument();
   });
 });

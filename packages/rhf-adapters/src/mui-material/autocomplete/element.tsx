@@ -7,10 +7,7 @@ import {
 } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useMuiAutocompleteAdapter,
-  type UseMuiAutocompleteProps,
-} from './adapter';
+import { useMuiAutocompleteAdapter, type UseMuiAutocompleteProps } from './adapter';
 
 export interface MuiAutocompleteElementProps<
   TTransformedValue,
@@ -23,23 +20,12 @@ export interface MuiAutocompleteElementProps<
 >
   extends
     Omit<
-      AutocompleteProps<
-        TTransformedValue,
-        Multiple,
-        DisableClearable,
-        FreeSolo,
-        ChipComponent
-      >,
+      AutocompleteProps<TTransformedValue, Multiple, DisableClearable, FreeSolo, ChipComponent>,
       'defaultValue' | 'renderInput' | 'style' | 'value'
     >,
     Omit<
       UseMuiAutocompleteProps<
-        AutocompleteValue<
-          TTransformedValue,
-          Multiple,
-          DisableClearable,
-          FreeSolo
-        >,
+        AutocompleteValue<TTransformedValue, Multiple, DisableClearable, FreeSolo>,
         Multiple,
         TFieldValues,
         TName

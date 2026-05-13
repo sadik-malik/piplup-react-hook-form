@@ -11,10 +11,7 @@ import {
   type UseBasePickerAdapterProps,
 } from '../internals';
 
-type ValidationProps = Omit<
-  ValidateTimeProps,
-  'disableFuture' | 'disablePast'
-> &
+type ValidationProps = Omit<ValidateTimeProps, 'disableFuture' | 'disablePast'> &
   Partial<Pick<ValidateTimeProps, 'disableFuture' | 'disablePast'>>;
 
 export interface UseBaseTimePickerAdapterProps<

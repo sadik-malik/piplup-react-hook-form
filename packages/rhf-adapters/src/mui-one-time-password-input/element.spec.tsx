@@ -1,40 +1,41 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiOtpInputElement } from './element';
+import { userEvent } from 'vitest/browser';
 
 describe('MuiOtpInputElement', () => {
-  it('renders initial defaultValue across inputs', () => {
-    cy.mount(
+  test('renders initial defaultValue across inputs', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ otp: '1234' }} onSubmit={() => {}}>
         <MuiOtpInputElement name="otp" />
       </FormContainer>,
     );
 
-    cy.get('input').should('have.length.at.least', 4);
-    cy.get('input').then(($els) => {
-      const value = Array.from($els)
-        .map((el: HTMLInputElement) => el.value)
-        .join('');
-      expect(value).to.equal('1234');
-    });
+    const inputs = screen.container.querySelectorAll('input');
+    expect(inputs.length).toBeGreaterThanOrEqual(4);
+    const value = Array.from(inputs)
+      .map((el) => (el as HTMLInputElement).value)
+      .join('');
+    expect(value).toBe('1234');
   });
 
-  it('types into the first input and populates subsequent fields', () => {
-    cy.mount(
+  test('types into the first input and populates subsequent fields', async () => {
+    const screen = await render(
       <FormContainer onSubmit={() => {}}>
         <MuiOtpInputElement name="otp" />
       </FormContainer>,
     );
 
-    cy.get('input').first().should('exist').clear();
-    cy.get('input').first().type('5678');
+    const inputs = screen.container.querySelectorAll('input');
+    const first = inputs[0] as HTMLInputElement;
+    await userEvent.clear(first);
+    await userEvent.type(first, '5678');
 
-    cy.get('input').then(($els) => {
-      const value = Array.from($els)
-        .map((el: HTMLInputElement) => el.value)
-        .join('');
-      expect(value).to.equal('5678');
-    });
+    const value = Array.from(inputs)
+      .map((el) => (el as HTMLInputElement).value)
+      .join('');
+    expect(value).toBe('5678');
   });
 });

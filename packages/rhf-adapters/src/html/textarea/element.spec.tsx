@@ -1,104 +1,100 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { test, expect, vi, describe } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { HtmlTextareaElement } from './element';
 
 describe('HtmlTextareaElement', () => {
-  it('forwards the name attribute', () => {
-    cy.mount(
+  test('forwards the name attribute', async () => {
+    const screen = await render(
       <FormContainer>
-        <HtmlTextareaElement data-cy="ta" name="my-textarea" />
+        <HtmlTextareaElement data-testid="ta" name="my-textarea" />
       </FormContainer>,
     );
 
-    cy.get('textarea').should('have.attr', 'name', 'my-textarea');
+    await expect(screen.getByTestId('ta')).toHaveAttribute('name', 'my-textarea');
   });
 
-  it('binds to the form and submits value', () => {
-    const onSubmit = cy.stub();
+  test('binds to the form and submits value', async () => {
+    const onSubmit = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer onSubmit={(d) => onSubmit(d)}>
-        <HtmlTextareaElement data-cy="bio" name="bio" />
-        <button type="submit">Submit</button>
+        <HtmlTextareaElement data-testid="bio" name="bio" />
+        <button data-testid="submit" type="submit">
+          Submit
+        </button>
       </FormContainer>,
     );
 
-    cy.get('[data-cy=bio]').type('Hello world');
-    cy.get('button[type=submit]').click();
+    const ta = screen.getByTestId('bio');
+    await ta.fill('Hello world');
+    await screen.getByTestId('submit').click();
 
-    cy.then(() => {
-      expect(onSubmit).to.have.been.calledWith({ bio: 'Hello world' });
-    });
+    await expect(onSubmit).toHaveBeenCalledWith({ bio: 'Hello world' });
   });
 
-  it('respects defaultValue prop', () => {
-    cy.mount(
+  test('respects defaultValue prop', async () => {
+    const screen = await render(
       <FormContainer>
-        <HtmlTextareaElement data-cy="note" defaultValue="init" name="note" />
+        <HtmlTextareaElement data-testid="note" defaultValue="init" name="note" />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=note]').should('have.value', 'init');
+    await expect(screen.getByTestId('note')).toHaveValue('init');
   });
 
-  it('applies disabled prop', () => {
-    cy.mount(
+  test('applies disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
-        <HtmlTextareaElement data-cy="disabled" name="x" disabled />
+        <HtmlTextareaElement data-testid="disabled" name="x" disabled />
       </FormContainer>,
     );
 
-    cy.get('[data-cy=disabled]').should('be.disabled');
+    await expect(screen.getByTestId('disabled')).toBeDisabled();
   });
 
-  it('calls onError when required validation fails', () => {
-    const onSubmit = cy.stub();
-    const onError = cy.stub();
+  test('calls onError when required validation fails', async () => {
+    const onSubmit = vi.fn();
+    const onError = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer onError={(e) => onError(e)} onSubmit={(d) => onSubmit(d)}>
-        <HtmlTextareaElement
-          data-cy="desc"
-          name="desc"
-          rules={{ required: true }}
-        />
-        <button type="submit">Submit</button>
+        <HtmlTextareaElement data-testid="desc" name="desc" rules={{ required: true }} />
+        <button data-testid="submit" type="submit">
+          Submit
+        </button>
       </FormContainer>,
     );
 
-    cy.get('button[type=submit]').click();
+    await screen.getByTestId('submit').click();
 
-    cy.then(() => {
-      expect(onSubmit.called).to.equal(false);
-      expect(onError.called).to.equal(true);
-      const err = onError.getCall(0).args[0];
-      expect(err).to.have.property('desc');
-      expect(err.desc).to.have.property('type', 'required');
-    });
+    await expect(onSubmit).not.toHaveBeenCalled();
+    await expect(onError).toHaveBeenCalled();
+    const err = onError.mock.calls[0][0];
+    await expect(err).toHaveProperty('desc');
+    await expect(err.desc).toHaveProperty('type', 'required');
   });
 
-  it('validates minLength and reports minLength error', () => {
-    const onError = cy.stub();
+  test('validates minLength and reports minLength error', async () => {
+    const onError = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer onError={(e) => onError(e)} onSubmit={() => {}}>
-        <HtmlTextareaElement
-          data-cy="short"
-          name="short"
-          rules={{ minLength: 5 }}
-        />
-        <button type="submit">Submit</button>
+        <HtmlTextareaElement data-testid="short" name="short" rules={{ minLength: 5 }} />
+        <button data-testid="submit" type="submit">
+          Submit
+        </button>
       </FormContainer>,
     );
 
-    cy.get('[data-cy=short]').type('123');
-    cy.get('button[type=submit]').click();
+    const ta = screen.getByTestId('short');
+    await ta.fill('123');
+    await screen.getByTestId('submit').click();
 
-    cy.then(() => {
-      expect(onError.called).to.equal(true);
-      const err = onError.getCall(0).args[0];
-      expect(err.short).to.have.property('type', 'minLength');
-    });
+    expect(onError).toHaveBeenCalled();
+    const err = onError.mock.calls[0][0];
+    expect(err.short).toHaveProperty('type', 'minLength');
   });
 });

@@ -1,61 +1,64 @@
 import * as React from 'react';
+import { describe, test, expect, vi } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiSliderElement } from './element';
+import { userEvent } from 'vitest/browser';
 
 describe('MuiSliderElement', () => {
-  it('mounts and allows keyboard changes', () => {
-    cy.mount(
+  test('mounts and allows keyboard changes', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ volume: 20 }}>
         <MuiSliderElement name="volume" />
       </FormContainer>,
     );
 
-    cy.get('input').first().focus();
-    cy.get('input').first().realPress(['ArrowRight', 'ArrowRight']);
-    cy.get('input')
-      .first()
-      .invoke('attr', 'aria-valuenow')
-      .then(Number)
-      .should('be.greaterThan', 20);
+    const slider = screen.getByRole('slider');
+
+    const element = await slider.element();
+    await element.focus();
+
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+    await expect.element(slider).toHaveAttribute('aria-valuenow', '22');
   });
 
-  it('honors defaultValue from form', () => {
-    cy.mount(
+  test('honors defaultValue from form', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ volume: 30 }}>
         <MuiSliderElement name="volume" />
       </FormContainer>,
     );
 
-    cy.get('input')
-      .first()
-      .invoke('attr', 'aria-valuenow')
-      .should('equal', '30');
+    const slider = screen.getByRole('slider');
+    await expect.element(slider).toHaveAttribute('aria-valuenow', '30');
   });
 
-  it('fires onChange when changed via keyboard', () => {
-    const onChange = cy.stub();
+  test('fires onChange when changed via keyboard', async () => {
+    const onChange = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
         <MuiSliderElement name="volume" onChange={(e) => onChange(e)} />
       </FormContainer>,
     );
 
-    cy.get('input').first().focus();
-    cy.get('input').first().realPress('ArrowRight');
+    const slider = screen.getByRole('slider');
 
-    cy.then(() => {
-      expect(onChange.called).to.equal(true);
-    });
+    const element = await slider.element();
+    await element.focus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(onChange).toHaveBeenCalled();
   });
 
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiSliderElement name="volume" disabled />
       </FormContainer>,
     );
 
-    cy.get('input').first().should('have.attr', 'disabled');
+    const slider = screen.getByRole('slider');
+    await expect.element(slider).toBeDisabled();
   });
 });

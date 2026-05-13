@@ -1,15 +1,8 @@
 import * as React from 'react';
-import {
-  DigitalClock,
-  type DigitalClockProps,
-  type PickerValidDate,
-} from '@mui/x-date-pickers';
+import { DigitalClock, type DigitalClockProps, type PickerValidDate } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiXDigitalClockAdapterProps,
-  useMuiXDigitalClockAdapter,
-} from './adapter';
+import { type UseMuiXDigitalClockAdapterProps, useMuiXDigitalClockAdapter } from './adapter';
 
 export type MuiXDigitalClockElementProps<
   TTransformedValue extends PickerValidDate,
@@ -29,12 +22,7 @@ export type MuiXDigitalClockElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      DigitalClockProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<DigitalClockProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiXDigitalClockComponent<

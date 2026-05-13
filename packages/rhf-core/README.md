@@ -2,7 +2,10 @@
 
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@piplup/rhf-core)
 
-This package builds upon `react-hook-form` by offering additional utility hooks such as `useControllerAdapter`, `useFieldStateAdapter`, `useFormStateAdapter`, `useFieldState`, `useFormState`, `useFormSetFocus` and `useFormReset`. These hooks simplify component composition and help reduce boilerplate code.
+This package builds upon `react-hook-form` by offering additional utility hooks
+such as `useControllerAdapter`, `useFieldStateAdapter`, `useFormStateAdapter`,
+`useFieldState`, `useFormState`, `useFormSetFocus` and `useFormReset`. These
+hooks simplify component composition and help reduce boilerplate code.
 
 ## Installation
 
@@ -33,4 +36,5 @@ pnpm add @piplup/rhf-core react-hook-form
 
 ## Components & Usage
 
-Refer to [storybook](https://www.piplupjs.com) examples for list of available components and its usage.
+Refer to [storybook](https://www.piplupjs.com) examples for list of available
+components and its usage.

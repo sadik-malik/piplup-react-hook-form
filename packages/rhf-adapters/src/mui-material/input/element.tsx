@@ -2,10 +2,7 @@ import * as React from 'react';
 import { Input, type InputProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiInputAdapterProps,
-  useMuiInputAdapterProps,
-} from './adapter';
+import { type UseMuiInputAdapterProps, useMuiInputAdapterProps } from './adapter';
 
 export interface MuiInputElementProps<
   TTransformedValue,
@@ -13,10 +10,7 @@ export interface MuiInputElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
-    Omit<
-      InputProps,
-      'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'
-    >,
+    Omit<InputProps, 'checked' | 'defaultChecked' | 'defaultValue' | 'name' | 'style' | 'value'>,
     Omit<
       UseMuiInputAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
@@ -31,12 +25,7 @@ export interface MuiInputElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    InputProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<InputProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiInputComponent<
@@ -116,9 +105,7 @@ function MuiInputComponent<
   return <Input {...rest} {...adapter} />;
 }
 
-export const MuiInputElement = React.forwardRef(
-  MuiInputComponent,
-) as typeof MuiInputComponent & {
+export const MuiInputElement = React.forwardRef(MuiInputComponent) as typeof MuiInputComponent & {
   displayName?: string;
 };
 

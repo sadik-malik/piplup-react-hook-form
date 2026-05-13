@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { NumberFormatBaseElement } from './element';
 
@@ -37,34 +39,28 @@ const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
   }
 };
 
-describe('NumberFormatBaseElement', () => {
-  it('renders initial defaultValue formatted', () => {
-    cy.mount(
+describe('NumberFormatBase', () => {
+  test('renders initial defaultValue formatted', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ cardExpiry: 1213 }} onSubmit={() => {}}>
-        <NumberFormatBaseElement
-          format={format}
-          name="cardExpiry"
-          onKeyDown={onKeyDown}
-        />
+        <NumberFormatBaseElement format={format} name="cardExpiry" onKeyDown={onKeyDown} />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').and('have.value', '12/13');
+    await expect(screen.getByRole('textbox')).toHaveValue('12/13');
   });
 
-  it('formats typed numbers', () => {
-    cy.mount(
+  test('formats typed numbers', async () => {
+    const screen = await render(
       <FormContainer onSubmit={() => {}}>
-        <NumberFormatBaseElement
-          format={format}
-          name="cardExpiry"
-          onKeyDown={onKeyDown}
-        />
+        <NumberFormatBaseElement format={format} name="cardExpiry" onKeyDown={onKeyDown} />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').clear();
-    cy.get('input').type('0156{enter}');
-    cy.get('input').should('have.value', '01/56');
+    const input = screen.getByRole('textbox');
+    await userEvent.clear(input);
+    await userEvent.type(input, '0156');
+    await userEvent.keyboard('{Enter}');
+    await expect(input).toHaveValue('01/56');
   });
 });

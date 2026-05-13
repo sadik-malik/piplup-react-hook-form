@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { type FieldValues } from 'react-hook-form';
 import {
   useUnstableComposeRules as useComposeRules,
@@ -12,18 +14,18 @@ function Comp(props: UseComposeRulesProps<FieldValues>) {
 
 describe('useComposeRules', () => {
   it('adds required message when required true', () => {
-    cy.mount(<Comp required />);
-    cy.get('[data-cy=r]').should('contain.text', 'required');
+    const { container } = render(<Comp required />);
+    expect(container.querySelector('[data-cy=r]')?.textContent).toContain('required');
   });
 
   it('populates minLength rule with value and message', () => {
-    cy.mount(<Comp minLength={5} />);
-    cy.get('[data-cy=r]').should('contain.text', 'minLength');
-    cy.get('[data-cy=r]').should('contain.text', '5');
+    const { container } = render(<Comp minLength={5} />);
+    expect(container.querySelector('[data-cy=r]')?.textContent).toContain('minLength');
+    expect(container.querySelector('[data-cy=r]')?.textContent).toContain('5');
   });
 
   it('converts pattern string to RegExp and message present', () => {
-    cy.mount(<Comp pattern="^a" />);
-    cy.get('[data-cy=r]').should('contain.text', 'pattern');
+    const { container } = render(<Comp pattern="^a" />);
+    expect(container.querySelector('[data-cy=r]')?.textContent).toContain('pattern');
   });
 });

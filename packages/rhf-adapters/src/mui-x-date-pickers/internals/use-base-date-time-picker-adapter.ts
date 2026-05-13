@@ -16,10 +16,7 @@ import {
   type UseBasePickerAdapterProps,
 } from '../internals';
 
-type ValidationProps = Omit<
-  ValidateDateTimeProps,
-  'disableFuture' | 'disablePast'
-> &
+type ValidationProps = Omit<ValidateDateTimeProps, 'disableFuture' | 'disablePast'> &
   Partial<Pick<ValidateDateTimeProps, 'disableFuture' | 'disablePast'>>;
 
 export interface UseBaseDateTimePickerAdapterProps<
@@ -46,11 +43,7 @@ export function useUnstableBaseDateTimePickerAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseBaseDateTimePickerAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: UseBaseDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   const {

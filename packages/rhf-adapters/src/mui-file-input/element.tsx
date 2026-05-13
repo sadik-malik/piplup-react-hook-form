@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { type Transform } from '@piplup/rhf-core';
-import {
-  MuiFileInput,
-  type MuiFileInputProps,
-} from 'mui-file-input';
+import { MuiFileInput, type MuiFileInputProps } from 'mui-file-input';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
   type UseMuiFileInputAdapterProps,
@@ -13,8 +10,7 @@ import {
 
 export type MuiFileInputElementProps<
   Multiple extends boolean | undefined = undefined,
-  TTransformedValue extends MuiFileInputValue<Multiple> =
-    MuiFileInputValue<Multiple>,
+  TTransformedValue extends MuiFileInputValue<Multiple> = MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
@@ -28,27 +24,16 @@ export type MuiFileInputElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      MuiFileInputProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<MuiFileInputProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiFileInputComponent<
   Multiple extends boolean | undefined = undefined,
-  TTransformedValue extends MuiFileInputValue<Multiple> =
-    MuiFileInputValue<Multiple>,
+  TTransformedValue extends MuiFileInputValue<Multiple> = MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiFileInputElementProps<
-    Multiple,
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiFileInputElementProps<Multiple, TTransformedValue, TFieldValues, TName>,
   ref?: MuiFileInputProps['ref'],
 ): React.ReactElement {
   const {
@@ -102,7 +87,7 @@ function MuiFileInputComponent<
     ref,
   );
 
-  const inputProps = {...rest, ...adapter} as MuiFileInputProps
+  const inputProps = { ...rest, ...adapter } as MuiFileInputProps;
 
   return <MuiFileInput {...inputProps} />;
 }

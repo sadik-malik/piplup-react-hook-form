@@ -2,10 +2,7 @@ import * as React from 'react';
 import { RadioGroup, type RadioGroupProps } from '@mui/material';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useMuiRadioGroupAdapter,
-  type UseMuiRadioGroupAdapterProps,
-} from './adapter';
+import { useMuiRadioGroupAdapter, type UseMuiRadioGroupAdapterProps } from './adapter';
 
 export interface MuiRadioGroupElementProps<
   TTransformedValue,
@@ -28,12 +25,7 @@ export interface MuiRadioGroupElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    RadioGroupProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<RadioGroupProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiRadioGroupComponent<

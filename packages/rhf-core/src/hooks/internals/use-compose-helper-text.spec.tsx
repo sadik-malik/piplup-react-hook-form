@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { type FieldValues } from 'react-hook-form';
 import {
   useUnstableComposeHelperText as useComposeHelperText,
@@ -14,32 +16,25 @@ function Comp(props: UseComposeHelperTextProps<FieldValues>) {
 
 describe('useComposeHelperText', () => {
   it('returns helperText when composeHelperText is false', () => {
-    cy.mount(<Comp composeHelperText={false} helperText="h" />);
-    cy.get('[data-cy=txt]').should('contain.text', 'h');
+    const { container } = render(<Comp composeHelperText={false} helperText="h" />);
+    expect(container.querySelector('[data-cy=txt]')?.textContent).toContain('h');
   });
 
   it('uses fieldError message when available', () => {
-    cy.mount(
-      <Comp
-        fieldError={{ message: 'err', type: 'custom' }}
-        helperText="f"
-        composeHelperText
-      />,
+    const { container } = render(
+      <Comp fieldError={{ message: 'err', type: 'custom' }} helperText="f" composeHelperText />,
     );
-    cy.get('[data-cy=txt]').should('contain.text', 'err');
+    expect(container.querySelector('[data-cy=txt]')?.textContent).toContain('err');
   });
 
   it('honors context-provided parser', () => {
     const parser: FormErrorParserFn = (e) => 'parsed:' + JSON.stringify(e);
-    cy.mount(
+    const { container } = render(
       <FormErrorProvider errorParser={parser}>
-        <Comp
-          fieldError={{ message: 'err', type: 'custom' }}
-          composeHelperText
-        />
+        <Comp fieldError={{ message: 'err', type: 'custom' }} composeHelperText />
       </FormErrorProvider>,
     );
 
-    cy.get('[data-cy=txt]').should('contain.text', 'parsed:');
+    expect(container.querySelector('[data-cy=txt]')?.textContent).toContain('parsed:');
   });
 });

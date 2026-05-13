@@ -5,22 +5,28 @@
   "description": "A library designed to streamline the integration of react-hook-form with UI frameworks by managing boilerplate code.",
   "keywords": [
     "react-hook-form",
-    "react-hook-form adapters",
-    "react-hook-form mui",
-    "react-hook-form material",
+    "react-hook-form @mui/base",
     "react-hook-form @mui/material",
     "react-hook-form @mui/x-date-pickers",
-    "react-hook-form @mui/base"
+    "react-hook-form adapters",
+    "react-hook-form material",
+    "react-hook-form mui"
   ],
   "homepage": "https://www.piplupjs.com",
+  "license": "MIT",
   "repository": {
     "url": "git+https://github.com/sadik-malik/piplup-react-hook-form.git",
     "directory": "packages/rhf-adapters"
   },
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./package.json": "./dist/package.json",
+    "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
@@ -77,25 +83,52 @@
       "require": "./dist/react-number-format.js"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@mui/material": "^9.0.1",
+    "@mui/x-date-pickers": "^9.1.0",
+    "@piplup/rhf-core": "file:../rhf-core",
+    "@piplup/utils": "^3.2.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/browser-playwright": "^4.1.6",
+    "dayjs": "^1.11.20",
+    "mui-chips-input": "^9.0.0",
+    "mui-color-input": "^9.0.0",
+    "mui-file-input": "^9.0.0",
+    "mui-one-time-password-input": "^7.0.0",
+    "mui-tel-input": "^11.0.0",
+    "playwright": "^1.60.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-hook-form": "^7.75.0",
+    "react-number-format": "^5.4.5",
+    "vite": "^8.0.12",
+    "vite-plugin-dts": "^5.0.0",
+    "vitest": "^4.1.6",
+    "vitest-browser-commands": "^0.2.0",
+    "vitest-browser-react": "^2.2.0"
+  },
   "peerDependencies": {
     "@mui/material": ">=6.0.0 <10.0.0",
     "@mui/x-date-pickers": ">=9.0.0 <10.0.0",
-    "@piplup/rhf-core": "workspace:*",
-    "mui-chips-input": ">=4.0.1 <9.0.0",
-    "mui-color-input": ">=5.0.1 <9.0.0",
-    "mui-file-input": ">=6.0.0 <9.0.0",
+    "@piplup/rhf-core": "^4.5.0",
+    "@piplup/utils": "3.2.4",
+    "mui-chips-input": ">=4.0.1 <10.0.0",
+    "mui-color-input": ">=5.0.1 <10.0.0",
+    "mui-file-input": ">=6.0.0 <10.0.0",
     "mui-one-time-password-input": ">=5.0.0 <8.0.0",
     "mui-tel-input": "^7.0.0 <12.0.0",
     "react": "^19.0.0",
     "react-hook-form": ">=7.65.0 <8.0.0",
-    "react-number-format": ">=5.4.2 <6.0.0",
-    "@piplup/utils": "3.2.4"
+    "react-number-format": ">=5.4.2 <6.0.0"
   },
   "peerDependenciesMeta": {
     "@mui/material": {
@@ -122,8 +155,5 @@
     "react-number-format": {
       "optional": true
     }
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

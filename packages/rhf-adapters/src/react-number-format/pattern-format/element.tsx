@@ -2,10 +2,7 @@ import * as React from 'react';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { PatternFormat, type PatternFormatProps } from 'react-number-format';
-import {
-  type UsePatternFormatAdapterProps,
-  usePatternFormatAdapter,
-} from './adapter';
+import { type UsePatternFormatAdapterProps, usePatternFormatAdapter } from './adapter';
 
 export interface PatternFormatElementProps<
   TTransformedValue extends null | number | string | undefined,
@@ -33,9 +30,7 @@ function PatternFormatComponent<
   TTransformedValue extends null | number | string | undefined,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(
-  props: PatternFormatElementProps<TTransformedValue, TFieldValues, TName>,
-): React.ReactElement {
+>(props: PatternFormatElementProps<TTransformedValue, TFieldValues, TName>): React.ReactElement {
   const {
     classes,
     className,
@@ -102,9 +97,8 @@ function PatternFormatComponent<
   return <PatternFormat {...rest} {...adapter} />;
 }
 
-export const PatternFormatElement =
-  PatternFormatComponent as typeof PatternFormatComponent & {
-    displayName?: string;
-  };
+export const PatternFormatElement = PatternFormatComponent as typeof PatternFormatComponent & {
+  displayName?: string;
+};
 
 PatternFormatElement.displayName = 'PatternFormatElement';

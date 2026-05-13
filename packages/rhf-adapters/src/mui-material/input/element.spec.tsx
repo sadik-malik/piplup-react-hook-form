@@ -1,61 +1,67 @@
 import * as React from 'react';
+import { describe, test, expect, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiInputElement } from './element';
 
 describe('MuiInputElement', () => {
-  it('mounts and allows typing', () => {
-    cy.mount(
+  test('mounts and allows typing', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiInputElement name="first" placeholder="First" />
       </FormContainer>,
     );
-
-    cy.get('input').should('exist').type('hello');
-    cy.get('input').should('have.value', 'hello');
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toBeInTheDocument();
+    await userEvent.type(input, 'hello');
+    await expect.element(input).toHaveValue('hello');
   });
 
-  it('honors defaultValue from form', () => {
-    cy.mount(
+  test('honors defaultValue from form', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ first: 'prefilled' }}>
         <MuiInputElement name="first" placeholder="First" />
       </FormContainer>,
     );
 
-    cy.get('input').should('have.value', 'prefilled');
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toHaveValue('prefilled');
   });
 
-  it('forwards the name from adapter when provided via props', () => {
-    cy.mount(
+  test('forwards the name from adapter when provided via props', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiInputElement name="my-input" placeholder="My" />
       </FormContainer>,
     );
-    cy.get('input').should('have.attr', 'name', 'my-input');
+
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toHaveAttribute('name', 'my-input');
   });
 
-  it('fires onChange when typing', () => {
-    const onChange = cy.stub();
+  test('fires onChange when typing', async () => {
+    const onChange = vi.fn();
 
-    cy.mount(
+    const screen = await render(
       <FormContainer>
         <MuiInputElement name="first" onChange={(e) => onChange(e)} />
       </FormContainer>,
     );
 
-    cy.get('input').type('x');
-
-    cy.then(() => {
-      expect(onChange.called).to.equal(true);
-    });
+    const input = screen.getByRole('textbox');
+    await userEvent.type(input, 'x');
+    await expect(onChange).toHaveBeenCalled();
   });
 
-  it('respects disabled prop', () => {
-    cy.mount(
+  test('respects disabled prop', async () => {
+    const screen = await render(
       <FormContainer>
         <MuiInputElement name="first" placeholder="Disabled" disabled />
       </FormContainer>,
     );
 
-    cy.get('input').should('be.disabled');
+    const input = screen.getByRole('textbox');
+    await expect.element(input).toBeDisabled();
   });
 });

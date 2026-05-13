@@ -1,25 +1,14 @@
 import * as React from 'react';
-import {
-  TimeField,
-  type TimeFieldProps,
-  type PickerValidDate,
-} from '@mui/x-date-pickers';
+import { TimeField, type TimeFieldProps, type PickerValidDate } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiXTimeFieldAdapterProps,
-  useMuiXTimeFieldAdapter,
-} from './adapter';
+import { type UseMuiXTimeFieldAdapterProps, useMuiXTimeFieldAdapter } from './adapter';
 
 export type MuiXTimeFieldElementProps<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<
-  TimeFieldProps,
-  'defaultValue' | 'name' | 'value'
-> &
+> = Omit<TimeFieldProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
     UseMuiXTimeFieldAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -34,26 +23,15 @@ export type MuiXTimeFieldElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      TimeFieldProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<TimeFieldProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiXTimeFieldComponent<
   TTransformedValue extends PickerValidDate,
-  TEnableAccessibleFieldDOMStructure extends boolean = true,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXTimeFieldElementProps<
-    TTransformedValue,
-    TEnableAccessibleFieldDOMStructure,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXTimeFieldElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

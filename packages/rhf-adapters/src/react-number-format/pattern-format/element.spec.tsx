@@ -1,27 +1,33 @@
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { PatternFormatElement } from './element';
 
 describe('PatternFormatElement', () => {
-  it('renders initial defaultValue formatted using format prop', () => {
-    cy.mount(
+  test('renders initial defaultValue formatted using format prop', async () => {
+    const screen = await render(
       <FormContainer defaultValues={{ phone: '4085551212' }}>
         <PatternFormatElement format="(###) ###-####" name="phone" />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').and('have.value', '(408) 555-1212');
+    await expect(screen.getByRole('textbox')).toHaveValue('(408) 555-1212');
   });
 
-  it('applies pattern formatting when typing', () => {
-    cy.mount(
+  test('applies pattern formatting when typing', async () => {
+    const screen = await render(
       <FormContainer>
         <PatternFormatElement format="(###) ###-####" name="phone" />
       </FormContainer>,
     );
 
-    cy.get('input').should('exist').clear();
-    cy.get('input').type('2125550100{enter}');
-    cy.get('input').should('have.value', '(212) 555-0100');
+    const input = screen.getByRole('textbox');
+    await userEvent.clear(input);
+    await userEvent.type(input, '2125550100');
+    await userEvent.keyboard('{Enter}');
+
+    expect(input).toHaveValue('(212) 555-0100');
   });
 });

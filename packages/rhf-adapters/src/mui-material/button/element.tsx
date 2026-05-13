@@ -3,11 +3,9 @@ import { Button, type ButtonProps } from '@mui/material';
 import { type FieldValues } from 'react-hook-form';
 import { useMuiButtonAdapter, type UseMuiButtonAdapterProps } from './adapter';
 
-export interface MuiButtonElementProps<
-  TFieldValues extends FieldValues = FieldValues,
->
+export interface MuiButtonElementProps<TFieldValues extends FieldValues = FieldValues>
   extends
-    Omit<ButtonProps, 'name' | 'style'>,
+    Omit<ButtonProps, 'name' | 'style' | 'type'>,
     Omit<
       UseMuiButtonAdapterProps<TFieldValues>,
       | 'classes'

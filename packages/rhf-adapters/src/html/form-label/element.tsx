@@ -10,10 +10,7 @@ export interface HtmlFormLabelElementProps<
     Omit<React.ComponentProps<'label'>, 'style'>,
     Omit<
       UseHtmlFormLabelProps<TFieldValues, TName>,
-      | 'composeClassName'
-      | 'composeHelperText'
-      | 'helperText'
-      | 'internalClasses'
+      'composeClassName' | 'composeHelperText' | 'helperText' | 'internalClasses'
     > {}
 
 function HtmlFormLabelComponent<

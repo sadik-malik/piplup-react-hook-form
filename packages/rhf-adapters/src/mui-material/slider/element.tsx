@@ -25,12 +25,7 @@ export interface MuiSliderElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    SliderProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<SliderProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiSliderComponent<

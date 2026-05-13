@@ -59,14 +59,8 @@ export type UseComposeModifierStateResult = {
 export function useUnstableComposeModifierState(
   props: UseComposeModifierStateProps,
 ): UseComposeModifierStateResult {
-  const {
-    disabled,
-    disableOnError,
-    disableOnIsSubmitting,
-    error,
-    fieldError,
-    isSubmitting,
-  } = props;
+  const { disabled, disableOnError, disableOnIsSubmitting, error, fieldError, isSubmitting } =
+    props;
 
   return React.useMemo<UseComposeModifierStateResult>(() => {
     const hasError = error ?? fieldError ?? false;
@@ -78,12 +72,5 @@ export function useUnstableComposeModifierState(
       ),
       error: hasError,
     };
-  }, [
-    error,
-    fieldError,
-    disabled,
-    disableOnError,
-    disableOnIsSubmitting,
-    isSubmitting,
-  ]);
+  }, [error, fieldError, disabled, disableOnError, disableOnIsSubmitting, isSubmitting]);
 }

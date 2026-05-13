@@ -17,16 +17,9 @@ export interface MuiXDesktopDatePickerElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
+    Omit<DesktopDatePickerProps, 'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'>,
     Omit<
-      DesktopDatePickerProps,
-      'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-    >,
-    Omit<
-      UseMuiXDesktopDatePickerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >,
+      UseMuiXDesktopDatePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
       | 'classes'
       | 'composeClassName'
       | 'composeHelperText'
@@ -39,12 +32,7 @@ export interface MuiXDesktopDatePickerElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    DesktopDatePickerProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<DesktopDatePickerProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiXDesktopDatePickerComponent<
@@ -52,11 +40,7 @@ function MuiXDesktopDatePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXDesktopDatePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXDesktopDatePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

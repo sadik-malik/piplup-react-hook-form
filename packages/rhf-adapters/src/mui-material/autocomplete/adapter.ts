@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { type AutocompleteRenderInputParams } from '@mui/material';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
 
 type AutocompleteExtendedRenderInputParams = AutocompleteRenderInputParams & {
   error: boolean;
@@ -23,9 +16,7 @@ export interface UseMuiAutocompleteProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends UseControllerAdapterProps<TTransformedValue, TFieldValues, TName> {
   multiple?: Multiple;
-  renderInput: (
-    params: AutocompleteExtendedRenderInputParams,
-  ) => React.ReactNode;
+  renderInput: (params: AutocompleteExtendedRenderInputParams) => React.ReactNode;
 }
 
 export function useMuiAutocompleteAdapter<
@@ -35,19 +26,10 @@ export function useMuiAutocompleteAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiAutocompleteProps<
-    TTransformedValue,
-    Multiple,
-    TFieldValues,
-    TName
-  >,
+  props: UseMuiAutocompleteProps<TTransformedValue, Multiple, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
-  const {
-    defaultValue = props.multiple ? [] : null,
-    multiple,
-    transform,
-  } = props;
+  const { defaultValue = props.multiple ? [] : null, multiple, transform } = props;
 
   const transformHelpers = React.useMemo(
     () => ({
@@ -55,9 +37,7 @@ export function useMuiAutocompleteAdapter<
         if (multiple) {
           return (Array.isArray(value) ? value : []) as TTransformedValue;
         }
-        return (
-          typeof value !== 'undefined' ? value : null
-        ) as TTransformedValue;
+        return (typeof value !== 'undefined' ? value : null) as TTransformedValue;
       },
       output(
         _event: React.ChangeEvent<HTMLInputElement>,

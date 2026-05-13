@@ -1,24 +1,14 @@
 import * as React from 'react';
-import {
-  DateCalendar,
-  type DateCalendarProps,
-  type PickerValidDate,
-} from '@mui/x-date-pickers';
+import { DateCalendar, type DateCalendarProps, type PickerValidDate } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useMuiXDateCalendarAdapter,
-  type UseMuiXDateCalendarAdapterProps,
-} from './adapter';
+import { useMuiXDateCalendarAdapter, type UseMuiXDateCalendarAdapterProps } from './adapter';
 
 export type MuiXDateCalendarElementProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<
-  DateCalendarProps,
-  'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-> &
+> = Omit<DateCalendarProps, 'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'> &
   Omit<
     UseMuiXDateCalendarAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -33,12 +23,7 @@ export type MuiXDateCalendarElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      DateCalendarProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<DateCalendarProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiXDateCalendarComponent<

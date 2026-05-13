@@ -1,24 +1,14 @@
 import * as React from 'react';
-import {
-  YearCalendar,
-  type YearCalendarProps,
-  type PickerValidDate,
-} from '@mui/x-date-pickers';
+import { YearCalendar, type YearCalendarProps, type PickerValidDate } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  type UseMuiXYearCalendarAdapterProps,
-  useMuiXYearCalendarAdapter,
-} from './adapter';
+import { type UseMuiXYearCalendarAdapterProps, useMuiXYearCalendarAdapter } from './adapter';
 
 export type MuiXYearCalendarElementProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<
-  YearCalendarProps,
-  'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'
-> &
+> = Omit<YearCalendarProps, 'defaultValue' | 'maxDate' | 'minDate' | 'name' | 'value'> &
   Omit<
     UseMuiXYearCalendarAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -32,12 +22,7 @@ export type MuiXYearCalendarElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      YearCalendarProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<YearCalendarProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiXYearCalendarComponent<

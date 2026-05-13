@@ -1,22 +1,12 @@
 import * as React from 'react';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
 
 export interface UseMuiRatingAdapterProps<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<
-  UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
-  'max' | 'min'
-> {
+> extends Omit<UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>, 'max' | 'min'> {
   max?: number;
   min?: number;
 }

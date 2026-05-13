@@ -1,32 +1,36 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
 import dayjs from 'dayjs';
 import { MuiXStaticDatePickerElement } from './element';
+import { userEvent } from 'vitest/browser';
 
 describe('MuiXStaticDatePickerElement', () => {
-  it('renders with a default selected date', () => {
-    const date = dayjs('2021-02-14');
+  test('renders with a default selected date', async () => {
+    const target = dayjs('2021-02-14');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormContainer defaultValues={{ date }}>
+        <FormContainer defaultValues={{ date: target }}>
           <MuiXStaticDatePickerElement name="date" />
         </FormContainer>
       </LocalizationProvider>,
     );
 
-    cy.get('button[aria-selected="true"]').should(
-      'contain',
-      String(date.date()),
-    );
+    const day = screen.getByRole('gridcell', {
+      name: target.format('D'),
+    });
+
+    await expect.element(day).toHaveAttribute('aria-selected', 'true');
   });
 
-  it('selects a day when clicked (renders specified month)', () => {
+  test('selects a day when clicked (renders specified month)', async () => {
     const target = dayjs('2021-03-10');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer defaultValues={{ date: dayjs('2021-03-01') }}>
           <MuiXStaticDatePickerElement name="date" />
@@ -34,16 +38,12 @@ describe('MuiXStaticDatePickerElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.get('[role="grid"]').within(() => {
-      cy.contains('button', String(target.date()))
-        .filter(':visible')
-        .first()
-        .click();
+    const day = screen.getByRole('gridcell', {
+      name: target.format('D'),
     });
 
-    cy.get('button[aria-selected="true"]').should(
-      'contain',
-      String(target.date()),
-    );
+    await userEvent.click(day);
+
+    await expect.element(day).toHaveAttribute('aria-selected', 'true');
   });
 });

@@ -1,15 +1,8 @@
 import * as React from 'react';
 import { type Validator, type PickersTimezone } from '@mui/x-date-pickers';
 import { type PickerValidValue } from '@mui/x-date-pickers/internals';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
 import {
   type ComposePickerRulesMessages,
   type UseComposePickerRules,
@@ -25,24 +18,12 @@ export interface UseBasePickerAdapterProps<
 >
   extends
     Omit<
-      UseComposePickerRules<
-        TTransformedValue,
-        TError,
-        TValidationProps,
-        TFieldValues,
-        TName
-      >,
+      UseComposePickerRules<TTransformedValue, TError, TValidationProps, TFieldValues, TName>,
       'messages'
     >,
     Omit<
       UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>,
-      | 'max'
-      | 'maxLength'
-      | 'messages'
-      | 'min'
-      | 'minLength'
-      | 'pattern'
-      | 'title'
+      'max' | 'maxLength' | 'messages' | 'min' | 'minLength' | 'pattern' | 'title'
     > {
   messages?: ComposePickerRulesMessages<TTransformedValue> & {
     required?: string;
@@ -82,14 +63,7 @@ export function useUnstableBasePickerAdapter<
   >,
   ref?: React.Ref<RefType>,
 ) {
-  const {
-    messages = {},
-    rules,
-    timezone,
-    transform,
-    validationProps,
-    validator,
-  } = props;
+  const { messages = {}, rules, timezone, transform, validationProps, validator } = props;
 
   const transformHelpers = React.useMemo(
     () => ({

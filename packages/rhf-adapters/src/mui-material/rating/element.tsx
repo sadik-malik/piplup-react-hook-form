@@ -26,12 +26,7 @@ export interface MuiRatingElementProps<
   /**
    * Transformation functions for the field's input and output values.
    */
-  transform?: Transform<
-    RatingProps['onChange'],
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >;
+  transform?: Transform<RatingProps['onChange'], TTransformedValue, TFieldValues, TName>;
 }
 
 function MuiRatingComponent<

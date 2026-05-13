@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type FieldPath,
-  type FieldValues,
-  type PathValue,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type FieldPath, type FieldValues, type PathValue } from 'react-hook-form';
 
 export interface UseMuiSwitchAdapterProps<
   TTransformedValue,
@@ -31,9 +24,7 @@ export function useMuiSwitchAdapter<
       input(value: PathValue<TFieldValues, TName>): TTransformedValue {
         return !!value as TTransformedValue;
       },
-      output(
-        event: React.ChangeEvent<HTMLInputElement>,
-      ): PathValue<TFieldValues, TName> {
+      output(event: React.ChangeEvent<HTMLInputElement>): PathValue<TFieldValues, TName> {
         return event.target.checked as PathValue<TFieldValues, TName>;
       },
     }),

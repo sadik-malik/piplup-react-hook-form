@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { useFormControl } from '@mui/material';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type FieldPath,
-  type FieldValues,
-  type PathValue,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type FieldPath, type FieldValues, type PathValue } from 'react-hook-form';
 
 export type UseMuiRadioGroupAdapterProps<
   TTransformedValue,
@@ -25,12 +18,7 @@ export function useMuiRadioGroupAdapter<
   props: UseMuiRadioGroupAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
-  const {
-    disabled: disabledProp,
-    required: requiredProp,
-    transform,
-    ...rest
-  } = props;
+  const { disabled: disabledProp, required: requiredProp, transform, ...rest } = props;
 
   const muiFormControl = useFormControl();
 

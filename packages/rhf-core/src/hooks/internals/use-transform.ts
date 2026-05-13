@@ -20,10 +20,7 @@ export type Transform<
 > = {
   input?: (value: PathValue<TFieldValues, TName>) => TTransformedValue;
   output?: (
-    ...args: [
-      ...Parameters<NonNullable<OnChange>>,
-      previousValue: TTransformedValue,
-    ]
+    ...args: [...Parameters<NonNullable<OnChange>>, previousValue: TTransformedValue]
   ) => PathValue<TFieldValues, TName>;
 };
 
@@ -104,9 +101,7 @@ export function useUnstableTransform<
     ) => {
       const output = props.transform?.output;
       const onChange = props.onChange;
-      return typeof output === 'function'
-        ? onChange(output(...args, value))
-        : onChange(...args);
+      return typeof output === 'function' ? onChange(output(...args, value)) : onChange(...args);
     },
   );
 

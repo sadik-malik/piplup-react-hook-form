@@ -1,22 +1,13 @@
 import * as React from 'react';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
 
-export type MuiFileInputValue<
-  Multiple extends boolean | undefined = undefined,
-> = Multiple extends true ? File[] : File | null;
+export type MuiFileInputValue<Multiple extends boolean | undefined = undefined> =
+  Multiple extends true ? File[] : File | null;
 
 export interface UseMuiFileInputAdapterProps<
   Multiple extends boolean | undefined = undefined,
-  TTransformedValue extends MuiFileInputValue<Multiple> =
-    MuiFileInputValue<Multiple>,
+  TTransformedValue extends MuiFileInputValue<Multiple> = MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<
@@ -38,8 +29,7 @@ export interface UseMuiFileInputAdapterProps<
 
 export function useMuiFileInputAdapter<
   Multiple extends boolean | undefined = undefined,
-  TTransformedValue extends MuiFileInputValue<Multiple> =
-    MuiFileInputValue<Multiple>,
+  TTransformedValue extends MuiFileInputValue<Multiple> = MuiFileInputValue<Multiple>,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
@@ -51,20 +41,14 @@ export function useMuiFileInputAdapter<
 
   const internalTransform = React.useMemo<
     Exclude<
-      UseControllerAdapterProps<
-        TTransformedValue,
-        TFieldValues,
-        TName
-      >['transform'],
+      UseControllerAdapterProps<TTransformedValue, TFieldValues, TName>['transform'],
       undefined
     >
   >(
     () => ({
       input(fileOrFiles: PathValue<TFieldValues, TName>) {
         if (multiple) {
-          return (
-            Array.isArray(fileOrFiles) ? fileOrFiles : []
-          ) as unknown as TTransformedValue;
+          return (Array.isArray(fileOrFiles) ? fileOrFiles : []) as unknown as TTransformedValue;
         }
         return (fileOrFiles ?? null) as TTransformedValue;
       },

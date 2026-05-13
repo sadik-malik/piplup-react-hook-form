@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { type FieldValues } from 'react-hook-form';
+import { render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import {
   useUnstableComposeModifierState as useComposeModifierState,
   type UseComposeModifierStateProps,
 } from './use-compose-modifier-state';
 
-function Comp(props: UseComposeModifierStateProps<FieldValues>) {
+function Comp(props: UseComposeModifierStateProps) {
   const state = useComposeModifierState(props);
   return (
     <div
@@ -18,23 +19,18 @@ function Comp(props: UseComposeModifierStateProps<FieldValues>) {
 
 describe('useComposeModifierState', () => {
   it('computes disabled from disabled prop', () => {
-    cy.mount(<Comp disabled />);
-    cy.get('[data-cy=s]').should('have.attr', 'data-disabled', '1');
+    const { container } = render(<Comp disabled />);
+    expect(container.querySelector('[data-cy=s]')?.getAttribute('data-disabled')).toBe('1');
   });
 
   it('disables on error when disableOnError true', () => {
-    cy.mount(
-      <Comp
-        fieldError={{ a: { message: 'x', type: 'custom' } }}
-        disableOnError
-      />,
-    );
-    cy.get('[data-cy=s]').should('have.attr', 'data-disabled', '1');
-    cy.get('[data-cy=s]').should('have.attr', 'data-error', '1');
+    const { container } = render(<Comp fieldError disableOnError />);
+    expect(container.querySelector('[data-cy=s]')?.getAttribute('data-disabled')).toBe('1');
+    expect(container.querySelector('[data-cy=s]')?.getAttribute('data-error')).toBe('1');
   });
 
   it('disables on submitting when disableOnIsSubmitting true', () => {
-    cy.mount(<Comp disableOnIsSubmitting isSubmitting />);
-    cy.get('[data-cy=s]').should('have.attr', 'data-disabled', '1');
+    const { container } = render(<Comp disableOnIsSubmitting isSubmitting />);
+    expect(container.querySelector('[data-cy=s]')?.getAttribute('data-disabled')).toBe('1');
   });
 });

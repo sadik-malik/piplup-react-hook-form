@@ -30,12 +30,7 @@ export type MuiXStaticTimePickerElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      TimePickerProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<TimePickerProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiXStaticTimePickerComponent<
@@ -43,11 +38,7 @@ function MuiXStaticTimePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXStaticTimePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXStaticTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

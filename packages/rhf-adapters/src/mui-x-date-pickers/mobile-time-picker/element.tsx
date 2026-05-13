@@ -16,10 +16,7 @@ export type MuiXMobileTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<
-  MobileTimePickerProps<TimeView>,
-  'defaultValue' | 'name' | 'value'
-> &
+> = Omit<MobileTimePickerProps<TimeView>, 'defaultValue' | 'name' | 'value'> &
   Omit<
     UseMuiXMobileTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
@@ -35,9 +32,7 @@ export type MuiXMobileTimePickerElementProps<
      * Transformation functions for the field's input and output values.
      */
     transform?: Transform<
-      MobileTimePickerProps<
-        TimeView
-      >['onChange'],
+      MobileTimePickerProps<TimeView>['onChange'],
       TTransformedValue,
       TFieldValues,
       TName
@@ -49,11 +44,7 @@ function MuiXMobileTimePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXMobileTimePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXMobileTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { describe, test, expect } from 'vitest';
+import { userEvent } from 'vitest/browser';
+import { render } from 'vitest-browser-react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormContainer } from '@piplup/rhf-core';
@@ -6,10 +9,10 @@ import dayjs from 'dayjs';
 import { MuiXDigitalClockElement } from './element';
 
 describe('MuiXDigitalClockElement', () => {
-  it('renders default time from defaultValues', () => {
+  test('renders default time from defaultValues', async () => {
     const dt = dayjs('2021-02-14T08:30');
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer defaultValues={{ time: dt }}>
           <MuiXDigitalClockElement name="time" />
@@ -17,15 +20,15 @@ describe('MuiXDigitalClockElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.get('[aria-selected="true"]')
-      .should('exist')
-      .should('contain', dt.format('HH:mm'));
+    const selected = screen.container.querySelector('[aria-selected="true"]');
+    expect(selected).toBeTruthy();
+    await expect.element(selected as HTMLElement).toHaveTextContent(dt.format('HH:mm A'));
   });
 
-  it('select a time, updating the displayed time', () => {
+  test('select a time, updating the displayed time', async () => {
     const target = dayjs().hour(9).minute(0);
 
-    cy.mount(
+    const screen = await render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormContainer>
           <MuiXDigitalClockElement name="time" />
@@ -33,14 +36,11 @@ describe('MuiXDigitalClockElement', () => {
       </LocalizationProvider>,
     );
 
-    cy.contains('[role="option"]', target.format('hh:mm A'))
-      .first()
-      .scrollIntoView();
+    const option = screen.getByRole('option', { name: target.format('hh:mm A') });
+    await userEvent.click(option);
 
-    cy.contains('[role="option"]', target.format('hh:mm A')).first().click();
-
-    cy.get('[aria-selected="true"]')
-      .should('exist')
-      .should('contain', target.format('HH:mm'));
+    const selected = screen.container.querySelector('[aria-selected="true"]');
+    expect(selected).toBeTruthy();
+    await expect.element(selected as HTMLElement).toHaveTextContent(target.format('HH:mm A'));
   });
 });

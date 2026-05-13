@@ -28,17 +28,12 @@ export function useMuiXDateTimePickerAdapter<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   RefType = unknown,
 >(
-  props: UseMuiXDateTimePickerAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: UseMuiXDateTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<RefType>,
 ) {
   const { inputRef, onClose, slotProps } = props;
 
-  const { error, helperText, onBlur, ...adapter } =
-    useBaseDateTimePickerAdapter(props, inputRef);
+  const { error, helperText, onBlur, ...adapter } = useBaseDateTimePickerAdapter(props, inputRef);
 
   const composedSlotProps = useComposePickerSlotProps({
     error,

@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-  useControllerAdapter,
-  type UseControllerAdapterProps,
-} from '@piplup/rhf-core';
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
+import { useControllerAdapter, type UseControllerAdapterProps } from '@piplup/rhf-core';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
 
 function isEqualRadioOrCheckboxValue(a: unknown, b: unknown) {
   if (typeof a === 'object' && b !== null) {
@@ -84,9 +77,7 @@ export function useHtmlInputAdapter<
 
   React.useMemo(() => {
     if (type === 'checkbox' && typeof value === 'undefined') {
-      throw new Error(
-        `\`value\` prop is required when using type as "${type}".`,
-      );
+      throw new Error(`\`value\` prop is required when using type as "${type}".`);
     }
   }, [value, type]);
 
@@ -109,9 +100,9 @@ export function useHtmlInputAdapter<
       ): PathValue<TFieldValues, TName> {
         switch (type) {
           case 'checkbox': {
-            const values = (
-              Array.isArray(previousValue) ? previousValue : []
-            ).filter((previousVal) => previousVal !== value);
+            const values = (Array.isArray(previousValue) ? previousValue : []).filter(
+              (previousVal) => previousVal !== value,
+            );
             if (event.target.checked) {
               values.push(value);
             }
@@ -121,9 +112,10 @@ export function useHtmlInputAdapter<
             return values as PathValue<TFieldValues, TName>;
           }
           case 'radio': {
-            return (
-              event.target.checked ? event.target.value : null
-            ) as PathValue<TFieldValues, TName>;
+            return (event.target.checked ? event.target.value : null) as PathValue<
+              TFieldValues,
+              TName
+            >;
           }
           case 'file': {
             return event.target.files as PathValue<TFieldValues, TName>;

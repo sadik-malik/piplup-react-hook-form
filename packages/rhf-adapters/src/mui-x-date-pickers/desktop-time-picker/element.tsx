@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-  DesktopTimePicker,
-  type PickerValidDate,
-  type TimePickerProps,
-} from '@mui/x-date-pickers';
+import { DesktopTimePicker, type PickerValidDate, type TimePickerProps } from '@mui/x-date-pickers';
 import { type Transform } from '@piplup/rhf-core';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import {
@@ -15,16 +11,9 @@ export type MuiXDesktopTimePickerElementProps<
   TTransformedValue extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<
-  TimePickerProps,
-  'defaultValue' | 'name' | 'value'
-> &
+> = Omit<TimePickerProps, 'defaultValue' | 'name' | 'value'> &
   Omit<
-    UseMuiXDesktopTimePickerAdapterProps<
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >,
+    UseMuiXDesktopTimePickerAdapterProps<TTransformedValue, TFieldValues, TName>,
     | 'classes'
     | 'composeClassName'
     | 'composeHelperText'
@@ -36,12 +25,7 @@ export type MuiXDesktopTimePickerElementProps<
     /**
      * Transformation functions for the field's input and output values.
      */
-    transform?: Transform<
-      TimePickerProps['onChange'],
-      TTransformedValue,
-      TFieldValues,
-      TName
-    >;
+    transform?: Transform<TimePickerProps['onChange'], TTransformedValue, TFieldValues, TName>;
   };
 
 function MuiXDesktopTimePickerComponent<
@@ -49,11 +33,7 @@ function MuiXDesktopTimePickerComponent<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  props: MuiXDesktopTimePickerElementProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
+  props: MuiXDesktopTimePickerElementProps<TTransformedValue, TFieldValues, TName>,
   ref?: React.Ref<HTMLDivElement>,
 ): React.ReactElement {
   const {

@@ -1,9 +1,6 @@
 import type * as React from 'react';
 import { type FieldValues } from 'react-hook-form';
-import {
-  useHtmlButtonAdapter,
-  type UseHtmlButtonAdapterProps,
-} from '../../html/button/adapter';
+import { useHtmlButtonAdapter, type UseHtmlButtonAdapterProps } from '../../html/button/adapter';
 
 export interface UseMuiIconButtonAdapterProps<
   TFieldValues extends FieldValues = FieldValues,

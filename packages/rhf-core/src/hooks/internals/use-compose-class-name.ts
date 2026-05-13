@@ -4,8 +4,7 @@ import { type UseComposeModifierStateResult } from './use-compose-modifier-state
  * Props for the `useComposeClassName` hook.
  */
 export type UseComposeClassNameProps<
-  ModifierState extends UseComposeModifierStateResult =
-    UseComposeModifierStateResult,
+  ModifierState extends UseComposeModifierStateResult = UseComposeModifierStateResult,
 > = {
   /**
    * Custom classes mapped by keys such as 'root' or modifier state keys.
@@ -34,15 +33,9 @@ export type UseComposeClassNameProps<
  * @returns Composed className string based on the provided options.
  */
 export function useUnstableComposeClassName<
-  ModifierState extends UseComposeModifierStateResult =
-    UseComposeModifierStateResult,
+  ModifierState extends UseComposeModifierStateResult = UseComposeModifierStateResult,
 >(options: UseComposeClassNameProps<ModifierState>): string | undefined {
-  const {
-    classes,
-    className,
-    composeClassName = true,
-    modifierState,
-  } = options;
+  const { classes, className, composeClassName = true, modifierState } = options;
 
   if (!composeClassName) {
     return className;

@@ -1,59 +1,63 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
+import { test, expect, describe } from 'vitest';
+import { render } from 'vitest-browser-react';
 import { FormContainer } from '@piplup/rhf-core';
 import { MuiFileInputElement } from './element';
 
-function attachFiles($input: HTMLInputElement, files: File[]) {
-  const dataTransfer = new DataTransfer();
-  files.forEach((f) => dataTransfer.items.add(f));
-  $input.files = dataTransfer.files;
-  $input.dispatchEvent(new Event('change', { bubbles: true }));
-}
-
 describe('MuiFileInputElement', () => {
-  it('accepts a single file selection', () => {
-    cy.mount(
+  test('accepts a single file selection', async () => {
+    const screen = await render(
       <FormContainer onSubmit={() => {}}>
-        <MuiFileInputElement name="file" />
+        <MuiFileInputElement
+          name="file"
+          slotProps={{
+            htmlInput: {
+              'data-testid': 'file',
+            },
+          }}
+        />
       </FormContainer>,
     );
 
-    cy.get('input[type="file"]')
-      .should('exist')
-      .then(($el) => {
-        const input = $el[0] as HTMLInputElement;
-        const file = new File(['hello'], 'test.txt', { type: 'text/plain' });
+    const input = screen.getByTestId('file');
+    const file = new File(['hello'], 'test.txt', { type: 'text/plain' });
 
-        attachFiles(input, [file]);
+    await input.upload(file);
 
-        expect(input.files).to.have.length(1);
-        expect(input.files?.[0].name).to.equal('test.txt');
-      });
+    const inputElement = (await input.element()) as HTMLInputElement;
 
-    cy.contains('test.txt').should('exist');
+    expect(inputElement.files).toHaveLength(1);
+    expect(inputElement.files?.[0].name).toBe('test.txt');
+
+    expect(screen.getByText('test.txt')).toBeInTheDocument();
   });
 
-  it('accepts multiple files when `multiple` is true', () => {
-    cy.mount(
+  test('accepts multiple files when `multiple` is true', async () => {
+    const screen = await render(
       <FormContainer onSubmit={() => {}}>
-        <MuiFileInputElement name="files" multiple />
+        <MuiFileInputElement
+          name="files"
+          multiple
+          slotProps={{
+            htmlInput: {
+              'data-testid': 'file',
+            },
+          }}
+        />
       </FormContainer>,
     );
 
-    cy.get('input[type="file"]')
-      .should('exist')
-      .then(($el) => {
-        const input = $el[0] as HTMLInputElement;
-        const f1 = new File(['one'], 'a.txt', { type: 'text/plain' });
-        const f2 = new File(['two'], 'b.txt', { type: 'text/plain' });
+    const input = screen.getByTestId('file');
+    const f1 = new File(['one'], 'a.txt', { type: 'text/plain' });
+    const f2 = new File(['two'], 'b.txt', { type: 'text/plain' });
 
-        attachFiles(input, [f1, f2]);
+    await input.upload([f1, f2]);
 
-        expect(input.files).to.have.length(2);
-        expect(input.files?.[0].name).to.equal('a.txt');
-        expect(input.files?.[1].name).to.equal('b.txt');
-      });
+    const inputElement = (await input.element()) as HTMLInputElement;
+    expect(inputElement.files).toHaveLength(2);
+    expect(inputElement.files?.[0].name).toBe('a.txt');
+    expect(inputElement.files?.[1].name).toBe('b.txt');
 
-    cy.contains('2 files').should('exist');
+    expect(screen.getByText('2 files')).toBeInTheDocument();
   });
 });

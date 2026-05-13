@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
-import {
-  useHtmlTextareaAdapter,
-  type UseHtmlTextareaAdapterProps,
-} from './adapter';
+import { useHtmlTextareaAdapter, type UseHtmlTextareaAdapterProps } from './adapter';
 
 export interface HtmlTextareaElementProps<
   TTransformedValue extends number | readonly string[] | string | undefined,
@@ -11,10 +8,7 @@ export interface HtmlTextareaElementProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >
   extends
-    Omit<
-      React.ComponentProps<'textarea'>,
-      'defaultValue' | 'name' | 'style' | 'type'
-    >,
+    Omit<React.ComponentProps<'textarea'>, 'defaultValue' | 'name' | 'style' | 'type'>,
     Omit<
       UseHtmlTextareaAdapterProps<TTransformedValue, TFieldValues, TName>,
       'composeClassName' | 'composeHelperText' | 'onBlur' | 'onChange'

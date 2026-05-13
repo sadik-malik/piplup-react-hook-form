@@ -1,12 +1,5 @@
-import {
-  type PathValue,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
-import {
-  useHtmlInputAdapter,
-  type UseHtmlInputAdapterProps,
-} from '../../html/input/adapter';
+import { type PathValue, type FieldPath, type FieldValues } from 'react-hook-form';
+import { useHtmlInputAdapter, type UseHtmlInputAdapterProps } from '../../html/input/adapter';
 
 export interface UseNumberFormatBaseAdapterProps<
   TTransformedValue,
@@ -30,21 +23,8 @@ export function useNumberFormatBaseAdapter<
   TTransformedValue,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(
-  props: UseNumberFormatBaseAdapterProps<
-    TTransformedValue,
-    TFieldValues,
-    TName
-  >,
-) {
-  const {
-    composeHelperText,
-    getInputRef,
-    onValueChange,
-    transform,
-    type,
-    ...rest
-  } = props;
+>(props: UseNumberFormatBaseAdapterProps<TTransformedValue, TFieldValues, TName>) {
+  const { composeHelperText, getInputRef, onValueChange, transform, type, ...rest } = props;
 
   const {
     checked: _checked,
@@ -57,12 +37,7 @@ export function useNumberFormatBaseAdapter<
     title: _title,
     type: _type,
     ...adapter
-  } = useHtmlInputAdapter<
-    TTransformedValue,
-    TFieldValues,
-    TName,
-    Required<typeof getInputRef>
-  >(
+  } = useHtmlInputAdapter<TTransformedValue, TFieldValues, TName, Required<typeof getInputRef>>(
     {
       ...rest,
       checked: undefined,
