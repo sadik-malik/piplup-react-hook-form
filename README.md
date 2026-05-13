@@ -20,35 +20,3 @@ integrating native html components and custom components with react-hook-form.
 
 This package contains a set of useful components, hooks and adapter for
 integrating libraries like mui with react-hook-form.
-
----
-
-## Getting Started
-
-```bash
-npm install
-```
-
-## Scripts
-
-### Development
-
-```bash
-npm run lint          # Run oxlint across all packages
-npm run format        # Format all files with oxfmt
-npm run format:check  # Check formatting without writing
-npm run build         # Build all packages
-```
-
-### Testing
-
-```bash
-npm run test           # Run tests
-```
-
-### Release
-
-```bash
-npm run release        # Interactive release: bump → lint → test → publish → tag
-npm run release:dry    # Preview what would happen (nothing is written/published)
-```
