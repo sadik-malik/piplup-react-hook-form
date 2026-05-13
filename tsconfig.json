@@ -7,6 +7,7 @@
   "files": [],
   "references": [
     { "path": "./packages/rhf-core" },
-    { "path": "./packages/rhf-adapters" }
+    { "path": "./packages/rhf-adapters" },
+    { "path": "./tsconfig.scripts.json" }
   ]
 }

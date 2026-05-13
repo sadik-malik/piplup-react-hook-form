@@ -12,8 +12,8 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "typecheck": "tsc --build --noEmit",
-    "release": "tsx scripts/release.ts",
-    "release:dry": "tsx scripts/release.ts --dry-run",
+    "release": "tsx scripts/release.mts",
+    "release:dry": "tsx scripts/release.mts --dry-run",
     "test": "npm run test --workspaces --if-present",
     "build": "npm run build -w @piplup/rhf-core && npm run build -w @piplup/rhf-adapters"
   },

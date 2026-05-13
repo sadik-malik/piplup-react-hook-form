@@ -11,7 +11,8 @@
     "noEmit": true,
     // Scripts don't need composite/incremental since they're not referenced
     "composite": false,
-    "incremental": false
+    "incremental": false,
+    "types": ["node"]
   },
-  "include": ["scripts/**/*.ts"]
+  "include": ["scripts/**/*.ts", "scripts/**/*.mts", "scripts/**/*.mjs"]
 }

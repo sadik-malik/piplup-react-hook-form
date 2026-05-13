@@ -40,6 +40,9 @@
     "composite": true,
     "incremental": true,
 
+    // Silence deprecation warnings for TS6 migration
+    "ignoreDeprecations": "6.0",
+
     // ─── Skip lib checks for faster builds ───────────────────────────────────
     "skipLibCheck": true
   }
