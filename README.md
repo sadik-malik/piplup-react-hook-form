@@ -35,19 +35,15 @@ npm install
 
 ```bash
 npm run lint          # Run oxlint across all packages
-npm run lint:fix      # Auto-fix lint issues
-npm run fmt           # Format all files with prettier
-npm run fmt:check     # Check formatting without writing
+npm run format        # Format all files with oxfmt
+npm run format:check  # Check formatting without writing
 npm run build         # Build all packages
 ```
 
 ### Testing
 
 ```bash
-npm run test           # Run component + E2E tests (headless)
-npm run test:unit      # Run Cypress component tests only
-npm run test:e2e       # Run Cypress E2E tests only
-npm run test:open      # Open Cypress interactive runner
+npm run test           # Run tests
 ```
 
 ### Release
@@ -55,15 +51,4 @@ npm run test:open      # Open Cypress interactive runner
 ```bash
 npm run release        # Interactive release: bump → lint → test → publish → tag
 npm run release:dry    # Preview what would happen (nothing is written/published)
-node scripts/changelog.js --write  # Regenerate CHANGELOG.md
-```
-
-## Release Flow
-
-```
-# From your local machine:
-npm run release          # interactive — picks bump type, runs all checks, publishes
-# OR manually:
-git tag release@1.2.3
-git push --follow-tags   # triggers the release workflow in CI
 ```
