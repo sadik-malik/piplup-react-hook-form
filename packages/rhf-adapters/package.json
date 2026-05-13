@@ -19,7 +19,10 @@
     "directory": "packages/rhf-adapters"
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json"
   ],
   "sideEffects": false,
   "main": "./dist/index.js",
