@@ -135,7 +135,7 @@ function preflight(dryRun: boolean): void {
   console.log('  🔍 Linting...');
   run('npm run lint', { dryRun });
   console.log('  🎨 Formatting...');
-  run('npm run fmt:check', { dryRun });
+  run('npm run format:check', { dryRun });
   console.log('  🏗️  Building...');
   run('npm run build', { dryRun });
   console.log('  🧪 Testing...');
