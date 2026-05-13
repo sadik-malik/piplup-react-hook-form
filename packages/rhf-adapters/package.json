@@ -1,6 +1,6 @@
 {
   "name": "@piplup/rhf-adapters",
-  "version": "4.5.0",
+  "version": "5.0.0",
   "private": false,
   "description": "A library designed to streamline the integration of react-hook-form with UI frameworks by managing boilerplate code.",
   "keywords": [
@@ -122,7 +122,7 @@
   "peerDependencies": {
     "@mui/material": ">=6.0.0 <10.0.0",
     "@mui/x-date-pickers": ">=9.0.0 <10.0.0",
-    "@piplup/rhf-core": "^4.5.0",
+    "@piplup/rhf-core": "^5.0.0",
     "@piplup/utils": "3.2.4",
     "mui-chips-input": ">=4.0.1 <10.0.0",
     "mui-color-input": ">=5.0.1 <10.0.0",

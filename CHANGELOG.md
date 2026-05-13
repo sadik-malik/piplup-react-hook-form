@@ -1,3 +1,26 @@
+## 5.0.0 (2026-05-13)
+
+- chore: updated release script (fe4e23c)
+- chore: fix typo in release script (6f9e57f)
+- chore: updated release script (826ddb1)
+- chore: added missing artifcats to package.json (477b7ca)
+- chore: removed nx, cypress, prettier and added vitest, oxfmt and new workflow (7d7efb2)
+- chore(deps): update vitest monorepo to v4.1.6 (ec1792f)
+- chore(deps): update dependency react-hook-form to v7.75.0 (ce91f57)
+- chore(deps): update dependency vite to v8.0.12 (7ad2dff)
+- chore(deps): update commitlint monorepo to v20.5.3 (c39068a)
+- chore(deps): update dependency @swc/core to v1.15.33 (e833f2f)
+- chore(deps): update dependency oxlint to v1.63.0 (74b5ce7)
+- chore(deps): update material-ui monorepo (1ad7f53)
+- chore(deps): update dependency cypress to v15.14.2 (0a4a9a1)
+- chore(deps): update nx monorepo to v22.7.1 (4b97027)
+- chore: update dependencies (cd974a3)
+- chore: remove eslint and use oxlint (3dbb3d3)
+- chore: migrate nx to latest version (4b86254)
+- fix: added error, helperText and required prop for renderInput in Autocomplete (4137e53)
+- chore: nx.json updated dependency graph for release (de19f35)
+- chore: enable nx cache (da6e00f)
+
 ## 4.5.0 (2026-01-27)
 
 ### 🚀 Features
